@@ -1,10 +1,18 @@
 import './App.css'
-import Navbar from "./components/Navbar/Navbar.jsx"
+import Navbar from './components/Navbar/Navbar.jsx'
+import SideNav from './components/SideNav/SideNav.jsx'
+import Layout from './components/Layout/Layout.jsx'
 
 function App() {
-  
+
   return (
-    <Navbar />
+    <Layout>
+      <div className='header'></div>
+      <SideNav />
+      <div className='dashboard'>
+        <Navbar />
+      </div>
+    </Layout>
   )
 }
 

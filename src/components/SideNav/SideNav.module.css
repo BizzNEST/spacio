@@ -1,0 +1,58 @@
+.sidenav {
+  background-color: #F5F5F5;
+  transition: .5s ease; 
+  overflow-x: hidden; 
+  padding-top: 100px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+  row-gap: 15px;
+  grid-area: sidebar;
+}
+
+.logoTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 20px;
+  width: 80%;
+}
+
+.image {
+  background-color: #a6a6a6;
+  height: 50px;
+  width: 50px;
+  border-radius: 5px;
+}
+
+.sideSearch {
+  border: none;
+  border-radius: 5px;
+  height: 35px;
+  width: 80%;
+
+}
+
+.sideTabs {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+  color: #666666;
+  width: 80%;
+  padding: 10px 0px 10px 0px;
+  border-right: solid orange 5px;
+  font-weight: 300;
+
+}
+
+.sideTabs:hover {
+  background-color: #E9E9E9;
+  color: #666666;
+}
+
+.iconGrid {
+  font-size: 30px;
+}
