@@ -1,11 +1,5 @@
 .sidenav {
   background-color: #F5F5F5;
-  /*height: 100%;  
-  width: 20%;  
-  position: fixed; 
-  z-index: 1; */
-  top: 0; 
-  left: 0; 
   transition: .5s ease; 
   overflow-x: hidden; 
   padding-top: 100px;

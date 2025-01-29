@@ -1,5 +1,4 @@
 import './App.css'
-import './components/SideNav/SideNav.jsx'
 import SideNav from './components/SideNav/SideNav.jsx'
 import Layout from './components/Layout/Layout.jsx'
 
