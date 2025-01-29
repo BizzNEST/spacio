@@ -45,7 +45,7 @@
   padding: 10px 0px 10px 0px;
   border-right: solid orange 5px;
   font-weight: 300;
-
+  text-decoration: none;
 }
 
 .sideTabs:hover {
