@@ -1,0 +1,80 @@
+.navbar {
+    display: flex; /* Align items in a row */
+    justify-content: right; /* Center align the buttons */
+    background-color: #ffffff; /* Navbar background color */
+    padding: 15px; /* Padding around the navbar */
+    gap: 10px;
+    border-radius: 8px; /* Optional: Rounded corners for the navbar */
+  }
+
+.navbarButton {
+    background-color: #ffffff; /* Button background color */
+    color: #4D5163; /* Button text color */
+    border: 1px solid #b4b7ba; /* Button border color */
+    border-radius: 5px; /* Rounded button corners */
+    padding: 10px; /* Padding inside buttons */
+    gap: 30px;
+    font-size: 12px; /* Font size for button text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: all 0.3s ease; /* Smooth transitions for hover effects */
+  }
+
+.navbarButton:hover {
+    color: #616161; /* White text on hover */
+    transform: scale(1.05); /* Slightly increase button size on hover */
+  }
+
+
+.navbarButton:active {
+  transform: scale(0.95); /* Slightly shrink button on click */
+  }
+
+
+.eyeButton{
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.backButton{
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  font-size: 25px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding-left: 6px;
+}
+
+.todayButton{
+  width: 67px; 
+  height: 32px; 
+  border-radius: 10px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.forwardButton{
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  font-size: 25px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding-right: 6px;
+}
+
+.dateButton{
+  width: 171.66px; 
+  height: 32px;
+  border-radius: 10px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
