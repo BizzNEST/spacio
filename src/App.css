@@ -47,12 +47,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-.main {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  height: 100dvh;
-}
-
 body {
   margin: 0;
+}
+
+.header {
+  grid-area: header;
+}
+
+.dashboard {
+  grid-area: dashboard;
 }

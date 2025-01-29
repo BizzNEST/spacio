@@ -1,19 +1,21 @@
 import React from 'react';
-import './SideNav.css';
+import styles from './SideNav.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
 
 function SideNav() {
   return (
-  <div className='sidenav'>
-    <div className='logo-title'>
-      <div className='image'></div>
+  <nav className={styles.sidenav}>
+    <div className={styles.logoTitle}>
+      <div className={styles.image}></div>
       <p>Digital NEST</p>
     </div>
-    <input className='side-search' type="text" placeholder="Jump To.."></input>
-    <a className='side-tabs' href='#section'>
-      <img src="images/myIcon.jpg"></img>
+    <input className={styles.sideSearch} type="text" placeholder="Jump To.."></input>
+    <a className={styles.sideTabs} href='#section'>
+      <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
       Meeting Rooms
     </a>
-  </div>
+  </nav>
   )
 }
-export default SideNav
+export default SideNav;
