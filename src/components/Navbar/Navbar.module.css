@@ -1,8 +1,6 @@
 .navbar {
     display: flex; /* Align items in a row */
     justify-content: right; /* Center align the buttons */
-    align-items: right; /* Vertically center align the buttons */
-    gap: 25px; /* Add spacing between buttons */
     background-color: #ffffff; /* Navbar background color */
     padding: 15px; /* Padding around the navbar */
     gap: 10px;

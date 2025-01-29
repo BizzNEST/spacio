@@ -1,11 +1,13 @@
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Navbar.module.css"
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function Navbar() {
     return (
       <nav className={styles.navbar}>
         <button className={`${styles.navbarButton} ${styles.eyeButton}`} onClick={() => alert("Eye Button Clicked!")}>
-        <i className="fa-solid fa-eye"></i>
+          <FontAwesomeIcon icon={faEye} />
         </button>
         <button className={`${styles.navbarButton} ${styles.backButton}`} onClick={() => alert("Second Button Clicked!")}>
         &lt;
