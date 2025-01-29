@@ -16,7 +16,7 @@ function Navbar() {
           Today
         </button>
         <button className={`${styles.navbarButton} ${styles.forwardButton}`} onClick={() => alert("Forward Button Clicked!")}>
-         <FontAwesomeIcon icon={faChevronRight} />
+         <FontAwesomeIcon className={styles.forwardButton} icon={faChevronRight} />
         </button>
         <button className={`${styles.navbarButton} ${styles.dateButton}`} onClick={() => alert("Date Button Clicked!")}>
           Date
