@@ -1,0 +1,9 @@
+.layout {
+  display: grid;
+  grid-template-rows: 80px 1fr;
+  grid-template-columns: 1fr 3fr;
+  height: 100dvh;
+  grid-template-areas:
+    'header header'
+    'sidebar dashboard';
+}

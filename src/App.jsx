@@ -1,16 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import Header from './Components/Header/Header'
+import Header from './components/Header/Header.jsx'
+import Navbar from './components/Navbar/Navbar.jsx'
+import SideNav from './components/SideNav/SideNav.jsx'
+import Layout from './components/Layout/Layout.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <Header />
-    </>
+ 
+     
+    <Layout>
+       <Header />
+      <SideNav />
+      <div className='dashboard'>
+        <Navbar />
+      </div>
+    </Layout>
   )
 }
 
