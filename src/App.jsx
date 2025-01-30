@@ -1,14 +1,12 @@
 import './App.css'
-import Header from './components/Header/Header.jsx'
-import Navbar from './components/Navbar/Navbar.jsx'
-import SideNav from './components/SideNav/SideNav.jsx'
-import Layout from './components/Layout/Layout.jsx'
+import Header from './Components/Header/Header.jsx'
+import Navbar from './Components/Navbar/Navbar.jsx'
+import SideNav from './Components/SideNav/SideNav.jsx'
+import Layout from './Components/Layout/Layout.jsx'
 
 function App() {
 
   return (
- 
-     
     <Layout>
        <Header />
       <SideNav />
