@@ -1,8 +1,9 @@
 import './App.css'
+import Navbar from './components/Navbar/Navbar.jsx'
+import SideNav from './components/SideNav/SideNav.jsx'
+import Layout from './components/Layout/Layout.jsx'
+import Dashboard from './Dashboard/Dashboard.jsx'
 import Header from './Components/Header/Header.jsx'
-import Navbar from './Components/Navbar/Navbar.jsx'
-import SideNav from './Components/SideNav/SideNav.jsx'
-import Layout from './Components/Layout/Layout.jsx'
 
 function App() {
 
@@ -10,9 +11,10 @@ function App() {
     <Layout>
        <Header />
       <SideNav />
-      <div className='dashboard'>
+      <Dashboard title="Meeting Rooms">
         <Navbar />
-      </div>
+      </Dashboard> 
+  
     </Layout>
   )
 }
