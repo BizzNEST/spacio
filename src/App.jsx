@@ -1,19 +1,20 @@
-import './App.css'
-import Navbar from './components/Navbar/Navbar.jsx'
-import SideNav from './components/SideNav/SideNav.jsx'
-import Layout from './components/Layout/Layout.jsx'
+import './App.css';
+import Navbar from './components/Navbar/Navbar.jsx';
+import SideNav from './components/SideNav/SideNav.jsx';
+import Layout from './components/Layout/Layout.jsx';
+import Dashboard from './Dashboard/Dashboard.jsx';
+import Header from './Components/Header/Header.jsx';
 
 function App() {
-
   return (
     <Layout>
-      <div className='header'></div>
+      <Header />
       <SideNav />
-      <div className='dashboard'>
+      <Dashboard title="Meeting Rooms">
         <Navbar />
-      </div>
+      </Dashboard>
     </Layout>
-  )
+  );
 }
 
-export default App
+export default App;
