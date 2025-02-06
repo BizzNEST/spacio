@@ -10,6 +10,7 @@ function App() {
     <Layout>
       <Header />
       <SideNav />
+
       <Dashboard title="Meeting Rooms">
         <Navbar />
       </Dashboard>
