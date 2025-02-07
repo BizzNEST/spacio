@@ -8,15 +8,21 @@
 /* 2. Remove default margin */
 * {
   margin: 0;
-}
-
-body {
+  
   /* 3. Add accessible line-height */
   line-height: 1.5;
   /* 4. Improve text rendering */
   -webkit-font-smoothing: antialiased;
   font-family: 'Roboto', sans-serif;
 }
+
+/*body {
+  /* 3. Add accessible line-height
+  line-height: 1.5;
+  /* 4. Improve text rendering
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Roboto', sans-serif;
+}*/
 
 /* 5. Improve media defaults */
 img,
