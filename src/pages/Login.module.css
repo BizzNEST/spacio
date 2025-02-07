@@ -1,0 +1,60 @@
+.animatedBackground {
+	background: linear-gradient(
+		45deg,
+    #9dffdb,
+    #8bee6c,
+    #6ceea2,
+    #4185d9,
+    #4144d9,
+    #4185d9,
+		#91efff,
+		#d5f9ff
+	);
+	background-size: 400% 400%;
+	animation: gradient 10s ease infinite;
+	
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  color: white;
+}
+
+.title {
+  font-size: 36px;
+}
+
+.note {
+  font-size: 25px;
+}
+
+.loginButton {
+  background-color: white;
+  width: 250px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+  border-radius: 5px;
+  border: none;
+  color: rgb(114, 118, 128);
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
