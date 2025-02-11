@@ -55,3 +55,9 @@
 .iconGrid {
   font-size: 30px;
 }
+
+.profileImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 25%;
+}
