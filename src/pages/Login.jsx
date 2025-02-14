@@ -2,6 +2,8 @@
 import styles from './Login.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+<script src="login.js" defer></script>
+
 
 import React, { useEffect, useState } from "react";
 import { gapi } from "gapi-script"; //Import the Google API client
@@ -105,5 +107,6 @@ function Login() {
     </div>
   );*/
 }
+
 
 export default Login;
