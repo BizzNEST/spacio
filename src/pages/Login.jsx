@@ -5,7 +5,8 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import useAuth from '../hooks/useAuth';
 
 function Login() {
-  const { handleSignIn, handleSignOut, isAuthorized, events } = useAuth();
+  const { handleSignIn, handleSignOut, isAuthorized, isLoading, events } =
+    useAuth();
 
   return (
     <div className={styles.animatedBackground}>
@@ -25,7 +26,9 @@ function Login() {
             <button onClick={handleSignOut}>Sign out</button>
             <h2>Your Upcoming Events:</h2>
             <ul>
-              {events.length > 0 ? (
+              {isLoading ? (
+                <p>Loading events...</p>
+              ) : events.length > 0 ? (
                 events.map((event, index) => (
                   <li key={index}>
                     <strong>{event.summary}</strong>

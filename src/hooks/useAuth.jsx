@@ -26,8 +26,9 @@ const useAuth = () => {
 
     const credential = GoogleAuthProvider.credential(token);
 
-    await signInWithCredential(auth, credential).then(() => {
+    await signInWithCredential(auth, credential).then(async () => {
       setIsAuthorized(true);
+      await addEvent();
       loadEvents();
     });
   };
@@ -40,21 +41,65 @@ const useAuth = () => {
     });
   };
 
-  const loadEvents = () => {
-    gapi.client.calendar.events
-      .list({
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
+
+  const loadEvents = async () => {
+    setIsLoading(true); // Start loading
+    try {
+      const response = await gapi.client.calendar.events.list({
         calendarId: 'primary',
         timeMin: new Date().toISOString(),
         maxResults: 10,
         singleEvents: true,
         orderBy: 'startTime',
-      })
-      .then((response) => {
-        setEvents(response.result.items);
       });
+      setEvents([...response.result.items]);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    } finally {
+      setIsLoading(false); // Stop loading after events are fetched
+    }
   };
 
-  return { handleSignIn, handleSignOut, isAuthorized, events };
+  const addEvent = async () => {
+    return new Promise((resolve, reject) => {
+      const event = {
+        summary: 'Google I/O 2025',
+        location: '800 Howard St., San Francisco, CA 94103',
+        description: "A chance to hear more about Google's developer products.",
+        start: {
+          dateTime: '2025-03-06T09:00:00-07:00',
+          timeZone: 'America/Los_Angeles',
+        },
+        end: {
+          dateTime: '2025-03-06T17:00:00-07:00',
+          timeZone: 'America/Los_Angeles',
+        },
+        reminders: {
+          useDefault: false,
+          overrides: [
+            { method: 'email', minutes: 24 * 60 },
+            { method: 'popup', minutes: 10 },
+          ],
+        },
+      };
+
+      gapi.client.calendar.events
+        .insert({
+          calendarId: 'primary',
+          resource: event,
+        })
+        .execute((event) => {
+          if (event && event.id) {
+            resolve(event);
+          } else {
+            reject('Failed to add event');
+          }
+        });
+    });
+  };
+
+  return { handleSignIn, handleSignOut, isAuthorized, isLoading, events };
 };
 
 export default useAuth;
