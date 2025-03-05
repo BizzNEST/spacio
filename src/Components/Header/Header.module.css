@@ -11,3 +11,32 @@
   color: black;
   font-size: 24px;
 }
+
+.mobileMenuIcon {
+  display: none;
+}
+
+.xmarkIcon {
+  display: none;
+}
+
+/* Styling for Mobile Devices */
+@media screen and (max-width: 768px) {
+  .header {
+    background-color: #80b8ff;
+    color: white;
+  }
+
+  .header h1 {
+    color: white;
+  }
+
+  .mobileMenuIcon {
+    display: block;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+    padding-top: 5px;
+    transition: transform 0.5s ease-in-out;
+  }
+}

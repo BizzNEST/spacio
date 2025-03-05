@@ -61,3 +61,10 @@
   height: 60px;
   border-radius: 25%;
 }
+
+/* Styling for Mobile Devices */
+@media screen and (max-width: 768px) {
+  .sidenav {
+    display: none;
+  }
+}
