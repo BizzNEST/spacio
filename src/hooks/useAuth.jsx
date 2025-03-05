@@ -91,7 +91,6 @@ const useAuth = () => {
         })
         .execute((event) => {
           if (event && event.id) {
-            console.log('Event added:', event);
             resolve(event);
           } else {
             reject('Failed to add event');
