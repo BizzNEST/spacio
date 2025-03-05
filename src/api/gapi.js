@@ -2,7 +2,7 @@ import { gapi } from 'gapi-script'; //Import the Google API client
 
 const apiKey = import.meta.env.VITE_API_KEY;
 const clientId = import.meta.env.VITE_CLIENT_ID;
-const scope = import.meta.env.VITE_SCOPES;
+const scope = import.meta.env.VITE_SCOPE;
 
 export const initClient = () => {
   gapi.client.init({
