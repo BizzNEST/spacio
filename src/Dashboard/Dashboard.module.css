@@ -13,16 +13,17 @@
 
 /* Styling for Mobile Devices */
 @media (max-width: 768px) {
+  .dashboardContent {
+    padding: 22px 28px;
+  }
   .bookRoomButton {
     display: block;
-    width: 250px;
-    height: 45px;
+    width: 100%;
     background-color: #e3eefc;
     border: none;
     border-radius: 8px;
     font-size: 1.25rem;
-    margin-top: -45px;
-    margin-left: -15px;
+    padding: 0.5rem 0 0.5rem 0;
   }
   .bookRoomButton button:hover {
     color: #a1a6aa;
