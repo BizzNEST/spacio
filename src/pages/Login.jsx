@@ -3,6 +3,7 @@ import styles from './Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import useAuth from '../hooks/useAuth';
+import { Navigate } from 'react-router-dom';
 
 function Login() {
   const { handleSignIn, handleSignOut, isAuthorized, isLoading, events } =
@@ -23,26 +24,7 @@ function Login() {
           </button>
         ) : (
           <>
-            <button onClick={handleSignOut}>Sign out</button>
-            <h2>Your Upcoming Events:</h2>
-            <ul>
-              {isLoading ? (
-                <p>Loading events...</p>
-              ) : events.length > 0 ? (
-                events.map((event, index) => (
-                  <li key={index}>
-                    <strong>{event.summary}</strong>
-                    <p>
-                      {new Date(
-                        event.start.dateTime || event.start.date
-                      ).toLocaleString()}
-                    </p>
-                  </li>
-                ))
-              ) : (
-                <p>No upcoming events.</p>
-              )}
-            </ul>
+            <Navigate to={'/home'} />
           </>
         )}
       </div>

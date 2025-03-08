@@ -10,9 +10,9 @@ import Navbar from '../Navbar/Navbar';
 function Layout({ children }) {
   return <div className={styles.layout}>
     <Header /> 
-    <Dashboard>
+    <Dashboard> 
       <Navbar />
-    </Dashboard>
+     </Dashboard> 
     <SideNav />
 
   </div>;
