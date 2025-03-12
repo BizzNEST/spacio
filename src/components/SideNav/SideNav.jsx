@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './SideNav.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
+import Modal from '../Modal/Modal';
+import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
 
 function SideNav() {
   return (
@@ -28,9 +30,15 @@ function SideNav() {
         </a>
       </div>
 
-      <div style={{ alignSelf: 'end' }}>
-        <button className={styles.desktopBookRoom}>Book a Room</button>
-      </div>
+      <Modal>
+        <Modal.Trigger>Click Button</Modal.Trigger>
+        <Modal.Content
+          title={'Book a Room'}
+          subtitle={'Select your prefered time and date.'}
+        >
+          Test
+        </Modal.Content>
+      </Modal>
     </nav>
   );
 }
