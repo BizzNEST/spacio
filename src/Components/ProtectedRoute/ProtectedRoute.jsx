@@ -3,10 +3,12 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 function ProtectedRoute({ children }) {
-    const {isAuthenticated} = useAuth();
+    const {isAuthorized} = useAuth();
+
+    console.log(isAuthorized);  
   return (
     <>
-    {isAuthenticated ? <Outlet /> : <Navigate to="/login" />}
+    {isAuthorized ? <Outlet /> : <Navigate to="/login" />}
     </>
     );
 

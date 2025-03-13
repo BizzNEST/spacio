@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signOut,
   signInWithCredential,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 const useAuth = () => {
@@ -16,13 +17,37 @@ const useAuth = () => {
   useEffect(() => {
     gapi.load('client:auth2', initClient);
   }, []);
+  
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        setIsAuthorized(true);
+        loadEvents();
+      } else {
+        // User is signed out
+        setIsAuthorized(false);
+        setEvents([]);
+      }
+      setIsLoading(false);
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
 
   // Sign in and authorize the app
   const handleSignIn = async () => {
+    console.log('inside of handle sign in');
+    
     const googleAuth = gapi.auth2.getAuthInstance();
     const googleUser = await googleAuth.signIn();
+    console.log(googleAuth.currentUser.get().isSignedIn())
 
     const token = googleUser.getAuthResponse().id_token;
+    console.log(googleAuth.currentUser.get().isSignedIn())
 
     const credential = GoogleAuthProvider.credential(token);
 
@@ -30,16 +55,40 @@ const useAuth = () => {
       setIsAuthorized(true);
       await addEvent();
       loadEvents();
+      
     });
   };
 
-  // Sign out of the app
-  const handleSignOut = async () => {
-    await signOut(auth).then(() => {
-      setIsAuthorized(false);
-      setEvents([]);
-    });
-  };
+ // Sign out of the app
+const handleSignOut = async () => {
+  try {  console.log('inside of handle sign out');
+    // First, get the Google Auth instance
+    const googleAuth = gapi.auth2.getAuthInstance();
+    console.log(googleAuth.isSignedIn)
+    console.log(googleAuth.currentUser.get().isSignedIn())
+    
+    // 1. Sign out from Google Auth first
+    if (googleAuth) {
+      await googleAuth.signOut();
+      await googleAuth.disconnect(); // Revoke permissions
+    }
+    
+    // 2. Then sign out from Firebase
+    gapi.auth.setToken(null);
+    await signOut(auth);
+    
+    // 3. Update local state
+    setIsAuthorized(false);
+    setEvents([]);
+    
+      //redirect to logIn
+
+  
+  } catch (error) {
+    console.error('Error during sign out process:', error);
+  }
+
+};
 
   const [isLoading, setIsLoading] = useState(true); // Track loading state
 
@@ -60,6 +109,7 @@ const useAuth = () => {
       setIsLoading(false); // Stop loading after events are fetched
     }
   };
+    
 
   const addEvent = async () => {
     return new Promise((resolve, reject) => {
