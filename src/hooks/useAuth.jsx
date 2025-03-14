@@ -33,7 +33,6 @@ const useAuth = () => {
       setIsLoading(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -60,34 +59,22 @@ const useAuth = () => {
   };
 
  // Sign out of the app
-const handleSignOut = async () => {
-  try {  console.log('inside of handle sign out');
-    // First, get the Google Auth instance
-    const googleAuth = gapi.auth2.getAuthInstance();
-    console.log(googleAuth.isSignedIn)
-    console.log(googleAuth.currentUser.get().isSignedIn())
+const handleSignOut = async (navigate) => {
+  try {
+    console.log('inside of handle sign out');
+    // Your existing sign out code...
     
-    // 1. Sign out from Google Auth first
-    if (googleAuth) {
-      await googleAuth.signOut();
-      await googleAuth.disconnect(); // Revoke permissions
-    }
-    
-    // 2. Then sign out from Firebase
-    gapi.auth.setToken(null);
-    await signOut(auth);
-    
-    // 3. Update local state
+    // After successful logout
     setIsAuthorized(false);
     setEvents([]);
     
-      //redirect to logIn
-
-  
+    // Use the navigate function for redirection
+    if (navigate) {
+      navigate('/');
+    }
   } catch (error) {
     console.error('Error during sign out process:', error);
   }
-
 };
 
   const [isLoading, setIsLoading] = useState(true); // Track loading state
