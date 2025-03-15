@@ -1,13 +1,9 @@
 import './App.css';
 import { RouterProvider } from 'react-router-dom';
-import { useRouter } from './pages/Routes.jsx';
-
-const routes = useRouter();
+import routes from './pages/Routes';
 
 function App() {
-  return (
-    <RouterProvider router={routes}></RouterProvider>
-  );
+  return <RouterProvider router={routes} />;
 }
 
 export default App;

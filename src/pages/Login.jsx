@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styles from './Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import useAuth from '../hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const { handleSignIn, handleSignOut, isAuthorized, isLoading, events } =
-    useAuth();
+  const { handleSignIn, isAuthorized, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthorized) {
+      setTimeout(() => {
+        navigate('/home');
+      }, 500);
+    }
+  }, [isAuthorized, navigate]);
 
   return (
     <div className={styles.animatedBackground}>
@@ -17,15 +25,15 @@ function Login() {
           <p className={styles.note}>Reservations made easy.</p>
         </div>
 
-        {!isAuthorized ? (
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : !isAuthorized ? (
           <button onClick={handleSignIn} className={styles.loginButton}>
             <FontAwesomeIcon icon={faGoogle} />
             Sign in with Google
           </button>
         ) : (
-          <>
-            <Navigate to={'/home'} />
-          </>
+          <p>Redirecting...</p>
         )}
       </div>
     </div>
