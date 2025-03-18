@@ -3,15 +3,17 @@ import styles from './Layout.module.css';
 import Header from '../Header/Header';
 import SideNav from '../SideNav/SideNav';
 import { Outlet } from 'react-router-dom';
-import Dashboard from '../../Dashboard/Dashboard';
+import Dashboard from '../Dashboard/Dashboard';
 import Navbar from '../Navbar/Navbar';
+import Calendar from  "../Calendar/Calendar";
 
 
 function Layout({ children }) {
   return <div className={styles.layout}>
     <Header /> 
     <Dashboard>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Calendar />
     </Dashboard>
     <SideNav />
 

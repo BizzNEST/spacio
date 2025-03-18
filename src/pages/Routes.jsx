@@ -5,10 +5,7 @@ import {
   Routes,
 } from 'react-router-dom';
 import Login from './Login';
-import Layout from '../components/Layout/Layout';
-import Dashboard from '../Dashboard/Dashboard';
-import Header from '../components/Header/Header';
-import Navbar from '../components/Navbar/Navbar';
+import Layout from '../Components/Layout/Layout';
 
 //const routes = 6;
 
