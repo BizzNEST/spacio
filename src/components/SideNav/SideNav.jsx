@@ -31,13 +31,13 @@ function SideNav() {
       </div>
 
       <Modal>
-        <Modal.Trigger>Click Button</Modal.Trigger>
+        <Modal.Trigger className={styles.desktopBookRoom}>
+          Book a Room
+        </Modal.Trigger>
         <Modal.Content
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
-        >
-          Test
-        </Modal.Content>
+        ></Modal.Content>
       </Modal>
     </nav>
   );

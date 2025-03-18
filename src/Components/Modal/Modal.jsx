@@ -16,6 +16,34 @@ const ModalContent = ({ title, subtitle, children }) => {
         <Dialog.Description className={styles.description}>
           {subtitle}
         </Dialog.Description>
+        <div className={styles.inputContainer}>
+          <div className={styles.inputWrapper}>
+            <label className={styles.eventLable} htmlFor="eventName">
+              Event Name
+            </label>
+            <input
+              className={styles.eventNameInput}
+              type="text"
+              placeholder="Enter event name"
+            />
+          </div>
+
+          <div className={styles.dateTimeContainer}>
+            <div className={styles.inputWrapper}>
+              <label className={styles.dateLable} htmlFor="eventDate">
+                Select Date
+              </label>
+              <input className={styles.dateInput} type="date" />
+            </div>
+            <div className={styles.inputWrapper}>
+              <label className={styles.timeLable} htmlFor="eventTime">
+                Select Time
+              </label>
+              <input className={styles.timeInput} type="time" />
+            </div>
+          </div>
+        </div>
+
         {children}
         <Dialog.Close className={styles.closeIcon}>
           <Cross1Icon></Cross1Icon>

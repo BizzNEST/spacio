@@ -65,11 +65,17 @@
 .desktopBookRoom {
   display: block;
   width: 100%;
-  background-color: #8b8c8cc0;
+  background-color: #8cbbf8;
   border: none;
   border-radius: 8px;
   font-size: 1.25rem;
   padding: 0.75rem 1rem;
+  align-self: end;
+}
+
+.desktopBookRoom:hover {
+  cursor: pointer;
+  background-color: lightgrey;
 }
 
 /* Styling for Mobile Devices */
