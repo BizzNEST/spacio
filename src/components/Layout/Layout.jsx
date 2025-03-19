@@ -6,16 +6,16 @@ import { Outlet } from 'react-router-dom';
 import Dashboard from '../../Dashboard/Dashboard';
 import Navbar from '../Navbar/Navbar';
 
-
 function Layout({ children }) {
-  return <div className={styles.layout}>
-    <Header /> 
-    <Dashboard>
-      <Navbar />
-    </Dashboard>
-    <SideNav />
-
-  </div>;
+  return (
+    <div className={styles.layout}>
+      <Header />
+      <Dashboard>
+        <Navbar />
+      </Dashboard>
+      <SideNav />
+    </div>
+  );
 }
 
 export default Layout;

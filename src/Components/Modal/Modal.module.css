@@ -1,0 +1,122 @@
+@import '@radix-ui/colors/black-alpha.css';
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/mauve.css';
+@import '@radix-ui/colors/violet.css';
+
+.overlayStyles {
+  backdrop-filter: blur(1.5px);
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  inset: 0;
+}
+
+.content {
+  background-color: #fffcfc;
+  border-radius: 14px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 500px;
+  max-height: 85vh;
+  padding: 25px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.content:focus {
+  outline: none;
+}
+
+.title {
+  margin: 0;
+  margin-bottom: 4px;
+  font-weight: bold;
+  color: black;
+  font-size: 1.7rem;
+}
+
+.description {
+  margin: 0 0 10px;
+  color: var(--mauve-11);
+  font-size: 1rem;
+}
+
+.closeIcon {
+  all: unset;
+  font-family: inherit;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--violet-11);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--gray-3);
+}
+.closeIcon:hover {
+  cursor: pointer;
+  background-color: var(--violet-4);
+}
+.closeIcon:focus {
+  box-shadow: 0 0 0 2px var(--violet-7);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 8px;
+  font-size:;
+}
+
+.eventNameInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateTimeContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.dateInput,
+.timeInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 223px;
+}
+
+.eventLable,
+.dateLable,
+.timeLable {
+  font-size: 15px;
+}
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
