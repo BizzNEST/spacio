@@ -1,0 +1,131 @@
+/* Sidebar-specific styles for RoomBooking component */
+.sidebarBooking {
+  width: 100%;
+  padding: 0;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.sidebarDateSection {
+  background-color: rgba(74, 144, 226, 0.1);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.sidebarDate {
+  font-weight: 500;
+  color: #4a90e2;
+}
+
+.sidebarDateLabel {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.sidebarRoomsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 0;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+}
+
+.sidebarDropdownIcon {
+  font-size: 10px;
+  color: #666;
+}
+
+.sidebarRoomsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.sidebarRoomItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidebarRoomInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarRoomName {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.sidebarRoomCapacity {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.sidebarRoomCheckbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  background-color: white;
+}
+
+.sidebarRoomCheckbox:checked {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.sidebarRoomCheckbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 1px;
+}
+
+.sidebarBookButton {
+  width: 100%;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.sidebarBookButton:hover {
+  background-color: #357abf;
+}
+
+.sidebarLoading, .sidebarError {
+  padding: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.sidebarError {
+  color: #e74c3c;
+}

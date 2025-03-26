@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './SideNav.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
+import RoomBooking from '../RoomBooking/RoomBooking';
 
 function SideNav() {
   return (
@@ -23,6 +24,7 @@ function SideNav() {
         <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
         Meeting Rooms
       </a>
+      <RoomBooking />
     </nav>
   );
 }
