@@ -129,3 +129,125 @@
 .sidebarError {
   color: #e74c3c;
 }
+.container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Date and Time Selector */
+.dateTimeSelector {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.dateInput, .timeInput {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+
+.timeSeparator {
+  font-weight: bold;
+}
+
+/* Section Headers */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 15px 0 10px 0;
+  cursor: pointer;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Room List */
+.roomsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.roomItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 5px;
+  border-bottom: 1px solid #f0f0f0;
+  /* margin-bottom: 10px; */
+}
+
+/* .roomItem:last-child {
+  border-bottom: none;
+} */
+
+.roomName {
+  flex: 1;
+  font-weight: 400;
+}
+
+.roomCapacity {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: 15px;
+}
+
+/* Book Button */
+.bookButton {
+  background-color: #5baaff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Empty message */
+.emptyMessage {
+  color: #999;
+  text-align: center;
+  padding: 15px 0;
+}
+
+/* Status message */
+.statusMessage {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
