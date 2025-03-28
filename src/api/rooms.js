@@ -16,14 +16,10 @@ async function getAllRooms() {
   }
 }
 
-// Check availability function
 async function checkAvailability(date, startTime, endTime) {
   try {
-    // Implement your availability checking logic here
-    // For now, just return a dummy response
     console.log("Checking availability for:", date, startTime, endTime);
     
-    // This should be replaced with actual availability checking logic
     return { success: true, message: "Availability checked" };
   } catch (error) {
     console.error("Error checking availability:", error);
@@ -31,13 +27,10 @@ async function checkAvailability(date, startTime, endTime) {
   }
 }
 
-// Create booking function
 async function createBooking(bookingDetails) {
   try {
-    // Implement your booking creation logic here
     console.log("Creating booking:", bookingDetails);
     
-    // This should be replaced with actual booking logic
     return { success: true, bookingId: "temp-" + Date.now() };
   } catch (error) {
     console.error("Error creating booking:", error);

@@ -1,4 +1,3 @@
-/* Sidebar-specific styles for RoomBooking component */
 .sidebarBooking {
   width: 100%;
   padding: 0;
@@ -216,25 +215,50 @@
   margin-right: 15px;
 }
 
-/* Book Button */
+
 .bookButton {
-  background-color: #5baaff;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 5px 15px;
-  font-size: 14px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.3s ease;
   cursor: pointer;
+  text-align: center;
 }
 
-/* Empty message */
+.activeButton {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+}
+
+.activeButton:hover {
+  background-color: #4a90e2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.activeButton:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.inactiveButton {
+  background-color: #f1f1f1;
+  color: #888;
+  border: 1px solid #ddd;
+  cursor: not-allowed;
+}
+
 .emptyMessage {
   color: #999;
   text-align: center;
   padding: 15px 0;
 }
 
-/* Status message */
 .statusMessage {
   padding: 10px;
   margin-bottom: 15px;

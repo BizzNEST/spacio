@@ -35,11 +35,9 @@ const fetchRooms = async () => {
     console.log("Rooms fetched:", fetchedRooms);
     setRooms(fetchedRooms);
     
-        // Filter rooms directly here
         setAvailableRooms(fetchedRooms.filter(room => room.isAvailable));
         setUnavailableRooms(fetchedRooms.filter(room => !room.isAvailable));
         
-        // Remove any selected rooms that are now unavailable
         setSelectedRooms(prevSelected => 
           prevSelected.filter(roomId => 
             fetchedRooms.some(room => room.id === roomId && room.isAvailable)
@@ -55,7 +53,6 @@ const fetchRooms = async () => {
     }
   };
 
-  // Toggle room selection when user clicks checkbox
   const handleRoomSelection = (roomId) => {
     if (selectedRooms.includes(roomId)) {
       setSelectedRooms(selectedRooms.filter(id => id !== roomId));
@@ -64,12 +61,10 @@ const fetchRooms = async () => {
     }
   };
 
-  // Toggle showing available rooms section
   const toggleAvailableRooms = () => {
     setShowAvailableRooms(!showAvailableRooms);
   };
 
-  // Toggle showing unavailable rooms section
   const toggleUnavailableRooms = () => {
     setShowUnavailableRooms(!showUnavailableRooms);
   };
@@ -79,15 +74,16 @@ const fetchRooms = async () => {
 
 
   const bookSelectedRooms = async () => {
+  if (selectedRooms.length === 0) {
+    return;
+  }
     try {
       setBookingStatus('processing');
       
-      // Gather booking details
       const bookingDetails = {
         roomIds: selectedRooms
       };
       
-      // Call API to create booking
       const result = await createBooking(bookingDetails);
       
       setBookingStatus({
@@ -132,21 +128,17 @@ const fetchRooms = async () => {
     <div className={styles.container}>
       <h2 className={styles.title}>Quick Look</h2>
       
-      {/* Show booking status messages */}
       {bookingStatus && (
         <div className={`${styles.statusMessage} ${bookingStatus.success ? styles.success : styles.error}`}>
           {bookingStatus.message}
         </div>
       )}
       
-      {/* Loading indicator when checking availability */}
       {loading && rooms.length > 0 && (
         <div className={styles.refreshing}>Checking availability...</div>
       )}
       
-      {/* Available and unavailable rooms sections */}
       <div className={styles.roomsSection}>
-        {/* Available Rooms Section */}
         <div 
           className={`${styles.sectionHeader} ${styles.available}`}
           onClick={toggleAvailableRooms}
@@ -198,7 +190,6 @@ const fetchRooms = async () => {
           </ul>
         )}
         
-        {/* Unavailable Rooms Section */}
         <div 
           className={`${styles.sectionHeader} ${styles.unavailable}`}
           onClick={toggleUnavailableRooms}
@@ -241,15 +232,16 @@ const fetchRooms = async () => {
         )}
       </div>
       
-      {/* Book button - only shows when rooms are selected */}
-      {selectedRooms.length > 0 && (
-        <button 
-          className={styles.bookButton}
-          onClick={bookSelectedRooms}
-        >
-          Book {selectedRooms.length} Room{selectedRooms.length > 1 ? 's' : ''}
-        </button>
-      )}
+      <button 
+  className={`${styles.bookButton} ${selectedRooms.length > 0 ? styles.activeButton : styles.inactiveButton}`}
+  onClick={bookSelectedRooms}
+  disabled={selectedRooms.length === 0}
+>
+  {selectedRooms.length > 0 
+    ? `Book ${selectedRooms.length} Room${selectedRooms.length > 1 ? 's' : ''}` 
+    : 'Select a Room to Book'}
+</button>
+
     </div>
   );
 };
