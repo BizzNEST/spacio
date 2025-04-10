@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import fetchRooms from '../../api/fetchRooms';
+import SelectMenu from '../SelectMenu/SelectMenu';
 
 function SideNav() {
   const [center, setCenter] = React.useState('Salinas');
@@ -36,47 +37,30 @@ function SideNav() {
           <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
           Meeting Rooms
         </a>
+        <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
+        <div className={styles.roomAvailabilityBox}>
+          <ul className={styles.roomAvailabilityList}>
+            {rooms.map((room) => {
+              return (
+                <li key={room.id} className={styles.roomItem}>
+                  <span className={styles.roomName}>
+                    {room.name} -{' '}
+                    <span
+                      className={
+                        room.isAvailable
+                          ? styles.roomAvailable
+                          : styles.roomNotAvailable
+                      }
+                    >
+                      {room.isAvailable ? 'Available' : 'Not available'}
+                    </span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-
-      <form id="centersForm">
-        <label htmlFor="center">Select a center:</label>
-        <select
-          name="centers"
-          id="centers"
-          value={center}
-          onChange={(event) => setCenter(event.target.value)}
-        >
-          <option value="Salinas">Salinas</option>
-          <option value="Gilroy">Gilroy</option>
-          <option value="Watsonville">Watsonville</option>
-          <option value="Stockton">Stockton</option>
-          <option value="Modesto">Modesto</option>
-        </select>
-        <br></br>
-        <button type="submit">Submit</button>
-      </form>
-
-      <ul>
-        {rooms.map((room) => {
-          return (
-            <li key={room.id}>
-              {room.isAvailable ? (
-                // Room is available
-                <>
-                  <span>{room.name}</span>
-                  <p>Available</p>
-                </>
-              ) : (
-                // Room is unavailable
-                <>
-                  <p>Not available</p>
-                  <div>{room.name}</div>
-                </>
-              )}
-            </li>
-          );
-        })}
-      </ul>
 
       <Modal>
         <Modal.Trigger className={styles.desktopBookRoom}>

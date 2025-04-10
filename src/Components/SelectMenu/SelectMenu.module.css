@@ -1,0 +1,48 @@
+.selectMenuBox {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: inherit;
+  padding: 25px 25px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  align-self: start;
+  width: 77%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectCenterLabel {
+  font-size: 15px;
+  padding-left: 3px;
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.dropDownBox {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  -webkit-appearance: none; /* For Chrome, Safari */
+  -moz-appearance: none; /* For Firefox */
+  appearance: none;
+}
+.dropDownArrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none; /* so it doesn't block clicking the select */
+  color: #555;
+}
+
+.dropDownBox::after {
+  content: url('images\icon-arrow-down.svg');
+}

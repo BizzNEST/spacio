@@ -78,6 +78,37 @@
   background-color: lightgrey;
 }
 
+.roomAvailabilityBox {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  align-self: start;
+  width: 77%;
+  height: 125px;
+}
+
+.roomAvailabilityList {
+  list-style: none;
+  padding: 0;
+}
+
+.roomName {
+  font-weight: bold;
+}
+
+.roomAvailable {
+  color: green;
+  font-weight: 500;
+}
+
+.roomNotAvailable {
+  color: red;
+  font-weight: 500;
+}
+
 /* Styling for Mobile Devices */
 @media screen and (max-width: 768px) {
   .sidenav {
