@@ -1,0 +1,158 @@
+/* Overall container */
+.meetingRoomsContainer {
+  width: 100%;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.meetingRoomsContainer h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Room filters */
+.roomFilters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filterBtn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.filterBtn.active {
+  background-color: #f0f0f0;
+  font-weight: 500;
+}
+
+.filterBtn:hover {
+  background-color: #f5f5f5;
+}
+
+/* Calendar container */
+.calendarContainer {
+  height: 800px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+/* Style for resource headers */
+.resourceHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.roomTitle {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.roomCapacity {
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.capacityIcon {
+  font-size: 14px;
+}
+
+/* Override react-big-calendar styles */
+:global(.rbc-calendar) {
+  font-family: inherit;
+}
+
+:global(.rbc-header) {
+  padding: 12px 3px;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+:global(.rbc-time-header-content) {
+  border-left: none;
+}
+
+:global(.rbc-time-view) {
+  border: none;
+}
+
+:global(.rbc-time-content) {
+  border-top: 1px solid #e0e0e0;
+}
+
+:global(.rbc-time-header-gutter),
+:global(.rbc-time-gutter) {
+  background-color: #f9f9f9;
+}
+
+:global(.rbc-timeslot-group) {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+:global(.rbc-event) {
+  border-radius: 6px !important;
+  padding: 5px 8px !important;
+}
+
+:global(.rbc-event-content) {
+  font-size: 13px;
+  font-weight: normal;
+}
+
+:global(.rbc-time-slot) {
+  min-height: 40px;
+}
+
+:global(.rbc-toolbar) {
+  padding: 10px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fafafa;
+}
+
+:global(.rbc-toolbar button) {
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+:global(.rbc-toolbar button.rbc-active),
+:global(.rbc-toolbar button.rbc-active:hover) {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+:global(.rbc-toolbar-label) {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+:global(.rbc-label) {
+  padding: 5px 8px;
+}
+
+:global(.rbc-btn-group button) {
+  text-transform: none;
+  font-weight: normal;
+}
