@@ -19,6 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "date-fns": "^4.1.0",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "firebase": "^11.2.0",
     "gapi-script": "^1.2.0",

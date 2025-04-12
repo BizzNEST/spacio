@@ -1,20 +1,23 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  Routes,
-} from 'react-router-dom';
-import Login from './Login';
-import Layout from '../Components/Layout/Layout';
+import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import Login from "./Login";
+import Layout from "../components/Layout/Layout";
+import Dashboard from "../Dashboard/Dashboard";
+import ProtectedRoute from "../Components/ProtectedRoute/ProtectedRoute";
 
-//const routes = 6;
+const routes = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      {/* Public Routes */}
+      <Route path="/" element={<Login />} />
+      
 
-export const useRouter = () =>
-  createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="home" element={<Layout />} />
-        <Route path="login" element={<Login />} />
-      </>
-    )
-  );
+      {/* Protected Route for Dashboard */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/home" element={<Layout />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
+    </>
+  )
+);
+
+export default routes;
