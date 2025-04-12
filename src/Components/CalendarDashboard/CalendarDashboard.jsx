@@ -6,6 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import getEvents from '../../api/getEvents';
 import mockEvents from './mockEvents';
+import getCalendars from '../../api/getCalendars';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -34,25 +35,80 @@ const eventTypes = {
 
 const MeetingRoomCalendar = () => {
   const [events, setEvents] = useState([]);
+  const [calendars, setCalendars] = useState([]);
+  const [selectedCalendarId, setSelectedCalendarId] = useState('');
   const [selectedRoomTypes, setSelectedRoomTypes] = useState(['all']);
   const [filteredRooms, setFilteredRooms] = useState(rooms);
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  console.log('Calendar: ', selectedCalendarId);
+
+  const handleNavigate = async (newDate) => {
+    setCurrentDate(newDate);
+
+    if (
+      gapi.auth2.getAuthInstance().isSignedIn.get() &&
+      calendars.length > 0 &&
+      rooms.length > 0
+    ) {
+      const allEvents = [];
+
+      for (const calendar of calendars) {
+        const calendarEvents = await getEvents(calendar.id, newDate);
+
+        const matchedRoom = rooms.find((room) =>
+          calendar.summary.includes(room.title)
+        );
+
+        if (matchedRoom) {
+          const eventsWithResource = calendarEvents.map((event) => ({
+            ...event,
+            resourceId: matchedRoom.id,
+          }));
+
+          allEvents.push(...eventsWithResource);
+        }
+      }
+
+      setEvents(allEvents);
+    }
+  };
+
+  //TODO: Move all these useEffects into their own hooks
 
   // Fetch events
   useEffect(() => {
-    const fetchEvents = async () => {
-      const eventsData = await getEvents();
-      const formattedEvents = eventsData.map((event) => ({
-        id: event.id,
-        title: event.title,
-        start: new Date(event.start),
-        end: new Date(event.end),
-        resourceId: event.resourceId,
-        eventType: event.eventType, // client, internal, interview, etc.
-      }));
-      setEvents(formattedEvents);
+    const fetchAllEvents = async () => {
+      const allEvents = [];
+
+      for (const calendar of calendars) {
+        const calendarEvents = await getEvents(calendar.id);
+
+        const matchedRoom = rooms.find((room) =>
+          calendar.summary.includes(room.title)
+        );
+
+        if (matchedRoom) {
+          const eventsWithResource = calendarEvents.map((event) => ({
+            ...event,
+            resourceId: matchedRoom.id,
+          }));
+
+          allEvents.push(...eventsWithResource);
+        }
+      }
+
+      setEvents(allEvents);
     };
-    fetchEvents();
-  }, []);
+
+    if (
+      gapi.auth2.getAuthInstance().isSignedIn.get() &&
+      calendars.length > 0 &&
+      rooms.length > 0
+    ) {
+      fetchAllEvents();
+    }
+  }, [calendars, rooms]); // make sure both are included
 
   // Filter rooms based on selected types
   useEffect(() => {
@@ -64,6 +120,26 @@ const MeetingRoomCalendar = () => {
       );
     }
   }, [selectedRoomTypes]);
+
+  //Fetch Calendars
+  useEffect(() => {
+    const fetchCalendars = async () => {
+      const calendarList = await getCalendars();
+
+      // Filter only resource calendars by checking `calendarListEntry.kind === 'calendar#calendar'`
+      // or using other resource-identifying logic (e.g., summary includes "resource" or matches a room)
+      const resourceCalendars = calendarList.filter((calendar) =>
+        rooms.some((room) => calendar.summary.includes(room.title))
+      );
+
+      setCalendars(resourceCalendars);
+      setSelectedCalendarId(resourceCalendars[0]?.id || '');
+    };
+
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      fetchCalendars();
+    }
+  }, [rooms]); // include rooms here since we depend on them
 
   // Handle room type filter selection
   const handleRoomTypeFilter = (type) => {
@@ -85,7 +161,10 @@ const MeetingRoomCalendar = () => {
     const backgroundColor = eventTypes[event.eventType] || '#d4f7d9';
     return {
       style: {
+        display: 'flex',
+        alignItems: 'center',
         backgroundColor,
+        width: '100%',
         borderRadius: '5px',
         border: 'none',
         color: '#333',
@@ -122,6 +201,24 @@ const MeetingRoomCalendar = () => {
       <div className={styles.calendarHeader}>
         <h1>Meeting Rooms</h1>
 
+        <div
+          className={styles.calendarSelect}
+          style={{ display: 'flex', flexDirection: 'column' }}
+        >
+          <label htmlFor="calendar-select">Choose Room:</label>
+          <select
+            id="calendar-select"
+            value={selectedCalendarId}
+            onChange={(e) => setSelectedCalendarId(e.target.value)}
+          >
+            {calendars.map((calendar) => (
+              <option key={calendar.id} value={calendar.id}>
+                {calendar.summary}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className={styles.roomFilters}>
           <button
             className={`${styles.filterBtn} ${selectedRoomTypes.includes('all') ? styles.active : ''}`}
@@ -147,7 +244,7 @@ const MeetingRoomCalendar = () => {
       <div className={styles.calendarContainer}>
         <Calendar
           localizer={localizer}
-          events={mockEvents}
+          events={events}
           startAccessor="start"
           endAccessor="end"
           defaultView={Views.DAY}
@@ -164,8 +261,8 @@ const MeetingRoomCalendar = () => {
           eventPropGetter={eventStyleGetter}
           showMultiDayTimes={false}
           toolbar={true}
-          date={new Date()}
-          onNavigate={(date) => console.log(date)}
+          date={currentDate}
+          onNavigate={handleNavigate}
         />
       </div>
     </div>

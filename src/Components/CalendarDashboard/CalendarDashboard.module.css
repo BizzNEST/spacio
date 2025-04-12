@@ -110,6 +110,11 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
+:global(.rbc-event-container),
+:global(.rbc-day-slot) {
+  margin-right: 0;
+}
+
 :global(.rbc-event) {
   border-radius: 6px !important;
   padding: 5px 8px !important;

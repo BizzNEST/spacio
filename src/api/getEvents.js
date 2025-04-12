@@ -1,21 +1,30 @@
-import { db } from './firebase.config';
-import { collection, getDocs } from 'firebase/firestore';
+import { gapi } from 'gapi-script';
+import { calendarToRoomMap } from '../helpers/calendarToRoomMap';
 
-const getEvents = async () => {
-  const q = collection(db, 'events');
-  const querySnapshot = await getDocs(q);
+const getEvents = async (calendarId = 'primary') => {
+  try {
+    const response = await gapi.client.calendar.events.list({
+      calendarId,
+      timeMin: new Date().toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 50,
+      orderBy: 'startTime',
+    });
 
-  const events = querySnapshot.docs.map((doc) => {
-    const data = doc.data();
+    const events = response.result.items.map((event) => ({
+      title: event.summary || '(No Title)',
+      start: new Date(event.start.dateTime || event.start.date), // Full-day events have only 'date'
+      end: new Date(event.end.dateTime || event.end.date),
+      eventType: 'client', // or parse from event.summary if needed
+      resourceId: calendarToRoomMap[calendarId],
+    }));
 
-    return {
-      title: data.title,
-      start: data.start_time ? data.start_time.toDate() : new Date(), // Convert Firestore Timestamp
-      end: data.end_time ? data.end_time.toDate() : new Date(),
-    };
-  });
-
-  return events;
+    return events;
+  } catch (error) {
+    console.error('Error fetching events from Google Calendar:', error);
+    return [];
+  }
 };
 
 export default getEvents;
