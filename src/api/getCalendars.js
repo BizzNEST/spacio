@@ -8,7 +8,6 @@ const getCalendars = async () => {
       summary: calendar.summary,
       primary: calendar.primary || false,
     }));
-    console.log(calendars);
     return calendars;
   } catch (error) {
     console.error('Error fetching calendar list:', error);
