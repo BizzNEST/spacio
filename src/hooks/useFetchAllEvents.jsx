@@ -1,5 +1,10 @@
+import { useState, useEffect } from 'react';
+import getEvents from '../api/getEvents';
+import useAuth from './useAuth';
+
 const useFetchAllEvents = (calendars, rooms) => {
   const [events, setEvents] = useState([]);
+  const { isAuthorized } = useAuth();
 
   useEffect(() => {
     const fetchAllEvents = async () => {
@@ -25,11 +30,7 @@ const useFetchAllEvents = (calendars, rooms) => {
       setEvents(allEvents);
     };
 
-    if (
-      gapi.auth2.getAuthInstance().isSignedIn.get() &&
-      calendars.length > 0 &&
-      rooms.length > 0
-    ) {
+    if (isAuthorized && calendars.length > 0 && rooms.length > 0) {
       fetchAllEvents();
     }
   }, [calendars, rooms]); // make sure both are included

@@ -17,6 +17,8 @@ import getCalendars from '../../api/getCalendars';
 import Modal from '../Modal/Modal';
 import CustomEvent from './calendarComponents/CustomEvents/CustomEvents';
 import useFetchAllEvents from '../../hooks/useFetchAllEvents';
+import useFilteredRooms from '../../hooks/useFilteredRooms';
+import useResourceCalendars from '../../hooks/useResourceCalendars';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -45,43 +47,17 @@ const eventTypes = {
 };
 
 const MeetingRoomCalendar = () => {
-  const [calendars, setCalendars] = useState([]);
-  const [selectedCalendarId, setSelectedCalendarId] = useState('');
   const [selectedRoomTypes, setSelectedRoomTypes] = useState(['all']);
-  const [filteredRooms, setFilteredRooms] = useState(rooms);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
 
-  const handleNavigate = async (newDate) => {
+  const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
+  const { calendars } = useResourceCalendars(rooms);
+  const events = useFetchAllEvents(calendars, filteredRooms);
+
+  const handleNavigate = (newDate) => {
     setCurrentDate(newDate);
-
-    if (
-      gapi.auth2.getAuthInstance().isSignedIn.get() &&
-      calendars.length > 0 &&
-      rooms.length > 0
-    ) {
-      const allEvents = [];
-
-      for (const calendar of calendars) {
-        const calendarEvents = await getEvents(calendar.id, newDate);
-
-        const matchedRoom = rooms.find((room) =>
-          calendar.summary.includes(room.title)
-        );
-
-        if (matchedRoom) {
-          const eventsWithResource = calendarEvents.map((event) => ({
-            ...event,
-            resourceId: matchedRoom.id,
-          }));
-
-          allEvents.push(...eventsWithResource);
-        }
-      }
-
-      setEvents(allEvents);
-    }
   };
 
   const handleSelectSlot = (slotInfo) => {
@@ -96,40 +72,6 @@ const MeetingRoomCalendar = () => {
   };
 
   //TODO: Move all these useEffects into their own hooks
-
-  // Fetch events
-  const events = useFetchAllEvents(calendars, filteredRooms);
-
-  // Filter rooms based on selected types
-  useEffect(() => {
-    if (selectedRoomTypes.includes('all')) {
-      setFilteredRooms(rooms);
-    } else {
-      setFilteredRooms(
-        rooms.filter((room) => selectedRoomTypes.includes(room.type))
-      );
-    }
-  }, [selectedRoomTypes]);
-
-  //Fetch Calendars
-  useEffect(() => {
-    const fetchCalendars = async () => {
-      const calendarList = await getCalendars();
-
-      // Filter only resource calendars by checking `calendarListEntry.kind === 'calendar#calendar'`
-      // or using other resource-identifying logic (e.g., summary includes "resource" or matches a room)
-      const resourceCalendars = calendarList.filter((calendar) =>
-        rooms.some((room) => calendar.summary.includes(room.title))
-      );
-
-      setCalendars(resourceCalendars);
-      setSelectedCalendarId(resourceCalendars[0]?.id || '');
-    };
-
-    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      fetchCalendars();
-    }
-  }, [rooms]); // include rooms here since we depend on them
 
   // Handle room type filter selection
   const handleRoomTypeFilter = (type) => {
