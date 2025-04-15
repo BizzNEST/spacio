@@ -16,6 +16,7 @@ import EventCard from './calendarComponents/CustomEvents/EventCard';
 import useFetchAllEvents from '../../hooks/useFetchAllEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
 import useResourceCalendars from '../../hooks/useResourceCalendars';
+import mockEvents from './mockEvents';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -44,6 +45,7 @@ const MeetingRoomCalendar = () => {
 
   const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
   const { calendars } = useResourceCalendars(rooms);
+  //BUG: This facing a race condition where gapi is not initialized yet
   const events = useFetchAllEvents(calendars, filteredRooms);
 
   const handleNavigate = (newDate) => {
@@ -111,7 +113,7 @@ const MeetingRoomCalendar = () => {
       <div className={styles.calendarContainer}>
         <Calendar
           localizer={localizer}
-          events={events}
+          events={mockEvents}
           components={{
             event: EventCard,
             // TODO: Component for ResourceHeader (Needs a Redesign)
