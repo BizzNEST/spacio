@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #616161;
+  background-color: lightblue;
+}
+
+.eventTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.eventTime {
+  font-size: 0.6rem;
+}

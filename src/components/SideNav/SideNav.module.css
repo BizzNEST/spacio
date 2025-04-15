@@ -3,7 +3,7 @@
   display: grid;
   align-items: center;
   grid-area: sidebar;
-  padding: 40px 10px;
+  padding: 30px 10px;
 }
 
 .topContainer {

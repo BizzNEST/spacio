@@ -1,0 +1,188 @@
+/* Overall container */
+.meetingRoomsContainer {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.meetingRoomsContainer h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+/* Room filters */
+.roomFilters {
+  display: flex;
+  gap: 10px;
+}
+
+.filterBtn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.filterBtn.active {
+  background-color: lightblue;
+  font-weight: 500;
+}
+
+.filterBtn:hover {
+  background-color: #f5f5f5;
+}
+
+/* Calendar container */
+.calendarContainer {
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+/* Style for resource headers */
+.resourceHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.roomTitle {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.roomCapacity {
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.capacityIcon {
+  font-size: 14px;
+}
+
+/* Override react-big-calendar styles */
+:global(.rbc-calendar) {
+  font-family: inherit;
+}
+
+:global(.rbc-header) {
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+:global(.rbc-time-header-content) {
+  border-left: none;
+}
+
+:global(.rbc-time-header-gutter) {
+  border-left: none;
+}
+
+:global(.rbc-time-view) {
+  border: none;
+}
+
+:global(.rbc-time-content) {
+  border-top: 1px solid #e0e0e0;
+}
+
+:global(.rbc-time-header-gutter),
+:global(.rbc-time-gutter) {
+  background-color: #f9f9f9;
+}
+
+:global(.rbc-timeslot-group) {
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+:global(.rbc-day-slot) {
+  margin-right: 0;
+}
+
+:global(.rbc-allday-cell) {
+  display: none;
+}
+
+/* :global(.rbc-events-container) {
+  margin-right: 0 !important;
+} */
+
+:global(.rbc-event) {
+  display: none;
+}
+
+:global(.rbc-event-label) {
+  display: none;
+}
+
+:global(.rbc-event-content) {
+  font-size: 13px;
+  font-weight: normal;
+}
+
+:global(.rbc-time-slot) {
+  cursor: pointer;
+  min-height: 40px;
+}
+
+:global(.rbc-toolbar) {
+  padding: 10px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fafafa;
+}
+
+:global(.rbc-toolbar button) {
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+:global(.rbc-toolbar button.rbc-active),
+:global(.rbc-toolbar button.rbc-active:hover) {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+:global(.rbc-toolbar-label) {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+:global(.rbc-label) {
+  padding: 5px 8px;
+}
+
+:global(.rbc-btn-group button) {
+  text-transform: none;
+  font-weight: normal;
+}
+
+@media (max-width: 768px) {
+  .calendarHeader {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  :global(.rbc-toolbar) {
+    gap: 10px;
+  }
+}
