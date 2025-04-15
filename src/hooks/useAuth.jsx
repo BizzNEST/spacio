@@ -21,13 +21,11 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("User is authenticated:", user);
+        console.log('User is authenticated:', user);
         setIsAuthorized(true);
-        loadEvents();
       } else {
-        console.log("User is NOT authenticated");
+        console.log('User is NOT authenticated');
         setIsAuthorized(false);
-        setEvents([]);
       }
       setIsLoading(false);
     });
@@ -35,29 +33,9 @@ const useAuth = () => {
     return () => unsubscribe();
   }, []);
 
-  const loadEvents = async () => {
-    setIsLoading(true);
-    try {
-      const response = await gapi.client.calendar.events.list({
-        calendarId: 'primary',
-        timeMin: new Date().toISOString(),
-        maxResults: 10,
-        singleEvents: true,
-        orderBy: 'startTime',
-      });
-  
-      const items = response.result?.items || [];
-      setEvents([...items]);
-  
-    } catch (error) {
-      console.error('Error loading events:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   const handleSignIn = async () => {
     console.log('inside of handle sign in');
-    
+
     const googleAuth = gapi.auth2.getAuthInstance();
     const googleUser = await googleAuth.signIn();
     const token = googleUser.getAuthResponse().id_token;
@@ -65,7 +43,6 @@ const useAuth = () => {
 
     await signInWithCredential(auth, credential).then(async () => {
       setIsAuthorized(true);
-      await loadEvents();
     });
   };
 
@@ -73,54 +50,51 @@ const useAuth = () => {
   const handleSignOut = async (navigate) => {
     try {
       setIsLoading(true);
-      console.log("Inside handleSignOut...");
-  
       const googleAuth = gapi.auth2.getAuthInstance();
-      
+
       if (googleAuth) {
         const user = googleAuth.currentUser.get();
-        
+
         if (user && user.isSignedIn()) {
-          console.log("User is signed in, revoking token...");
           const token = user.getAuthResponse().id_token;
-  
+
           if (token) {
             try {
-              await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${token}`, {
-                method: "GET",
-                mode: "no-cors",
-              });
-              console.log("Token revoked successfully.");
+              await fetch(
+                `https://accounts.google.com/o/oauth2/revoke?token=${token}`,
+                {
+                  method: 'GET',
+                  mode: 'no-cors',
+                }
+              );
             } catch (error) {
-              console.warn("Token revocation failed. Continuing logout...");
+              console.error('Error revoking token:', error);
             }
           }
-  
+
           await googleAuth.signOut();
           await googleAuth.disconnect();
         } else {
-          console.warn("User is already signed out from Google.");
+          console.warn('User is already signed out from Google.');
         }
       } else {
-        console.warn("Google Auth instance not found. Proceeding with Firebase logout...");
+        console.warn(
+          'Google Auth instance not found. Proceeding with Firebase logout...'
+        );
       }
-  
+
       await signOut(auth);
-      console.log("Signed out from Firebase");
-  
       setIsAuthorized(false);
-      setEvents([]);
       setIsLoading(false);
-  
+
       if (navigate) {
         navigate('/login');
       }
-  
     } catch (error) {
-      console.error("Error during sign-out process:", error);
+      console.error('Error during sign-out process:', error);
     }
   };
-  
+
   return { handleSignIn, handleSignOut, isAuthorized, isLoading, events };
 };
 

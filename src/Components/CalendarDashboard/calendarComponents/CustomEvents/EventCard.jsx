@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './CustomEvents.module.css';
-const CustomEvent = ({ event, title }) => {
+import styles from './EventCard.module.css';
+const EventCard = ({ event, title }) => {
   const { start, end } = event;
 
   // Format the times as needed
@@ -23,4 +23,4 @@ const CustomEvent = ({ event, title }) => {
   );
 };
 
-export default CustomEvent;
+export default EventCard;

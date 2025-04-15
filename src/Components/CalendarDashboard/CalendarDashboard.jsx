@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import {
   format,
@@ -7,15 +7,12 @@ import {
   getDay,
   setMinutes,
   setHours,
-  set,
 } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './CalendarDashboard.module.css'; // Using CSS modules
-import getEvents from '../../api/getEvents';
-import getCalendars from '../../api/getCalendars';
 import Modal from '../Modal/Modal';
-import CustomEvent from './calendarComponents/CustomEvents/CustomEvents';
+import EventCard from './calendarComponents/CustomEvents/EventCard';
 import useFetchAllEvents from '../../hooks/useFetchAllEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
 import useResourceCalendars from '../../hooks/useResourceCalendars';
@@ -29,8 +26,8 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+//TODO: This is still test data, we need to get this from Google Calendar API
 // Room resources with additional metadata
-//TODO: This is still test data, we nneed to get this from Firebase
 const rooms = [
   { id: 1, title: 'Phone Booth 1', type: 'phone', capacity: 1, resourceId: 1 },
   { id: 2, title: 'Phone Booth 2', type: 'phone', capacity: 1, resourceId: 2 },
@@ -38,13 +35,6 @@ const rooms = [
   { id: 4, title: 'CPU', type: 'conference', capacity: 11, resourceId: 4 },
   { id: 5, title: 'Ideation', type: 'conference', capacity: 12, resourceId: 5 },
 ];
-
-// Meeting types with corresponding colors
-const eventTypes = {
-  client: 'lightblue', // light green
-  internal: '#fff2cc', // light yellow
-  interview: '#d4f7d9', // light green
-};
 
 const MeetingRoomCalendar = () => {
   const [selectedRoomTypes, setSelectedRoomTypes] = useState(['all']);
@@ -71,8 +61,6 @@ const MeetingRoomCalendar = () => {
     setSelectedSlot(null);
   };
 
-  //TODO: Move all these useEffects into their own hooks
-
   // Handle room type filter selection
   const handleRoomTypeFilter = (type) => {
     if (type === 'all') {
@@ -88,46 +76,15 @@ const MeetingRoomCalendar = () => {
     }
   };
 
-  // Custom event style based on event type
-  const eventStyleGetter = (event) => {
-    const backgroundColor = eventTypes[event.eventType] || '#d4f7d9';
-    return {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '4px',
-        backgroundColor,
-      },
-    };
-  };
-
   // Format the time in the agenda view
   const formats = {
-    timeGutterFormat: (date) => format(date, 'h:mm a'),
+    timeGutterFormat: (date) => format(date, 'h:mma'),
   };
 
   return (
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarHeader}>
         <h1>Salinas Center Rooms</h1>
-
-        {/* <div
-          className={styles.calendarSelect}
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <label htmlFor="calendar-select">Choose Room:</label>
-          <select
-            id="calendar-select"
-            value={selectedCalendarId}
-            onChange={(e) => setSelectedCalendarId(e.target.value)}
-          >
-            {calendars.map((calendar) => (
-              <option key={calendar.id} value={calendar.id}>
-                {calendar.summary}
-              </option>
-            ))}
-          </select>
-        </div> */}
 
         <div className={styles.roomFilters}>
           <button
@@ -156,8 +113,10 @@ const MeetingRoomCalendar = () => {
           localizer={localizer}
           events={events}
           components={{
-            event: CustomEvent,
+            event: EventCard,
+            // TODO: Component for ResourceHeader (Needs a Redesign)
             resourceHeader: ResourceHeader,
+            // TODO: Component for Toolbar (Date Picker and Room Filters)
             // toolbar: CalendarToolbar,
           }}
           defaultView={Views.DAY}
@@ -171,13 +130,12 @@ const MeetingRoomCalendar = () => {
           min={new Date(new Date().setHours(9, 0, 0))}
           max={new Date(new Date().setHours(18, 0, 0))}
           formats={formats}
-          eventPropGetter={eventStyleGetter}
           showMultiDayTimes={true}
           toolbar={true}
           date={currentDate}
           onNavigate={handleNavigate}
           selectable={true}
-          onSelectSlot={() => setIsModalOpen(true)}
+          onSelectSlot={handleSelectSlot}
           onSelectEvent={(data) => console.log('On select event:', data)}
         />
       </div>
