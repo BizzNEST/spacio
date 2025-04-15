@@ -9,9 +9,10 @@ function Header() {
   const { handleSignOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   const onLogout = () => {
-    handleSignOut(navigate);
+    handleSignOut();
+    navigate('/');
   };
 
   return (
