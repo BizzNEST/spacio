@@ -17,6 +17,7 @@ import useFetchAllEvents from '../../hooks/useFetchAllEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
 import useResourceCalendars from '../../hooks/useResourceCalendars';
 import mockEvents from './mockEvents';
+import RoomFilter from '../RoomFilter/RoomFilter';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -87,27 +88,10 @@ const MeetingRoomCalendar = () => {
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarHeader}>
         <h1>Salinas Center Rooms</h1>
-
-        <div className={styles.roomFilters}>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('all') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('all')}
-          >
-            All Rooms
-          </button>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('phone') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('phone')}
-          >
-            Phone Booths
-          </button>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('conference') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('conference')}
-          >
-            Conference Rooms
-          </button>
-        </div>
+        <RoomFilter
+          selectedRoomTypes={selectedRoomTypes}
+          handleRoomTypeFilter={handleRoomTypeFilter}
+        />
       </div>
 
       <div className={styles.calendarContainer}>
