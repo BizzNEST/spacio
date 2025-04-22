@@ -35,10 +35,6 @@ function SideNav() {
         </a>
       </div>
 
-      <StatusTag label={'tag'} color={'success'}>
-        Test
-      </StatusTag>
-
       <Modal>
         <Modal.Trigger className={styles.desktopBookRoom}>
           Book a Room
