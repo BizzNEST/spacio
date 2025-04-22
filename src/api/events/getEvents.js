@@ -1,5 +1,5 @@
 import { gapi } from 'gapi-script';
-import { calendarToRoomMap } from '../helpers/calendarToRoomMap';
+import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 
 const getEvents = async (calendarId = 'primary') => {
   try {
