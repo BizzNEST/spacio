@@ -3,6 +3,9 @@
   padding: 20px;
   display: flex;
   grid-area: header;
+  align-items: center;
+  justify-content: space-between; /* Add this to push content to edges */
+
 }
 
 .header h1 {
@@ -19,8 +22,27 @@
 .xmarkIcon {
   display: none;
 }
+/* Logout button styles for desktop */
+.logoutButton {
+  background-color: transparent;
+  color: #6B7280;
+  border: 1px solid #6B7280;
+  border-radius: 6px;
+  padding: 6px 16px; 
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto; 
+  transition: all 0.2s ease;
+  font-weight: 500;
+  
+  
+}
 
+.logoutButton:hover {
+  background-color: #f9f9f9;
+}
 /* Styling for Mobile Devices */
+
 @media screen and (max-width: 768px) {
   .header {
     color: white;
@@ -37,5 +59,8 @@
     margin-left: auto;
     padding-top: 5px;
     transition: transform 0.5s ease-in-out;
+    
   }
+  
+  
 }

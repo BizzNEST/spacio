@@ -23,7 +23,20 @@ function Header() {
         className={styles.mobileMenuIcon}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       />
-      <button onClick={onLogout}>Log out</button>
+      {/* Delete
+      <button onClick={onLogout}>Log out
+      </button> 
+      Delete */}
+
+      <div className={styles.rightSection}>
+        <button 
+          onClick={onLogout}
+          className={styles.logoutButton}
+        >
+          Log out
+        </button>
+      </div>
+
     </header>
   );
 }

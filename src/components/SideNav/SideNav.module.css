@@ -3,7 +3,7 @@
   display: grid;
   align-items: center;
   grid-area: sidebar;
-  padding: 30px 10px;
+  padding: 30px 15px;
 }
 
 .topContainer {
@@ -11,6 +11,7 @@
   flex-direction: column;
   gap: 25px;
   align-self: start;
+  width: 100%;
 }
 
 .logoTitle {
@@ -63,19 +64,24 @@
 }
 
 .desktopBookRoom {
-  display: block;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
   width: 100%;
-  background-color: #8cbbf8;
   border: none;
   border-radius: 8px;
   font-size: 1.25rem;
   padding: 0.75rem 1rem;
   align-self: end;
+  background: linear-gradient(90deg, #4764E8 0%, #7A91F4 100%);  
+  gap: 8px;
+  color: white; 
+  white-space: nowrap;
 }
 
 .desktopBookRoom:hover {
   cursor: pointer;
-  background-color: lightgrey;
+  background: linear-gradient(90deg, #3A59D1 0%, #5F7FDB 100%); 
 }
 
 /* Styling for Mobile Devices */

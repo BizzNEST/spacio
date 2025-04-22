@@ -3,6 +3,7 @@ import styles from './SideNav.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
 
 function SideNav() {
@@ -32,12 +33,16 @@ function SideNav() {
 
       <Modal>
         <Modal.Trigger className={styles.desktopBookRoom}>
+        <FontAwesomeIcon icon={faCalendarAlt} />
+           
           Book a Room
         </Modal.Trigger>
+
         <Modal.Content
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
         >
+
           <div className={styles.inputContainer}>
             <div className={styles.inputWrapper}>
               <label className={styles.eventLable} htmlFor="eventName">
@@ -66,7 +71,9 @@ function SideNav() {
             </div>
           </div>
         </Modal.Content>
+
       </Modal>
+      
     </nav>
   );
 }
