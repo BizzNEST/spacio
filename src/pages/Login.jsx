@@ -1,21 +1,32 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { signInWithGoogle } from '../hooks/auth';
+import { useAuth } from '../contexts/authContext';
 
 function Login() {
-  const { handleSignIn, isAuthorized, isLoading } = useAuth();
+  const [isSigningIn, setIsSigningIn] = React.useState(false);
+  const { isUserLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isAuthorized) {
-      setTimeout(() => {
-        navigate('/home');
-      }, 500);
+  const handleSignIn = (event) => {
+    event.preventDefault();
+    if (!isSigningIn) {
+      setIsSigningIn(true);
+      signInWithGoogle().catch((error) => {
+        console.error('Error signing in: ', error);
+        setIsSigningIn(false);
+      });
     }
-  }, [isAuthorized, navigate]);
+  };
+
+  React.useEffect(() => {
+    if (isUserLoggedIn) {
+      navigate('/home');
+    }
+  }, [isUserLoggedIn, navigate]);
 
   return (
     <div className={styles.animatedBackground}>
@@ -25,16 +36,10 @@ function Login() {
           <p className={styles.note}>Reservations made easy.</p>
         </div>
 
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : !isAuthorized ? (
-          <button onClick={handleSignIn} className={styles.loginButton}>
-            <FontAwesomeIcon icon={faGoogle} />
-            Sign in with Google
-          </button>
-        ) : (
-          <p>Redirecting...</p>
-        )}
+        <button onClick={handleSignIn} className={styles.loginButton}>
+          <FontAwesomeIcon icon={faGoogle} />
+          Sign in with Google
+        </button>
       </div>
     </div>
   );
