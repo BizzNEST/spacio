@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import getCalendars from '../api/getCalendars';
-import { useAuth } from '../contexts/authContext';
+import getCalendars from './getCalendars';
+import { useAuth } from '../../contexts/authContext';
 
 const useGetCalendars = (rooms) => {
   const { isUserLoggedIn, isGapiReady } = useAuth();

@@ -13,9 +13,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
-import { useFetchAllEvents } from '../../hooks/useGetEvents';
+import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
-import useGetCalendars from '../../hooks/useGetCalendars';
+import useGetCalendars from '../../api/calendars/useGetCalendars';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
