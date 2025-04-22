@@ -1,9 +1,14 @@
 import React from 'react';
 import styles from './SideNav.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBorderAll,
+  faClock,
+  faRobot,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
+import StatusTag from '../StatusTag/StatusTag';
 
 function SideNav() {
   return (
@@ -29,6 +34,10 @@ function SideNav() {
           Meeting Rooms
         </a>
       </div>
+
+      <StatusTag label={'tag'} color={'success'}>
+        Test
+      </StatusTag>
 
       <Modal>
         <Modal.Trigger className={styles.desktopBookRoom}>
