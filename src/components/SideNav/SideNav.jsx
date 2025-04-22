@@ -1,14 +1,9 @@
 import React from 'react';
 import styles from './SideNav.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBorderAll,
-  faClock,
-  faRobot,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
-import StatusTag from '../StatusTag/StatusTag';
 
 function SideNav() {
   return (
