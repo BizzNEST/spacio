@@ -2,6 +2,7 @@
   background-color: #dad9de;
   display: grid;
   align-items: center;
+  width: max-content;
   padding: 30px 10px;
 }
 
@@ -75,6 +76,12 @@
 .desktopBookRoom:hover {
   cursor: pointer;
   background-color: lightgrey;
+}
+
+.statusTag {
+  font-size: 10px;
+  padding: 2px 8px;
+  gap: 0.2rem;
 }
 
 /* Styling for Mobile Devices */
