@@ -92,8 +92,6 @@ const MeetingRoomCalendar = () => {
   return (
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarHeader}>
-        <h1>Salinas Center Rooms</h1>
-
         <div className={styles.roomFilters}>
           <button
             className={`${styles.filterBtn} ${selectedRoomTypes.includes('all') ? styles.active : ''}`}

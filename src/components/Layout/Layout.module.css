@@ -1,11 +1,7 @@
 .layout {
   display: grid;
-  grid-template-rows: 80px 1fr;
-  grid-template-columns: 190px 1fr;
+  grid-template-columns: auto 1fr;
   height: 100dvh;
-  grid-template-areas:
-    'header header'
-    'sidebar dashboard';
 }
 
 /* Styling for Mobile Devices */

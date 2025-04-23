@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Header.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { ViewVerticalIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { signOut } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,15 +15,29 @@ function Header() {
 
   return (
     <header className={styles.header}>
-      <h1>OfficeFlow</h1>
-      <FontAwesomeIcon
-        icon={isMenuOpen ? faXmark : faBars}
-        className={styles.mobileMenuIcon}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      />
-      <button onClick={onLogout}>Log out</button>
+      <div className={styles.headerContainer}>
+        <button className={styles.menuButton}>
+          <ViewVerticalIcon width={16} height={16} />
+        </button>
+        <h1>Salinas Center Rooms</h1>
+      </div>
+      <div className={styles.headerContainer}>
+        <div style={{ position: 'relative' }}>
+          <MagnifyingGlassIcon className={styles.searchIcon} />
+          <input type="text" placeholder="Search" className={styles.search} />
+        </div>
+        <button onClick={onLogout}>Log out</button>
+      </div>
     </header>
   );
 }
 
 export default Header;
+
+{
+  /* <FontAwesomeIcon
+  icon={isMenuOpen ? faXmark : faBars}
+  className={styles.mobileMenuIcon}
+  onClick={() => setIsMenuOpen(!isMenuOpen)}
+/>; */
+}

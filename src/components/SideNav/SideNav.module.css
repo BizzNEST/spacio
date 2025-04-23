@@ -1,8 +1,7 @@
 .sidenav {
-  background-color: #e3eefc;
+  background-color: #dad9de;
   display: grid;
   align-items: center;
-  grid-area: sidebar;
   padding: 30px 10px;
 }
 
