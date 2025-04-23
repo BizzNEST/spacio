@@ -1,5 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './StatusTag.module.css';
 
 const colorStyles = {
@@ -9,7 +8,7 @@ const colorStyles = {
   tagDark: { backgroundColor: '#4a4a4a5d', color: '#ffffff' },
 };
 
-const StatusTag = ({ label, color = 'tagLight', children }) => {
+const StatusTag = ({ label, color = 'tagLight', tagFormat, children }) => {
   const isValid = ['success', 'warning', 'tagDark', 'tagLight'].includes(color);
   if (!isValid) {
     throw new Error(
@@ -17,9 +16,9 @@ const StatusTag = ({ label, color = 'tagLight', children }) => {
     );
   }
   const tagStyles = colorStyles[color];
-
+  const tagClassName = `${styles.tag} ${tagFormat}`;
   return (
-    <div className={styles.tag} style={tagStyles}>
+    <div className={tagClassName} style={tagStyles}>
       {children}
     </div>
   );
