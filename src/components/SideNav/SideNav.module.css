@@ -63,26 +63,7 @@
   font-size: 30px;
 }
 
-.desktopBookRoom {
-  display: flex;
-  align-items: center; 
-  justify-content: center;
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.25rem;
-  padding: 0.75rem 1rem;
-  align-self: end;
-  background: linear-gradient(90deg, #4764E8 0%, #7A91F4 100%);  
-  gap: 8px;
-  color: white; 
-  white-space: nowrap;
-}
 
-.desktopBookRoom:hover {
-  cursor: pointer;
-  background: linear-gradient(90deg, #3A59D1 0%, #5F7FDB 100%); 
-}
 
 /* Styling for Mobile Devices */
 @media screen and (max-width: 768px) {

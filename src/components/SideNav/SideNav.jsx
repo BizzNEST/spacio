@@ -5,6 +5,8 @@ import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
+import Button from '../Button/Button';
+
 
 function SideNav() {
   return (
@@ -32,11 +34,14 @@ function SideNav() {
       </div>
 
       <Modal>
-        <Modal.Trigger className={styles.desktopBookRoom}>
-        <FontAwesomeIcon icon={faCalendarAlt} />
-           
-          Book a Room
+
+      <Modal.Trigger asChild>
+          <Button type="gradient">
+            <FontAwesomeIcon icon={faCalendarAlt}  />
+            Book a Room
+          </Button>
         </Modal.Trigger>
+        
 
         <Modal.Content
           title={'Book a Room'}

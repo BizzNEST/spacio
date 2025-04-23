@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button/Button';
+
 
 function Header() {
   const { handleSignOut } = useAuth();
@@ -23,19 +25,17 @@ function Header() {
         className={styles.mobileMenuIcon}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       />
-      {/* Delete
-      <button onClick={onLogout}>Log out
-      </button> 
-      Delete */}
 
+{/* Outline */}
       <div className={styles.rightSection}>
-        <button 
+        <Button 
           onClick={onLogout}
-          className={styles.logoutButton}
+          type="outline"
         >
           Log out
-        </button>
+        </Button>
       </div>
+
 
     </header>
   );
