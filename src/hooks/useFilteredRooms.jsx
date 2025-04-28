@@ -1,19 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 
 const useFilteredRooms = (rooms, selectedRoomTypes) => {
-  const [filteredRooms, setFilteredRooms] = useState(rooms);
-
-  useEffect(() => {
+  return useMemo(() => {
     if (selectedRoomTypes.includes('all')) {
-      setFilteredRooms(rooms);
+      return rooms;
     } else {
-      setFilteredRooms(
-        rooms.filter((room) => selectedRoomTypes.includes(room.type))
-      );
+      return rooms.filter((room) => selectedRoomTypes.includes(room.type));
     }
   }, [rooms, selectedRoomTypes]);
-
-  return filteredRooms;
 };
 
 export default useFilteredRooms;

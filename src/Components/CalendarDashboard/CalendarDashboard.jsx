@@ -13,6 +13,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
+import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
@@ -37,26 +38,27 @@ const rooms = [
 ];
 
 const MeetingRoomCalendar = () => {
-  const [selectedRoomTypes, setSelectedRoomTypes] = useState(['all']);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedRoomTypes, setSelectedRoomTypes] = useState('all');
+  const [currentDate, setCurrentDate] = useState(
+    format(new Date(), 'EEEE, MMMM dd, yyyy')
+  );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
+  const [currentView, setCurrentView] = React.useState(Views.DAY);
 
   const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
-  const { data: calendars, isLoading: isLoadingCalendars } =
-    useGetCalendars(filteredRooms);
+
+  //NOTE: This fetches calendars that users are subscribed to
+  const { data: allCalendars } = useGetCalendars();
+
   const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
-    calendars,
+    allCalendars,
     filteredRooms
   );
 
-  if (isLoadingCalendars || isLoadingEvents) {
+  if (isLoadingEvents) {
     return <div>Loading...</div>;
   }
-
-  const handleNavigate = (newDate) => {
-    setCurrentDate(newDate);
-  };
 
   const handleSelectSlot = (slotInfo) => {
     console.log('Selected slot:', slotInfo);
@@ -69,21 +71,6 @@ const MeetingRoomCalendar = () => {
     setSelectedSlot(null);
   };
 
-  // Handle room type filter selection
-  const handleRoomTypeFilter = (type) => {
-    if (type === 'all') {
-      setSelectedRoomTypes(['all']);
-    } else {
-      const newSelection = selectedRoomTypes.includes('all')
-        ? [type]
-        : selectedRoomTypes.includes(type)
-          ? selectedRoomTypes.filter((t) => t !== type)
-          : [...selectedRoomTypes, type];
-
-      setSelectedRoomTypes(newSelection.length ? newSelection : ['all']);
-    }
-  };
-
   // Format the time in the agenda view
   const formats = {
     timeGutterFormat: (date) => format(date, 'h:mma'),
@@ -91,29 +78,6 @@ const MeetingRoomCalendar = () => {
 
   return (
     <div className={styles.meetingRoomsContainer}>
-      <div className={styles.calendarHeader}>
-        <div className={styles.roomFilters}>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('all') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('all')}
-          >
-            All Rooms
-          </button>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('phone') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('phone')}
-          >
-            Phone Booths
-          </button>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('conference') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('conference')}
-          >
-            Conference Rooms
-          </button>
-        </div>
-      </div>
-
       <div className={styles.calendarContainer}>
         <Calendar
           localizer={localizer}
@@ -123,7 +87,17 @@ const MeetingRoomCalendar = () => {
             // TODO: Component for ResourceHeader (Needs a Redesign)
             // resourceHeader: ResourceHeader,
             // TODO: Component for Toolbar (Date Picker and Room Filters)
-            // toolbar: CalendarToolbar,
+            toolbar: (props) => (
+              <CalendarToolbar
+                {...props}
+                selectedRoomTypes={selectedRoomTypes}
+                setSelectedRoomTypes={setSelectedRoomTypes}
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+                currentView={currentView}
+                setCurrentView={setCurrentView}
+              />
+            ),
           }}
           defaultView={Views.DAY}
           views={[Views.DAY, Views.WORK_WEEK]}
@@ -139,10 +113,12 @@ const MeetingRoomCalendar = () => {
           showMultiDayTimes={true}
           toolbar={true}
           date={currentDate}
-          onNavigate={handleNavigate}
+          onNavigate={(newDate) => setCurrentDate(newDate)}
           selectable={true}
           onSelectSlot={handleSelectSlot}
           onSelectEvent={(data) => console.log('On select event:', data)}
+          view={currentView}
+          onView={(newView) => setCurrentView(newView)}
         />
       </div>
 
