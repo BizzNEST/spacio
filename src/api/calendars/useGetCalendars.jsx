@@ -9,6 +9,7 @@ const useGetCalendars = () => {
     queryFn: getCalendars,
     enabled: isUserLoggedIn && isGapiReady,
     retry: 2,
+    refetchOnWindowFocus: false,
   });
 };
 

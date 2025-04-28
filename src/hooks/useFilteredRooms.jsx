@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
-const useFilteredRooms = (rooms, selectedRoomTypes) => {
+const useFilteredRooms = (rooms, selectedRoomType) => {
   return useMemo(() => {
-    if (selectedRoomTypes.includes('all')) {
+    if (selectedRoomType === 'all') {
       return rooms;
     } else {
-      return rooms.filter((room) => selectedRoomTypes.includes(room.type));
+      return rooms.filter((room) => selectedRoomType === room.type);
     }
-  }, [rooms, selectedRoomTypes]);
+  }, [rooms, selectedRoomType]);
 };
 
 export default useFilteredRooms;

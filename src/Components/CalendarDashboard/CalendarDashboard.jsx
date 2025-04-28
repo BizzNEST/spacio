@@ -14,9 +14,7 @@ import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
 import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
-import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
-import useGetCalendars from '../../api/calendars/useGetCalendars';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -30,14 +28,29 @@ const localizer = dateFnsLocalizer({
 //TODO: This is still test data, we need to get this from Google Calendar API
 // Room resources with additional metadata
 const rooms = [
-  { id: 1, title: 'Phone Booth 1', type: 'phone', capacity: 1, resourceId: 1 },
-  { id: 2, title: 'Phone Booth 2', type: 'phone', capacity: 1, resourceId: 2 },
-  { id: 3, title: 'Tony', type: 'conference', capacity: 8, resourceId: 3 },
-  { id: 4, title: 'CPU', type: 'conference', capacity: 11, resourceId: 4 },
-  { id: 5, title: 'Ideation', type: 'conference', capacity: 12, resourceId: 5 },
+  {
+    id: 'Phone Booth 1',
+    title: 'Phone Booth 1',
+    type: 'phone',
+    capacity: 1,
+  },
+  {
+    id: 'Phone Booth 2',
+    title: 'Phone Booth 2',
+    type: 'phone',
+    capacity: 1,
+  },
+  { id: 'TONY', title: 'Tony', type: 'conference', capacity: 8 },
+  { id: 'CPU', title: 'CPU', type: 'conference', capacity: 11 },
+  {
+    id: 'Ideation',
+    title: 'Ideation',
+    type: 'conference',
+    capacity: 12,
+  },
 ];
 
-const MeetingRoomCalendar = () => {
+const MeetingRoomCalendar = ({ events }) => {
   const [selectedRoomTypes, setSelectedRoomTypes] = useState('all');
   const [currentDate, setCurrentDate] = useState(
     format(new Date(), 'EEEE, MMMM dd, yyyy')
@@ -47,18 +60,6 @@ const MeetingRoomCalendar = () => {
   const [currentView, setCurrentView] = React.useState(Views.DAY);
 
   const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
-
-  //NOTE: This fetches calendars that users are subscribed to
-  const { data: allCalendars } = useGetCalendars();
-
-  const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
-    allCalendars,
-    filteredRooms
-  );
-
-  if (isLoadingEvents) {
-    return <div>Loading...</div>;
-  }
 
   const handleSelectSlot = (slotInfo) => {
     console.log('Selected slot:', slotInfo);
@@ -86,7 +87,6 @@ const MeetingRoomCalendar = () => {
             event: EventCard,
             // TODO: Component for ResourceHeader (Needs a Redesign)
             // resourceHeader: ResourceHeader,
-            // TODO: Component for Toolbar (Date Picker and Room Filters)
             toolbar: (props) => (
               <CalendarToolbar
                 {...props}
@@ -224,7 +224,7 @@ const MeetingRoomCalendar = () => {
                         Select a room
                       </option>
                       {rooms.map((room) => (
-                        <option key={room.resourceId} value={room.resourceId}>
+                        <option key={room.id} value={room.id}>
                           {room.title}
                         </option>
                       ))}

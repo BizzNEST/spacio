@@ -4,7 +4,10 @@ import { auth } from '../../api/firebase.config';
 import { gapi } from 'gapi-script';
 import PropTypes from 'prop-types';
 
+//Create the context
 const AuthContext = React.createContext();
+
+//Import environment variables
 const apiKey = import.meta.env.VITE_API_KEY;
 const clientId = import.meta.env.VITE_CLIENT_ID;
 const scope = import.meta.env.VITE_SCOPE;

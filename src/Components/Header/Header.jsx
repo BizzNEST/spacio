@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Header.module.css';
-import { ViewVerticalIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { Sidebar } from 'react-feather';
 import { signOut } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ function Header() {
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         <button className={styles.menuButton}>
-          <ViewVerticalIcon width={16} height={16} />
+          <Sidebar color="#6E6E73" aria-label="Toggle Sidebar" />
         </button>
         <h1>Salinas Center Rooms</h1>
       </div>
