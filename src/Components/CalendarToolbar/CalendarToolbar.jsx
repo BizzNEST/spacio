@@ -1,7 +1,7 @@
 import React from 'react';
 import ButtonGroup from '../ButtonGroup/ButtonGroup';
 import { Views } from 'react-big-calendar';
-import { add, format, sub } from 'date-fns';
+import { add, addDays, format, startOfWeek, sub } from 'date-fns';
 import styles from './CalendarToolbar.module.css';
 
 const VIEW_OPTION = [
@@ -11,7 +11,7 @@ const VIEW_OPTION = [
   },
   {
     id: Views.WORK_WEEK,
-    label: 'Work Week',
+    label: 'Week',
   },
 ];
 
@@ -23,6 +23,8 @@ const CalendarToolbar = ({
   currentDate,
   setCurrentDate,
 }) => {
+  const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
+
   const handleRoomTypeFilter = (type) => {
     setSelectedRoomTypes(type ? type : 'all');
   };
@@ -63,13 +65,22 @@ const CalendarToolbar = ({
   return (
     <div className={styles.toolbar}>
       <div className={styles.navigationContainer}>
-        <button onClick={onPreviousClick}>Previous</button>
-        <button onClick={() => setCurrentDate(new Date())}>Today</button>
-        <button onClick={onNextClick}>Next</button>
-        <p>{format(currentDate, 'EEEE, MMMM dd, yyyy')}</p>
+        <div className={styles.buttonContainer}>
+          <button onClick={onPreviousClick}>Previous</button>
+          <button onClick={() => setCurrentDate(new Date())}>Today</button>
+          <button onClick={onNextClick}>Next</button>
+        </div>
+        {currentView === Views.WORK_WEEK ? (
+          <p>
+            {format(weekStart, 'EEEE, MMMM dd')} -{' '}
+            {format(addDays(weekStart, 4), 'EEEE, MMMM dd')}
+          </p>
+        ) : (
+          <p>{format(currentDate, 'EEEE, MMMM dd')}</p>
+        )}
       </div>
 
-      <div style={{ display: 'flex', gap: '8px' }}>
+      <div className={styles.filtersContainer}>
         <ButtonGroup
           type="single"
           value={selectedRoomTypes}
@@ -88,7 +99,7 @@ const CalendarToolbar = ({
             className={styles.toggle}
             asChild
           >
-            <button>Conference Rooms</button>
+            <button>Conference</button>
           </ButtonGroup.Item>
         </ButtonGroup>
 
