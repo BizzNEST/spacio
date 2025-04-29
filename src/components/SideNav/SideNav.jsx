@@ -1,12 +1,18 @@
 import React from 'react';
-import styles from './SideNav.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBorderAll,
+  faRoad,
+  faRobot,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
 import Button from '../Button/Button';
 
+import Card from '../Card/Card';
+import StatusTag from '../StatusTag/StatusTag';
+
+import styles from './SideNav.module.css';
 
 function SideNav() {
   return (
@@ -32,6 +38,23 @@ function SideNav() {
           Meeting Rooms
         </a>
       </div>
+
+      <Card
+        title={'Title'}
+        StatusTag={
+          <StatusTag
+            label={'tag'}
+            color={'success'}
+            tagFormat={styles.statusTag}
+          >
+            <FontAwesomeIcon icon={faRobot} className={styles.statusIcon} />
+            Test
+          </StatusTag>
+        }
+      >
+        <p>Child 1</p>
+        <p>Child 2</p>
+      </Card>
 
       <Modal>
       <Modal.Trigger asChild>

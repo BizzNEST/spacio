@@ -6,6 +6,7 @@
   border-radius: 6px;
   cursor: pointer;
   height: 35px; 
+  align-self: end;
   
 }
 

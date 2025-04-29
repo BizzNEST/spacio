@@ -1,18 +1,45 @@
 .header {
-  background-color: #80b8ff;
-  padding: 20px;
   display: flex;
-  grid-area: header;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-between; /* Add this to push content to edges */
+  padding: 20px 0;
+  color: #6E6E73;
+  border-bottom: 1px solid #E4E4E7;
+}
 
+.headerContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menuButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 25%;
+  left: 5%;
+  width: 20px;
+  height: 20px;
 }
 
 .header h1 {
-  font-weight: bold;
   margin: 0;
-  color: white;
-  font-size: 24px;
+  font-size: 1.3rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #E4E4E7;
+  padding: 8px 12px;
+  padding-left: 36px;
+  border-radius: 8px;
 }
 
 .mobileMenuIcon {
@@ -62,3 +89,4 @@
   
   
 }
+

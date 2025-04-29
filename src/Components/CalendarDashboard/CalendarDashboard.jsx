@@ -12,11 +12,10 @@ import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
-import EventCard from './calendarComponents/CustomEvents/EventCard';
-import useFetchAllEvents from '../../hooks/useFetchAllEvents';
+import EventCard from './calendarComponents/EventCard/EventCard';
+import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
-import useResourceCalendars from '../../hooks/useResourceCalendars';
-import mockEvents from './mockEvents';
+import useGetCalendars from '../../api/calendars/useGetCalendars';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -44,9 +43,16 @@ const MeetingRoomCalendar = () => {
   const [selectedSlot, setSelectedSlot] = React.useState(null);
 
   const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
-  const { calendars } = useResourceCalendars(rooms);
-  //BUG: This facing a race condition where gapi is not initialized yet
-  const events = useFetchAllEvents(calendars, filteredRooms);
+  const { data: calendars, isLoading: isLoadingCalendars } =
+    useGetCalendars(filteredRooms);
+  const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
+    calendars,
+    filteredRooms
+  );
+
+  if (isLoadingCalendars || isLoadingEvents) {
+    return <div>Loading...</div>;
+  }
 
   const handleNavigate = (newDate) => {
     setCurrentDate(newDate);
@@ -86,8 +92,6 @@ const MeetingRoomCalendar = () => {
   return (
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarHeader}>
-        <h1>Salinas Center Rooms</h1>
-
         <div className={styles.roomFilters}>
           <button
             className={`${styles.filterBtn} ${selectedRoomTypes.includes('all') ? styles.active : ''}`}
@@ -113,11 +117,11 @@ const MeetingRoomCalendar = () => {
       <div className={styles.calendarContainer}>
         <Calendar
           localizer={localizer}
-          events={mockEvents}
+          events={events}
           components={{
             event: EventCard,
             // TODO: Component for ResourceHeader (Needs a Redesign)
-            resourceHeader: ResourceHeader,
+            // resourceHeader: ResourceHeader,
             // TODO: Component for Toolbar (Date Picker and Room Filters)
             // toolbar: CalendarToolbar,
           }}
@@ -126,7 +130,7 @@ const MeetingRoomCalendar = () => {
           resources={filteredRooms}
           resourceIdAccessor="id"
           resourceTitleAccessor="title"
-          resourceHeaderAccessor={ResourceHeader}
+          // resourceHeaderAccessor={ResourceHeader}
           step={60}
           timeslots={1}
           min={new Date(new Date().setHours(9, 0, 0))}
@@ -258,21 +262,6 @@ const MeetingRoomCalendar = () => {
             </div>
           </Modal.Content>
         </Modal>
-      )}
-    </div>
-  );
-};
-
-// Custom resource header to show room capacity
-const ResourceHeader = ({ resource }) => {
-  return (
-    <div className={styles.resourceHeader}>
-      <div className={styles.roomTitle}>{resource.title}</div>
-      {resource.capacity && (
-        <div className={styles.roomCapacity}>
-          <span className={styles.capacityIcon}>👥</span> {resource.capacity}{' '}
-          seats
-        </div>
       )}
     </div>
   );

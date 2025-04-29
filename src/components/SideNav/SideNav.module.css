@@ -1,15 +1,9 @@
 .sidenav {
-  background-color: #e3eefc;
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between;
-  grid-area: sidebar;
-  padding: 30px 15px;
-}
-
-.bottomContainer {
-  padding: 20px;
-  margin-top: auto;
+  background-color: #dad9de;
+  display: grid;
+  align-items: center;
+  width: max-content;
+  padding: 30px 10px;
 }
 
 .topContainer {
@@ -70,6 +64,12 @@
 }
 
 
+
+.statusTag {
+  font-size: 10px;
+  padding: 2px 8px;
+  gap: 0.2rem;
+}
 
 /* Styling for Mobile Devices */
 @media screen and (max-width: 768px) {
