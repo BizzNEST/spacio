@@ -34,15 +34,13 @@ function SideNav() {
       </div>
 
       <Modal>
-
       <Modal.Trigger asChild>
           <Button type="gradient">
             <FontAwesomeIcon icon={faCalendarAlt}  />
             Book a Room
           </Button>
         </Modal.Trigger>
-        
-
+      
         <Modal.Content
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}

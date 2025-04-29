@@ -1,9 +1,15 @@
 .sidenav {
   background-color: #e3eefc;
-  display: grid;
-  align-items: center;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between;
   grid-area: sidebar;
   padding: 30px 15px;
+}
+
+.bottomContainer {
+  padding: 20px;
+  margin-top: auto;
 }
 
 .topContainer {
