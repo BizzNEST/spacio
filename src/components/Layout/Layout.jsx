@@ -6,6 +6,7 @@ import CalendarDashboard from '../CalendarDashboard/CalendarDashboard';
 import Header from '../Header/Header';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
+import Loader from '../Loader/Loader';
 
 function Layout() {
   //NOTE: This fetches all calendars that users are subscribed to
@@ -21,7 +22,7 @@ function Layout() {
   );
 
   if (isLoadingCalendars || isLoadingEvents) {
-    return <div>Loading...</div>;
+    return <Loader label={'Preparing your dashboard...'} />;
   }
 
   return (

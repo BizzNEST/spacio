@@ -30,7 +30,6 @@ const CalendarToolbar = ({
   };
 
   const onNextClick = React.useCallback(() => {
-    console.log('Click');
     switch (currentView) {
       case Views.DAY:
         setCurrentDate(add(currentDate, { days: 1 }));
