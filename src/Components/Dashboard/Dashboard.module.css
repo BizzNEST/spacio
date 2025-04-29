@@ -1,5 +1,7 @@
 .dashboardContent {
-  padding: 18px 26px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 18px 26px 8px;
 }
 
 .title {
@@ -15,6 +17,7 @@
   .dashboardContent {
     padding: 22px 28px;
   }
+
   .bookRoomButton {
     display: block;
     width: 100%;
@@ -24,6 +27,7 @@
     font-size: 1.25rem;
     padding: 0.5rem 0 0.5rem 0;
   }
+
   .bookRoomButton button:hover {
     color: #a1a6aa;
   }
