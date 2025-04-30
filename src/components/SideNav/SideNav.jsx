@@ -57,18 +57,17 @@ function SideNav() {
       </Card>
 
       <Modal>
-      <Modal.Trigger asChild>
-          <Button type="gradient">
-            <FontAwesomeIcon icon={faCalendarAlt}  />
+        <Modal.Trigger asChild>
+          <Button type="gradient" className={styles.bookButton}>
+            <FontAwesomeIcon icon={faCalendarAlt} />
             Book a Room
           </Button>
         </Modal.Trigger>
-      
+
         <Modal.Content
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
         >
-
           <div className={styles.inputContainer}>
             <div className={styles.inputWrapper}>
               <label className={styles.eventLable} htmlFor="eventName">
@@ -97,9 +96,7 @@ function SideNav() {
             </div>
           </div>
         </Modal.Content>
-
       </Modal>
-      
     </nav>
   );
 }
