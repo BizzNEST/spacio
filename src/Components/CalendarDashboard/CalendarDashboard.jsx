@@ -16,6 +16,7 @@ import EventCard from './calendarComponents/EventCard/EventCard';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
+import ResourceHeader from '../ResourceHeader/ResourceHeader'; 
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -28,13 +29,14 @@ const localizer = dateFnsLocalizer({
 
 //TODO: This is still test data, we need to get this from Google Calendar API
 // Room resources with additional metadata
-const rooms = [
+const rooms = [  
   { id: 1, title: 'Phone Booth 1', type: 'phone', capacity: 1, resourceId: 1 },
   { id: 2, title: 'Phone Booth 2', type: 'phone', capacity: 1, resourceId: 2 },
   { id: 3, title: 'Tony', type: 'conference', capacity: 8, resourceId: 3 },
   { id: 4, title: 'CPU', type: 'conference', capacity: 11, resourceId: 4 },
   { id: 5, title: 'Ideation', type: 'conference', capacity: 12, resourceId: 5 },
-];
+]; 
+
 
 const MeetingRoomCalendar = () => {
   const [selectedRoomTypes, setSelectedRoomTypes] = useState(['all']);
@@ -120,8 +122,11 @@ const MeetingRoomCalendar = () => {
           events={events}
           components={{
             event: EventCard,
+            resourceHeader: ResourceHeader, 
+            // CHANGED: Uncommented and enabled the ResourceHeader component
             // TODO: Component for ResourceHeader (Needs a Redesign)
-            // resourceHeader: ResourceHeader,
+            
+            // resourceHeader: ResourceHeader, 
             // TODO: Component for Toolbar (Date Picker and Room Filters)
             // toolbar: CalendarToolbar,
           }}
