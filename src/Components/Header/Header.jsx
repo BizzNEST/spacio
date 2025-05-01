@@ -3,6 +3,7 @@ import styles from './Header.module.css';
 import { ViewVerticalIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { signOut } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button/Button';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +27,13 @@ function Header() {
           <MagnifyingGlassIcon className={styles.searchIcon} />
           <input type="text" placeholder="Search" className={styles.search} />
         </div>
-        <button onClick={onLogout}>Log out</button>
+        <Button
+          type={'outline'}
+          className={styles.logoutButton}
+          onClick={onLogout}
+        >
+          Log out
+        </Button>
       </div>
     </header>
   );

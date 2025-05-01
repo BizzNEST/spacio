@@ -6,7 +6,9 @@ import {
   faRobot,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
-import { Dialog, Flex } from '@radix-ui/themes/dist/cjs/index.js';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import Button from '../Button/Button';
+
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 
@@ -55,9 +57,13 @@ function SideNav() {
       </Card>
 
       <Modal>
-        <Modal.Trigger className={styles.desktopBookRoom}>
-          Book a Room
+        <Modal.Trigger asChild>
+          <Button type="gradient" className={styles.bookButton}>
+            <FontAwesomeIcon icon={faCalendarAlt} />
+            Book a Room
+          </Button>
         </Modal.Trigger>
+
         <Modal.Content
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
