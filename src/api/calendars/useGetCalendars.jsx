@@ -2,18 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import getCalendars from './getCalendars';
 import { useAuth } from '../../contexts/authContext';
 
-const useGetCalendars = (rooms) => {
+const useGetCalendars = () => {
   const { isUserLoggedIn, isGapiReady } = useAuth();
   return useQuery({
-    queryKey: ['calendars', rooms],
-    queryFn: async () => {
-      const allCalendars = await getCalendars();
-      return allCalendars.filter((calendar) =>
-        rooms.some((room) => calendar.summary.includes(room.title))
-      );
-    },
+    queryKey: ['calendars'],
+    queryFn: getCalendars,
     enabled: isUserLoggedIn && isGapiReady,
     retry: 2,
+    // refetchOnWindowFocus: false,
   });
 };
 
