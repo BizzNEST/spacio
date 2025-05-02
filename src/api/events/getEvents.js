@@ -9,7 +9,7 @@ const getEvents = async (calendarId = 'primary') => {
       timeMin: new Date().toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 50,
+      maxResults: 25,
       orderBy: 'startTime',
     });
 

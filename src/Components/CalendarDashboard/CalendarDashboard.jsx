@@ -13,7 +13,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
-import { useFetchAllEvents } from '../../api/events/useGetEvents';
+import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
 import ResourceHeader from '../ResourceHeader/ResourceHeader'; 
@@ -29,36 +29,39 @@ const localizer = dateFnsLocalizer({
 
 //TODO: This is still test data, we need to get this from Google Calendar API
 // Room resources with additional metadata
-const rooms = [  
-  { id: 1, title: 'Phone Booth 1', type: 'phone', capacity: 1, resourceId: 1 },
-  { id: 2, title: 'Phone Booth 2', type: 'phone', capacity: 1, resourceId: 2 },
-  { id: 3, title: 'Tony', type: 'conference', capacity: 8, resourceId: 3 },
-  { id: 4, title: 'CPU', type: 'conference', capacity: 11, resourceId: 4 },
-  { id: 5, title: 'Ideation', type: 'conference', capacity: 12, resourceId: 5 },
-]; 
+const rooms = [
+  {
+    id: 'Phone Booth 1',
+    title: 'Phone Booth 1',
+    type: 'phone',
+    capacity: 1,
+  },
+  {
+    id: 'Phone Booth 2',
+    title: 'Phone Booth 2',
+    type: 'phone',
+    capacity: 1,
+  },
+  { id: 'TONY', title: 'Tony', type: 'conference', capacity: 8 },
+  { id: 'CPU', title: 'CPU', type: 'conference', capacity: 11 },
+  {
+    id: 'Ideation',
+    title: 'Ideation',
+    type: 'conference',
+    capacity: 12,
+  },
+];
 
-
-const MeetingRoomCalendar = () => {
-  const [selectedRoomTypes, setSelectedRoomTypes] = useState(['all']);
-  const [currentDate, setCurrentDate] = useState(new Date());
+const MeetingRoomCalendar = ({ events }) => {
+  const [selectedRoomTypes, setSelectedRoomTypes] = useState('all');
+  const [currentDate, setCurrentDate] = useState(
+    format(new Date(), 'EEEE, MMMM dd, yyyy')
+  );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
+  const [currentView, setCurrentView] = React.useState(Views.DAY);
 
   const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
-  const { data: calendars, isLoading: isLoadingCalendars } =
-    useGetCalendars(filteredRooms);
-  const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
-    calendars,
-    filteredRooms
-  );
-
-  if (isLoadingCalendars || isLoadingEvents) {
-    return <div>Loading...</div>;
-  }
-
-  const handleNavigate = (newDate) => {
-    setCurrentDate(newDate);
-  };
 
   const handleSelectSlot = (slotInfo) => {
     console.log('Selected slot:', slotInfo);
@@ -71,21 +74,6 @@ const MeetingRoomCalendar = () => {
     setSelectedSlot(null);
   };
 
-  // Handle room type filter selection
-  const handleRoomTypeFilter = (type) => {
-    if (type === 'all') {
-      setSelectedRoomTypes(['all']);
-    } else {
-      const newSelection = selectedRoomTypes.includes('all')
-        ? [type]
-        : selectedRoomTypes.includes(type)
-          ? selectedRoomTypes.filter((t) => t !== type)
-          : [...selectedRoomTypes, type];
-
-      setSelectedRoomTypes(newSelection.length ? newSelection : ['all']);
-    }
-  };
-
   // Format the time in the agenda view
   const formats = {
     timeGutterFormat: (date) => format(date, 'h:mma'),
@@ -93,29 +81,6 @@ const MeetingRoomCalendar = () => {
 
   return (
     <div className={styles.meetingRoomsContainer}>
-      <div className={styles.calendarHeader}>
-        <div className={styles.roomFilters}>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('all') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('all')}
-          >
-            All Rooms
-          </button>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('phone') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('phone')}
-          >
-            Phone Booths
-          </button>
-          <button
-            className={`${styles.filterBtn} ${selectedRoomTypes.includes('conference') ? styles.active : ''}`}
-            onClick={() => handleRoomTypeFilter('conference')}
-          >
-            Conference Rooms
-          </button>
-        </div>
-      </div>
-
       <div className={styles.calendarContainer}>
         <Calendar
           localizer={localizer}
@@ -125,10 +90,18 @@ const MeetingRoomCalendar = () => {
             resourceHeader: ResourceHeader, 
             // CHANGED: Uncommented and enabled the ResourceHeader component
             // TODO: Component for ResourceHeader (Needs a Redesign)
-            
-            // resourceHeader: ResourceHeader, 
-            // TODO: Component for Toolbar (Date Picker and Room Filters)
-            // toolbar: CalendarToolbar,
+            // resourceHeader: ResourceHeader,
+            toolbar: (props) => (
+              <CalendarToolbar
+                {...props}
+                selectedRoomTypes={selectedRoomTypes}
+                setSelectedRoomTypes={setSelectedRoomTypes}
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+                currentView={currentView}
+                setCurrentView={setCurrentView}
+              />
+            ),
           }}
           defaultView={Views.DAY}
           views={[Views.DAY, Views.WORK_WEEK]}
@@ -144,10 +117,12 @@ const MeetingRoomCalendar = () => {
           showMultiDayTimes={true}
           toolbar={true}
           date={currentDate}
-          onNavigate={handleNavigate}
+          onNavigate={(newDate) => setCurrentDate(newDate)}
           selectable={true}
           onSelectSlot={handleSelectSlot}
           onSelectEvent={(data) => console.log('On select event:', data)}
+          view={currentView}
+          onView={(newView) => setCurrentView(newView)}
         />
       </div>
 
@@ -253,7 +228,7 @@ const MeetingRoomCalendar = () => {
                         Select a room
                       </option>
                       {rooms.map((room) => (
-                        <option key={room.resourceId} value={room.resourceId}>
+                        <option key={room.id} value={room.id}>
                           {room.title}
                         </option>
                       ))}
