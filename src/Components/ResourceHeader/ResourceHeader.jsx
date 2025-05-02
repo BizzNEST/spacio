@@ -1,9 +1,9 @@
-//Create the UI for the Resource Center & style it import React from 'react';
+// UI for the Resource Center & style it import React from 'react';
 
 import React from 'react';
 import styles from './ResourceHeader.module.css';
 
-const ResourceHeader = ({ resource }) => {
+const ResourceHeader = ({ resource, calendars }) => {
   const { title, capacity } = resource;
   const formattedCapacity = capacity === 1 ? '1 seat' : `${capacity} seats`;
 

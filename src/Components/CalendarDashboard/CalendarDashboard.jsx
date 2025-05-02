@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import {
   format,
@@ -52,7 +52,7 @@ const rooms = [
   },
 ];
 
-const MeetingRoomCalendar = ({ events }) => {
+const MeetingRoomCalendar = ({ events, calendars }) => {
   const [selectedRoomTypes, setSelectedRoomTypes] = useState('all');
   const [currentDate, setCurrentDate] = useState(
     format(new Date(), 'EEEE, MMMM dd, yyyy')
@@ -78,7 +78,6 @@ const MeetingRoomCalendar = ({ events }) => {
   const formats = {
     timeGutterFormat: (date) => format(date, 'h:mma'),
   };
-
   return (
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarContainer}>
@@ -87,7 +86,11 @@ const MeetingRoomCalendar = ({ events }) => {
           events={events}
           components={{
             event: EventCard,
-            resourceHeader: ResourceHeader, 
+            resourceHeader: ResourceHeader,
+                
+            
+            
+            
             // CHANGED: Uncommented and enabled the ResourceHeader component
             // TODO: Component for ResourceHeader (Needs a Redesign)
             // resourceHeader: ResourceHeader,
@@ -105,7 +108,7 @@ const MeetingRoomCalendar = ({ events }) => {
           }}
           defaultView={Views.DAY}
           views={[Views.DAY, Views.WORK_WEEK]}
-          resources={filteredRooms}
+          resources={calendars}
           resourceIdAccessor="id"
           resourceTitleAccessor="title"
           // resourceHeaderAccessor={ResourceHeader}
