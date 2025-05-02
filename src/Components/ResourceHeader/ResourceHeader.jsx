@@ -5,13 +5,15 @@ import styles from './ResourceHeader.module.css';
 
 const ResourceHeader = ({ resource }) => {
   const { title, capacity } = resource;
-  
+  const formattedCapacity = capacity === 1 ? '1 seat' : `${capacity} seats`;
+
   return (
     <div className={styles.resourceHeader}>
-      <div className={styles.resourceTitle}>{title}</div>
-      <div className={styles.resourceCapacity}>
-      <i className="fa-solid fa-users"></i> {capacity} {capacity === 1 ? 'seat' : 'seats'}
-      </div>
+      <h2 className={styles.resourceTitle}>{title}</h2>
+      <p className={styles.resourceCapacity}>
+        <i className="fa-solid fa-users"></i>
+        {formattedCapacity}
+      </p>
     </div>
   );
 };
