@@ -18,10 +18,16 @@ export const signInWithGoogle = async () => {
   const token = credential.accessToken;
 
   if (token) {
+    //Automatically sign out after 1 hour
+    const expiresIn = 3600 * 1000;
     localStorage.setItem('google_access_token', token);
     gapi.client.setToken({
       access_token: token,
     });
+
+    setTimeout(() => {
+      signOut();
+    }, expiresIn);
 
     return token;
   }
