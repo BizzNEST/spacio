@@ -15,6 +15,8 @@ import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
 import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
 import useFilteredRooms from '../../hooks/useFilteredRooms';
+import useGetCalendars from '../../api/calendars/useGetCalendars';
+import ResourceHeader from '../ResourceHeader/ResourceHeader'; 
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -85,6 +87,8 @@ const MeetingRoomCalendar = ({ events }) => {
           events={events}
           components={{
             event: EventCard,
+            resourceHeader: ResourceHeader, 
+            // CHANGED: Uncommented and enabled the ResourceHeader component
             // TODO: Component for ResourceHeader (Needs a Redesign)
             // resourceHeader: ResourceHeader,
             toolbar: (props) => (
