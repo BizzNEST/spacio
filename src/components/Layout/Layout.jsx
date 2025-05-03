@@ -13,9 +13,6 @@ function Layout() {
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
 
-    
-
-
   //NOTE: This fetches 25 events from all subscribed calendars
   const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
     allCalendars,
@@ -30,7 +27,7 @@ function Layout() {
 
   return (
     <div className={styles.layout}>
-      <SideNav />  
+      <SideNav />
       <Dashboard>
         <Header />
         <CalendarDashboard events={events} calendars={allCalendars} />
