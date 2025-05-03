@@ -30,7 +30,7 @@ function Layout() {
       <SideNav />
       <Dashboard>
         <Header />
-        <CalendarDashboard events={events} />
+        <CalendarDashboard events={events} calendars={allCalendars} />
       </Dashboard>
     </div>
   );

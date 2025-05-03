@@ -1,12 +1,12 @@
 import { gapi } from 'gapi-script';
-import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
+import { startOfToday } from 'date-fns';
 
 const getEvents = async (calendarId = 'primary') => {
   try {
     //Make the request to Google Calendar with specified parameters
     const response = await gapi.client.calendar.events.list({
       calendarId,
-      timeMin: new Date().toISOString(),
+      timeMin: startOfToday().toISOString(),
       showDeleted: false,
       singleEvents: true,
       maxResults: 25,
@@ -18,8 +18,7 @@ const getEvents = async (calendarId = 'primary') => {
       title: event.summary || '(No Title)',
       start: new Date(event.start.dateTime || event.start.date),
       end: new Date(event.end.dateTime || event.end.date),
-      //This will map the calendar id to the room id we have in our helper function
-      resourceId: calendarToRoomMap[calendarId],
+      resourceId: calendarId,
     }));
 
     return events;
