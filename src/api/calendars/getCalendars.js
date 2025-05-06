@@ -2,6 +2,7 @@ import { gapi } from 'gapi-script';
 import {
   getResourceCapacity,
   getResourceFloor,
+  getResourceLocation,
   getTrimmedName,
   isResourceCalendar,
 } from './helpers';
@@ -19,6 +20,7 @@ const getCalendars = async () => {
       capacity: getResourceCapacity(calendar.summary),
       floor: getResourceFloor(calendar.summary),
       primary: calendar.primary || false,
+      location: getResourceLocation(calendar.summary),
     }));
 
     //Filter to only include resource calendars

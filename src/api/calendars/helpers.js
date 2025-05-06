@@ -1,21 +1,22 @@
 const CAPACITY_REGEX = /\((\d{1,2})\)/;
 const FLOOR_REGEX = /-(\d)-/;
 const NAME_REGEX = /-(?!\d-)([^-()]+?)(?=\s*\(|$)/;
+const LOCATION_REGEX = /(?:^|\s)([A-Za-z]+)-\d-/;
 
 /**
  * Given a room name, returns the capacity of the room if present, otherwise
  * returns null. The capacity is expected to be in the format "(X)" where X is
  * the number of seats available.
  *
- * @param {String} roomName - The name of the room
+ * @param {String} resourceName - The name of the room
  * @return {String|null} - The capacity of the room, or null if not present
  */
-export const getResourceCapacity = (roomName) => {
-  if (!roomName) {
+export const getResourceCapacity = (resourceName) => {
+  if (!resourceName) {
     return;
   }
 
-  const capacity = roomName.match(CAPACITY_REGEX);
+  const capacity = resourceName.match(CAPACITY_REGEX);
 
   if (capacity && capacity[1]) {
     return capacity[1];
@@ -29,14 +30,14 @@ export const getResourceCapacity = (roomName) => {
  * returns null. The floor number is expected to be in the format "-X-"
  * where X is the floor number.
  *
- * @param {String} floorName - The name of the floor
+ * @param {String} resourceName - The name of the floor
  * @return {String|null} - The floor number of the room, or null if not present
  */
-export const getResourceFloor = (floorName) => {
-  if (!floorName) {
+export const getResourceFloor = (resourceName) => {
+  if (!resourceName) {
     return;
   }
-  const floor = floorName.match(FLOOR_REGEX);
+  const floor = resourceName.match(FLOOR_REGEX);
   if (floor && floor[1]) {
     return floor[1];
   }
@@ -47,18 +48,38 @@ export const getResourceFloor = (floorName) => {
  * The name is expected to follow a specific pattern where it appears
  * after a hyphen and before any parentheses, or at the end of the string.
  *
- * @param {String} trimmedName - The string to extract the name from
+ * @param {String} resourceName - The string to extract the name from
  * @return {String|null} - The extracted name, or null if not found
  */
 
-export const getTrimmedName = (trimmedName) => {
-  if (!trimmedName) {
+export const getTrimmedName = (resourceName) => {
+  if (!resourceName) {
     return;
   }
-  const name = trimmedName.match(NAME_REGEX);
+  const name = resourceName.match(NAME_REGEX);
 
   if (name && name[1]) {
     return name[1];
+  }
+  return null;
+};
+
+/**
+ * Given a room name, returns the location of the room if present, otherwise
+ * returns null. The location is expected to be in the format "X-" where X is
+ * the location of the room.
+ *
+ * @param {String} resourceName - The name of the room
+ * @return {String|null} - The location of the room, or null if not present
+ */
+export const getResourceLocation = (resourceName) => {
+  if (!resourceName) {
+    return;
+  }
+  const location = resourceName.match(LOCATION_REGEX);
+
+  if (location && location[1]) {
+    return location[1];
   }
   return null;
 };
