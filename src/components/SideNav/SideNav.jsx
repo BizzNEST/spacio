@@ -71,29 +71,56 @@ function SideNav() {
           <div className={styles.inputContainer}>
             <div className={styles.inputWrapper}>
               <label className={styles.eventLable} htmlFor="eventName">
-                Event Name
+                Title
               </label>
               <input
                 className={styles.eventNameInput}
                 type="text"
-                placeholder="Enter event name"
+                placeholder="Leetcode Session"
               />
             </div>
 
-            <div className={styles.dateTimeContainer}>
+            <div className={styles.timeRangeContainer}>
+              {/* Logic for Start Time */}
               <div className={styles.inputWrapper}>
-                <label className={styles.dateLable} htmlFor="eventDate">
-                  Select Date
+                <label className={styles.timeLabel} htmlFor="StartTime">
+                  Start Time
                 </label>
-                <input className={styles.dateInput} type="date" />
+                <input className={styles.timeInput} 
+                type="text"
+                placeholder="04/1/2025 10:00 AM" 
+                />
               </div>
+              {/* Logic for End Time */}
               <div className={styles.inputWrapper}>
-                <label className={styles.timeLable} htmlFor="eventTime">
-                  Select Time
+                <label className={styles.timeLable} htmlFor="EndTime">
+                  End Time
                 </label>
-                <input className={styles.timeInput} type="time" />
+                <input className={styles.timeInput} 
+                type="text" 
+                placeholder='04/1/2025 11:00 AM'
+                />
               </div>
             </div>
+            {/* Logic for Room Selection */}
+            <div className={styles.inputWrapper}>
+              <label className={styles.roomLabel} htmlFor="roomSelect">
+                Select Room
+              </label>
+              <input
+              className={styles.roomInput}
+              type="text"
+              placeholder='Tony'
+              />
+            </div>
+          </div>
+          <div className={styles.buttonContainer}>
+            <Button
+            type="gradient"
+            className={styles.bookButton}
+            >
+              Book
+            </Button>
           </div>
         </Modal.Content>
       </Modal>
