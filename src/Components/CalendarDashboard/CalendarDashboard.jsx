@@ -38,8 +38,6 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   //TODO: Filtering is broken since we no longer returning room types
   const filterResources = useFilterResourceByFloor(calendars, filterType);
 
-  console.log('Filter Resource: ', filterResources);
-
   const handleSelectSlot = (slotInfo) => {
     console.log('Selected slot:', slotInfo);
     setSelectedSlot(slotInfo);
@@ -84,7 +82,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
           // resourceHeaderAccessor={ResourceHeader}
           step={30}
           timeslots={1}
-          min={new Date(new Date().setHours(9, 0, 0))}
+          min={new Date(new Date().setHours(8, 0, 0))}
           max={new Date(new Date().setHours(18, 0, 0))}
           formats={formats}
           showMultiDayTimes={true}
