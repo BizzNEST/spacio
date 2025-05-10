@@ -10,11 +10,11 @@ import {
 } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
 import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
 import ResourceHeader from '../ResourceHeader/ResourceHeader';
+import styles from './CalendarDashboard.module.css';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -59,7 +59,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
           localizer={localizer}
           events={events}
           components={{
-            event: EventCard,
+            event: (props) => <EventCard {...props} calendars={calendars} />,
             resourceHeader: ResourceHeader,
             toolbar: (props) => (
               <CalendarToolbar

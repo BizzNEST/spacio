@@ -10,16 +10,22 @@ const getCalendars = async () => {
   try {
     //Retrieve all the calendars from the user's calendar list
     const response = await gapi.client.calendar.calendarList.list();
+    const calendarItems = response.result.items;
 
-    //Return an array of calendars with the parameters we want
-    const calendars = response.result.items.map((calendar) => ({
-      id: calendar.id,
-      colorId: calendar.colorId,
-      title: getTrimmedName(calendar.summary),
-      capacity: getResourceCapacity(calendar.summary),
-      floor: getResourceFloor(calendar.summary),
-      primary: calendar.primary || false,
-    }));
+    //Finally, return an array of calendars with the parameters we want for convenience
+    const calendars = calendarItems.map((calendar, index) => {
+      const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
+
+      return {
+        id: calendar.id,
+        title: getTrimmedName(calendar.summary),
+        capacity: getResourceCapacity(calendar.summary),
+        floor: getResourceFloor(calendar.summary),
+        primary: calendar.primary || false,
+        backgroundColor: color.backgroundColor,
+        foregroundColor: color.foregroundColor,
+      };
+    });
 
     //Filter to only include resource calendars
     return calendars.filter(isResourceCalendar);
@@ -28,5 +34,13 @@ const getCalendars = async () => {
     return [];
   }
 };
+
+const CALENDAR_COLORS = [
+  { backgroundColor: '#C60077', foregroundColor: '#ffffff' }, // yellow
+  { backgroundColor: '#33A852', foregroundColor: '#ffffff' }, // green
+  { backgroundColor: '#3371A8', foregroundColor: '#ffffff' }, // blue
+  { backgroundColor: '#d50000', foregroundColor: '#ffffff' }, // red
+  { backgroundColor: '#9D16BC', foregroundColor: '#ffffff' }, // purple
+];
 
 export default getCalendars;

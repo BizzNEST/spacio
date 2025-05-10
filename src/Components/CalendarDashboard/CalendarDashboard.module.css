@@ -75,19 +75,8 @@
 }
 
 /* Override react-big-calendar styles */
-:global(.rbc-calendar) {
-  font-family: inherit;
-}
-
-:global(.rbc-header) {
-  font-weight: 500;
-  font-size: 14px;
-  padding: 0;
-  border-bottom: none;
-}
-
-:global(.rbc-row.rbc-row-resource) {
-  border-bottom: none;
+:global(.rbc-time-content) {
+  border: none;
 }
 
 :global(.rbc-time-header-content) {
@@ -102,24 +91,6 @@
   border: none;
 }
 
-:global(.rbc-time-content) {
-  border-top: 1px solid #e0e0e0;
-}
-
-:global(.rbc-time-header-gutter),
-:global(.rbc-time-gutter) {
-  background-color: #f9f9f9;
-}
-
-:global(.rbc-timeslot-group) {
-  cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-:global(.rbc-day-slot) {
-  margin-right: 0;
-}
-
 :global(.rbc-allday-cell) {
   display: none;
 }
@@ -128,55 +99,9 @@
   margin-right: 0 !important;
 } */
 
-:global(.rbc-event) {
-  display: none;
-}
-
-:global(.rbc-event-label) {
-  display: none;
-}
-
-:global(.rbc-event-content) {
-  font-size: 13px;
-  font-weight: normal;
-}
-
 :global(.rbc-time-slot) {
   cursor: pointer;
   min-height: 40px;
-}
-
-:global(.rbc-toolbar) {
-  padding: 10px;
-  margin-bottom: 0;
-  border-bottom: 1px solid #e0e0e0;
-  background-color: #fafafa;
-}
-
-:global(.rbc-toolbar button) {
-  border-radius: 4px;
-  padding: 6px 12px;
-}
-
-:global(.rbc-toolbar button.rbc-active),
-:global(.rbc-toolbar button.rbc-active:hover) {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: white;
-}
-
-:global(.rbc-toolbar-label) {
-  font-weight: 500;
-  font-size: 16px;
-}
-
-:global(.rbc-label) {
-  padding: 5px 8px;
-}
-
-:global(.rbc-btn-group button) {
-  text-transform: none;
-  font-weight: normal;
 }
 
 @media (max-width: 768px) {
@@ -184,8 +109,5 @@
     flex-direction: column;
     gap: 10px;
   }
-
-  :global(.rbc-toolbar) {
-    gap: 10px;
-  }
 }
+
