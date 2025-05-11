@@ -82,6 +82,22 @@
   border: none;
   overflow-y: auto; 
   height: 500px; 
+:global(.rbc-calendar) {
+  font-family: inherit;
+}
+
+:global(.rbc-header) {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0;
+  border-bottom: none;
+  border-right: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+}
+
+:global(.rbc-row.rbc-row-resource) {
+  border-bottom: none;
+  height: 100%;
 }
 
 :global(.rbc-time-header-content) {
@@ -120,6 +136,11 @@
 @media (max-width: 768px) {
   .calendarHeader {
     flex-direction: column;
+    gap: 10px;
+  }
+}
+
+  :global(.rbc-toolbar) {
     gap: 10px;
   }
 }

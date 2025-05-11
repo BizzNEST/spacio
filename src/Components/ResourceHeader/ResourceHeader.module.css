@@ -3,17 +3,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
   padding: 12px 0;
   background: white;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
 }
 
 .resourceTitle {
   font-size: 0.75rem;
   font-weight: 700;
   color: #3f3f45;
+}
+
+.resourceLocation {
+  font-size: 0.6rem;
+  font-style: italic;
+  color: #aeaeb3;
 }
 
 .resourceCapacity {

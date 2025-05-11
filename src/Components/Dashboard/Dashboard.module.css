@@ -3,6 +3,7 @@
   grid-template-rows: auto 1fr;
   padding: 18px 26px 8px;
   overflow: hidden;
+  padding: 12px 8px 8px;
 }
 
 .title {
