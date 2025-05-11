@@ -10,6 +10,8 @@ const EventCard = ({ event, title, calendars }) => {
   const backgroundColor = calendar?.backgroundColor || '#f0f0f0';
   const foregroundColor = calendar?.foregroundColor || '#000000';
 
+  const numOfAttendees = attendees.length;
+
   // Format the times as needed
   const startTime = start.toLocaleTimeString([], {
     hour: 'numeric',
@@ -34,10 +36,12 @@ const EventCard = ({ event, title, calendars }) => {
       </p>
 
       <p className={styles.attendees}>
-        {attendees.length > 0 && (
+        {numOfAttendees > 0 && (
           <>
             <i className="fa-solid fa-users"></i>
-            {`${attendees.length} Attendees`}
+            {numOfAttendees > 1
+              ? `${numOfAttendees} Attendees`
+              : `${numOfAttendees} Attendee`}
           </>
         )}
       </p>
