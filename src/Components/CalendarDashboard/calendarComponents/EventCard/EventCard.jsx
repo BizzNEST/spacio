@@ -47,8 +47,10 @@ const EventCard = ({ event, title, calendars }) => {
       </p>
 
       <div className={styles.statusTagContainer}>
-        {attendees.map((attendee) => (
-          <StatusTag tagFormat={styles.statusTag}>{attendee}</StatusTag>
+        {attendees.map((attendee, idx) => (
+          <StatusTag key={idx} tagFormat={styles.statusTag}>
+            {attendee}
+          </StatusTag>
         ))}
       </div>
     </div>

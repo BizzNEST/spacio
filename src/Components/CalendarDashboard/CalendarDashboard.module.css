@@ -45,9 +45,9 @@
 
 /* Calendar container */
 .calendarContainer {
-  height: 100%; 
+  height: 100%;
   border-radius: 8px;
-  overflow: hidden; 
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -78,26 +78,17 @@
 }
 
 /* Override react-big-calendar styles */
-:global(.rbc-time-content) {
-  border: none;
-  overflow-y: auto; 
-  height: 500px; 
-:global(.rbc-calendar) {
-  font-family: inherit;
-}
 
 :global(.rbc-header) {
   font-weight: 500;
   font-size: 14px;
   padding: 0;
   border-bottom: none;
-  border-right: 1px solid lightgray;
   border-left: 1px solid lightgray;
 }
 
-:global(.rbc-row.rbc-row-resource) {
-  border-bottom: none;
-  height: 100%;
+:global(.rbc-row-content > .rbc-row) {
+  display: none;
 }
 
 :global(.rbc-time-header-content) {
@@ -108,20 +99,15 @@
   border-left: none;
 }
 
+:global(.rbc-time-content) {
+  border-top: none;
+}
+
 :global(.rbc-time-view) {
   display: flex;
   flex-direction: column;
-  min-height: 0; 
+  min-height: 0;
   height: 100%;
-}
-
-:global(.rbc-time-view-resources) {
-  min-height: 0; 
-  flex: 1;
-}
-
-:global(.rbc-allday-cell) {
-  display: none;
 }
 
 /* :global(.rbc-events-container) {
@@ -130,18 +116,5 @@
 
 :global(.rbc-time-slot) {
   cursor: pointer;
-  min-height: 80px;
+  min-height: 70px;
 }
-
-@media (max-width: 768px) {
-  .calendarHeader {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
-  :global(.rbc-toolbar) {
-    gap: 10px;
-  }
-}
-

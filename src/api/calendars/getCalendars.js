@@ -25,18 +25,9 @@ const getCalendars = async () => {
         primary: calendar.primary || false,
         backgroundColor: color.backgroundColor,
         foregroundColor: color.foregroundColor,
+        location: getResourceLocation(calendar.summary),
       };
     });
-    //Return an array of calendars with the parameters we want
-    const calendars = response.result.items.map((calendar) => ({
-      id: calendar.id,
-      colorId: calendar.colorId,
-      title: getTrimmedName(calendar.summary),
-      capacity: getResourceCapacity(calendar.summary),
-      floor: getResourceFloor(calendar.summary),
-      primary: calendar.primary || false,
-      location: getResourceLocation(calendar.summary),
-    }));
 
     //Filter to only include resource calendars
     return calendars.filter(isResourceCalendar);

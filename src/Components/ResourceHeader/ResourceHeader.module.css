@@ -47,3 +47,10 @@
   background-color: white;
 }
 
+:global(.rbc-time-view-resources .rbc-header) {
+  min-width: 150px;
+}
+
+:global(.rbc-time-content > .rbc-day-slot) {
+  min-width: 149px;
+}
