@@ -42,13 +42,11 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   const filterResources = useFilterResourceByFloor(calendars, filterType);
 
   const handleSelectSlot = (slotInfo) => {
-    console.log('Selected slot:', slotInfo);
     setSelectedSlot(slotInfo);
     setIsModalOpen(true);
   };
 
   const handleSelectedEvent = (eventInfo) => {
-    console.log('Event Info:', eventInfo);
     setSelectedEvent(eventInfo);
     setIsEventModalOpen(true);
   };

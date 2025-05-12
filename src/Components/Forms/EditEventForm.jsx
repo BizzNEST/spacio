@@ -181,32 +181,37 @@ const EditEventForm = ({
         )}
       </div>
 
-      <div className={styles.btnContainer}>
-        <div>
-          {isEditing && (
-            <Button type="submit" variant="gradient">
-              Save Event
+      {selectedEvent.isOrganizer && (
+        <div className={styles.btnContainer}>
+          <div>
+            {isEditing && (
+              <Button type="submit" variant="gradient">
+                Save Event
+              </Button>
+            )}
+            <Button type="button" onClick={toggleEdit} variant="outline">
+              {isEditing ? 'Cancel' : 'Edit'}
             </Button>
-          )}
-          <Button type="button" onClick={toggleEdit} variant="outline">
-            {isEditing ? 'Cancel' : 'Edit'}
+          </div>
+          <Button
+            type="button"
+            variant="danger"
+            onClick={() => {
+              if (confirmDelete) {
+                handleDelete();
+              } else {
+                setConfirmDelete(true);
+              }
+            }}
+          >
+            {confirmDelete ? (
+              'Confirm Delete'
+            ) : (
+              <Trash2 height={20} width={20} />
+            )}
           </Button>
         </div>
-
-        <Button
-          type="button"
-          variant="danger"
-          onClick={() => {
-            if (confirmDelete) {
-              handleDelete();
-            } else {
-              setConfirmDelete(true);
-            }
-          }}
-        >
-          {confirmDelete ? 'Confirm Delete' : <Trash2 height={20} width={20} />}
-        </Button>
-      </div>
+      )}
     </form>
   );
 };
