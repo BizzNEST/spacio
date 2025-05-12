@@ -87,6 +87,10 @@
   border-left: 1px solid lightgray;
 }
 
+:global(.rbc-label) {
+  font-size: 0.9rem;
+}
+
 :global(.rbc-row-content > .rbc-row) {
   display: none;
 }
