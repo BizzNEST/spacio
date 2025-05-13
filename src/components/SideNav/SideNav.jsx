@@ -13,8 +13,12 @@ import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 
 import styles from './SideNav.module.css';
+import CreateEventForm from '../Forms/CreateEventForm';
 
-function SideNav() {
+function SideNav({ calendars }) {
+  const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
+    React.useState(false);
+
   return (
     <nav className={styles.sidenav}>
       <div className={styles.topContainer}>
@@ -56,7 +60,10 @@ function SideNav() {
         <p>Child 2</p>
       </Card>
 
-      <Modal>
+      <Modal
+        open={isCreateEventModalOpen}
+        onOpenChange={setIsCreateEventModalOpen}
+      >
         <Modal.Trigger asChild>
           <Button variant="gradient" className={styles.bookButton}>
             <FontAwesomeIcon icon={faCalendarAlt} />
@@ -68,60 +75,10 @@ function SideNav() {
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
         >
-          <div className={styles.inputContainer}>
-            <div className={styles.inputWrapper}>
-              <label className={styles.eventLable} htmlFor="eventName">
-                Title
-              </label>
-              <input
-                className={styles.eventNameInput}
-                type="text"
-                placeholder="Leetcode Session"
-              />
-            </div>
-
-            <div className={styles.timeRangeContainer}>
-              {/* Logic for Start Time */}
-              <div className={styles.inputWrapper}>
-                <label className={styles.timeLabel} htmlFor="StartTime">
-                  Start Time
-                </label>
-                <input className={styles.timeInput} 
-                type="text"
-                placeholder="04/1/2025 10:00 AM" 
-                />
-              </div>
-              {/* Logic for End Time */}
-              <div className={styles.inputWrapper}>
-                <label className={styles.timeLable} htmlFor="EndTime">
-                  End Time
-                </label>
-                <input className={styles.timeInput} 
-                type="text" 
-                placeholder='04/1/2025 11:00 AM'
-                />
-              </div>
-            </div>
-            {/* Logic for Room Selection */}
-            <div className={styles.inputWrapper}>
-              <label className={styles.roomLabel} htmlFor="roomSelect">
-                Select Room
-              </label>
-              <input
-              className={styles.roomInput}
-              type="text"
-              placeholder='Tony'
-              />
-            </div>
-          </div>
-          <div className={styles.buttonContainer}>
-            <Button
-            type="gradient"
-            className={styles.bookButton}
-            >
-              Book
-            </Button>
-          </div>
+          <CreateEventForm
+            calendars={calendars}
+            afterSave={() => setIsCreateEventModalOpen(false)}
+          />
         </Modal.Content>
       </Modal>
     </nav>
