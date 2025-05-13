@@ -3,7 +3,7 @@ import { format, setHours, setMinutes } from 'date-fns';
 import Button from '../Button/Button';
 import { Trash2 } from 'react-feather';
 import styles from './form.module.css';
-
+import useDeleteEvent from '../../api/events/useDeleteEvent.jsx';
 const EditEventForm = ({
   selectedEvent,
   setSelectedEvent,
@@ -13,6 +13,8 @@ const EditEventForm = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [draftEvent, setDraftEvent] = React.useState(selectedEvent);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
+const deleteEventMutation = useDeleteEvent()
+  console.log(deleteEventMutation)
 
   React.useEffect(() => {
     if (!isEditing) {
@@ -29,12 +31,20 @@ const EditEventForm = ({
     afterSave();
   };
 
-  const handleDelete = () => {
-    // Perform the actual delete logic here
-    console.log('Event deleted:', selectedEvent);
+const handleDelete = async () => {
+// Perform the actual delete logic here
+ 
+    const eventId = selectedEvent.id;
+
+    
+
+    deleteEventMutation.mutate(eventId)
+    
+   
     setConfirmDelete(false);
     afterSave();
-  };
+ 
+};
 
   const toggleEdit = () => {
     if (isEditing) {
@@ -164,7 +174,7 @@ const EditEventForm = ({
         </select>
       </div>
 
-      {selectedEvent.isOrganizer && (
+      {/* {selectedEvent.isOrganizer && ( */}
         <div className={styles.btnContainer}>
           <div>
             {isEditing && (
@@ -206,7 +216,7 @@ const EditEventForm = ({
             )}
           </div>
         </div>
-      )}
+      {/* )} */}
     </form>
   );
 };
