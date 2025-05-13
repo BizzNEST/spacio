@@ -11,6 +11,9 @@
 }
 
 .content {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
   background-color: #fffcfc;
   border-radius: 14px;
   position: fixed;
@@ -23,22 +26,25 @@
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .content:focus {
   outline: none;
 }
 
+.modalHeader {
+  display: grid;
+}
+
 .title {
   margin: 0;
-  margin-bottom: 4px;
   font-weight: bold;
   color: black;
   font-size: 1.7rem;
 }
 
 .description {
-  margin: 0 0 10px;
   color: var(--mauve-11);
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .closeIcon {
@@ -56,10 +62,12 @@
   right: 10px;
   background-color: var(--gray-3);
 }
+
 .closeIcon:hover {
   cursor: pointer;
   background-color: var(--violet-4);
 }
+
 .closeIcon:focus {
   box-shadow: 0 0 0 2px var(--violet-7);
 }
@@ -69,7 +77,6 @@
   flex-direction: column;
   gap: 10px;
   border-radius: 8px;
-  font-size: 15px;
 }
 
 .eventNameInput {
@@ -101,10 +108,12 @@
 .timeLable {
   font-size: 15px;
 }
+
 @keyframes overlayShow {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -115,6 +124,7 @@
     opacity: 0;
     transform: translate(-50%, -48%) scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);

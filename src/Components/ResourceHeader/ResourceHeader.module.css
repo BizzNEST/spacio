@@ -3,17 +3,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
   padding: 12px 0;
   background: white;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
 }
 
 .resourceTitle {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #3F3F45;
+  color: #3f3f45;
+}
+
+.resourceLocation {
+  font-size: 0.6rem;
+  font-style: italic;
+  color: #aeaeb3;
 }
 
 .resourceCapacity {
@@ -21,10 +24,33 @@
   align-items: center;
   gap: 6px;
   font-size: 0.7rem;
-  color: #AEAEB3;
+  color: #aeaeb3;
 }
 
 .resourceCapacity i {
   font-size: 0.625rem;
   opacity: 0.7;
+}
+
+/* OverWrite Big Calendar CSS */
+:global(.rbc-header) {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0;
+  border-bottom: none;
+}
+
+:global(.rbc-time-header) {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+}
+
+:global(.rbc-time-view-resources .rbc-header) {
+  min-width: 150px;
+}
+
+:global(.rbc-time-content > .rbc-day-slot) {
+  min-width: 149px;
 }

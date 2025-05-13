@@ -58,7 +58,7 @@ function SideNav() {
 
       <Modal>
         <Modal.Trigger asChild>
-          <Button type="gradient" className={styles.bookButton}>
+          <Button variant="gradient" className={styles.bookButton}>
             <FontAwesomeIcon icon={faCalendarAlt} />
             Book a Room
           </Button>
