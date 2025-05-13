@@ -1,5 +1,5 @@
 .sidenav {
-  background-color: #dad9de;
+  background-color: #fafafa;
   display: grid;
   align-items: center;
   width: max-content;
@@ -66,11 +66,13 @@
 .bookButton {
   align-self: end;
 }
+
 .statusTag {
   font-size: 10px;
   padding: 2px 8px;
   gap: 0.2rem;
 }
+
 /* New Styles */
 .inputContainer {
   display: flex;
@@ -78,12 +80,14 @@
   gap: 24px;
   width: 100%;
 }
+
 .inputWrapper {
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 100%;
 }
+
 .timeRangeContainer {
  display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -97,6 +101,7 @@
   flex: 1;
   max-width: 100%;
 }
+
 .eventNameInput,
 .timeInput,
 .roomInput {
@@ -122,6 +127,7 @@
   justify-content: flex-end;
   width: 100%;
 }
+
 .bookButton {
   padding: 12px 40px;
   font-size: 16px;

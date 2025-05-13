@@ -16,8 +16,8 @@ const VIEW_OPTION = [
 ];
 
 const CalendarToolbar = ({
-  selectedRoomTypes,
-  setSelectedRoomTypes,
+  filterType,
+  setFilterType,
   currentView,
   setCurrentView,
   currentDate,
@@ -25,8 +25,8 @@ const CalendarToolbar = ({
 }) => {
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
 
-  const handleRoomTypeFilter = (type) => {
-    setSelectedRoomTypes(type ? type : 'all');
+  const handleFilter = (type) => {
+    setFilterType(type ? type : 'all');
   };
 
   const onNextClick = React.useCallback(() => {
@@ -82,23 +82,19 @@ const CalendarToolbar = ({
       <div className={styles.filtersContainer}>
         <ButtonGroup
           type="single"
-          value={selectedRoomTypes}
-          onValueChange={(value) => handleRoomTypeFilter(value)}
+          value={filterType}
+          onValueChange={(value) => handleFilter(value)}
         >
           <ButtonGroup.Item value={'all'} className={styles.toggle} asChild>
-            <button>All Rooms</button>
+            <button>All</button>
           </ButtonGroup.Item>
 
-          <ButtonGroup.Item value={'phone'} className={styles.toggle} asChild>
-            <button>Phone Booths</button>
+          <ButtonGroup.Item value={'1'} className={styles.toggle} asChild>
+            <button>1st Floor</button>
           </ButtonGroup.Item>
 
-          <ButtonGroup.Item
-            value={'conference'}
-            className={styles.toggle}
-            asChild
-          >
-            <button>Conference</button>
+          <ButtonGroup.Item value={'2'} className={styles.toggle} asChild>
+            <button>2nd Floor</button>
           </ButtonGroup.Item>
         </ButtonGroup>
 

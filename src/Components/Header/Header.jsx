@@ -29,7 +29,7 @@ function Header() {
           <input type="text" placeholder="Search" className={styles.search} />
         </div>
         <Button
-          type={'outline'}
+          variant={'outline'}
           className={styles.logoutButton}
           onClick={onLogout}
         >
