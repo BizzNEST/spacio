@@ -67,12 +67,17 @@
   align-self: end;
 }
 
-
+.roomsAvailable {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
 
 .statusTag {
   font-size: 10px;
-  padding: 2px 8px;
   gap: 0.2rem;
+  width: 12px;
+  height: 8px;
 }
 
 /* Styling for Mobile Devices */

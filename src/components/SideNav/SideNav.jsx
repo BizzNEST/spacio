@@ -1,10 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBorderAll,
-  faRoad,
-  faRobot,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
@@ -13,8 +10,20 @@ import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 
 import styles from './SideNav.module.css';
+import { useGetAvailability } from '../../api/availability/useGetAvailability';
+import { format } from 'date-fns';
 
-function SideNav() {
+function SideNav({ calendars }) {
+  const { data: availabilities, isLoading: isLoadingCalendars } =
+    useGetAvailability(calendars);
+  //console.log('SideNav avail:', availabilities);
+
+  const availableNow = availabilities.filter(
+    (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
+  );
+
+  //console.log('NOW:', availableNow);
+
   return (
     <nav className={styles.sidenav}>
       <div className={styles.topContainer}>
@@ -39,22 +48,27 @@ function SideNav() {
         </a>
       </div>
 
-      <Card
-        title={'Title'}
-        StatusTag={
-          <StatusTag
-            label={'tag'}
-            color={'success'}
-            tagFormat={styles.statusTag}
+      <div className={styles.roomsAvailable}>
+        {availableNow.map((calendar) => (
+          <Card
+            key={calendar.calendarId}
+            title={calendar.summary}
+            StatusTag={
+              <StatusTag
+                label={'tag'}
+                color={'success'}
+                tagFormat={styles.statusTag}
+              >
+                <FontAwesomeIcon icon={faClock} className={styles.statusIcon} />
+                Now
+              </StatusTag>
+            }
           >
-            <FontAwesomeIcon icon={faRobot} className={styles.statusIcon} />
-            Test
-          </StatusTag>
-        }
-      >
-        <p>Child 1</p>
-        <p>Child 2</p>
-      </Card>
+            {/* <p>Child 1</p>
+          <p>Child 2</p> */}
+          </Card>
+        ))}
+      </div>
 
       <Modal>
         <Modal.Trigger asChild>
