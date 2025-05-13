@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from '../Modal/Modal';
 import { combineDateAndTime, roundUpToNext15 } from './helpers';
-import { gapi } from 'gapi-script';
+import useCreateEvent from '../../api/events/mutations';
 
 const CreateEventForm = ({ calendars, afterSave }) => {
   const roundedStart = roundUpToNext15(new Date());
@@ -17,6 +17,8 @@ const CreateEventForm = ({ calendars, afterSave }) => {
     end: addMinutes(roundedStart, 15),
     resourceId: '',
   });
+
+  const eventMutation = useCreateEvent();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,7 +47,7 @@ const CreateEventForm = ({ calendars, afterSave }) => {
         ? [{ email: reservationData.resourceId }]
         : [],
     };
-
+    eventMutation.mutate(eventPayload);
     console.log(eventPayload);
     afterSave();
   };
