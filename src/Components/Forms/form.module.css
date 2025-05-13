@@ -45,6 +45,13 @@
     align-items: center;
 }
 
+.btnContainer button {
+    min-width: 75px;
+}
+
+.disabled {
+    opacity: 0.8;
+}
 
 .deleteBtn {
     font-family: inherit;

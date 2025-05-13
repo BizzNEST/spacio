@@ -107,7 +107,9 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
       {/* Modal for viewing/editing an event */}
       {isEventModalOpen && (
         <Modal open={isEventModalOpen} onOpenChange={setIsEventModalOpen}>
-          <Modal.Content title={selectedEvent.title}>
+          <Modal.Content
+            title={selectedEvent.title ? selectedEvent.title : '(No title)'}
+          >
             <EditEventForm
               selectedEvent={selectedEvent}
               setSelectedEvent={setSelectedEvent}

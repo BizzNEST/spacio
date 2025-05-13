@@ -55,130 +55,113 @@ const EditEventForm = ({
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.inputContainer}>
         <label>Event Name</label>
-        {isEditing ? (
-          <input
-            type="text"
-            disabled={!isEditing}
-            value={selectedEvent.title ?? ''}
-            placeholder="Event Title"
-            onChange={(e) =>
-              setSelectedEvent({
-                ...selectedEvent,
-                title: e.target.value,
-              })
-            }
-          />
-        ) : (
-          <p>{selectedEvent.title ?? ''}</p>
-        )}
+        <input
+          className={isEditing ? ' ' : styles.disabled}
+          type="text"
+          disabled={!isEditing}
+          value={selectedEvent.title ?? ''}
+          placeholder="Event Title"
+          onChange={(e) =>
+            setSelectedEvent({
+              ...selectedEvent,
+              title: e.target.value,
+            })
+          }
+        />
       </div>
 
       <div className={styles.timeInputContainer}>
         <div className={styles.inputContainer}>
           <label>Date</label>
-          {isEditing ? (
-            <input
-              disabled={!isEditing}
-              type="date"
-              value={format(selectedEvent.start, 'yyyy-MM-dd')}
-              onChange={(e) => {
-                const [year, month, day] = e.target.value
-                  .split('-')
-                  .map(Number);
-                const newDate = new Date(selectedEvent.start);
-                newDate.setFullYear(year, month - 1, day);
+          <input
+            className={isEditing ? ' ' : styles.disabled}
+            disabled={!isEditing}
+            type="date"
+            value={format(selectedEvent.start, 'yyyy-MM-dd')}
+            onChange={(e) => {
+              const [year, month, day] = e.target.value.split('-').map(Number);
+              const newDate = new Date(selectedEvent.start);
+              newDate.setFullYear(year, month - 1, day);
 
-                setSelectedEvent({
-                  ...selectedEvent,
-                  start: newDate,
-                });
-              }}
-            />
-          ) : (
-            <p>{format(selectedEvent.start, 'MMMM do yyyy')}</p>
-          )}
+              setSelectedEvent({
+                ...selectedEvent,
+                start: newDate,
+              });
+            }}
+          />
         </div>
 
         <div className={styles.inputContainer}>
           <label>Start Time</label>
-          {isEditing ? (
-            <input
-              disabled={!isEditing}
-              type="time"
-              value={format(selectedEvent.start, 'HH:mm')}
-              onChange={(e) => {
-                const [hours, minutes] = e.target.value.split(':').map(Number);
-                const newDate = setMinutes(
-                  setHours(selectedEvent.start, hours),
-                  minutes
-                );
-                setSelectedEvent({
-                  ...selectedEvent,
-                  start: newDate,
-                });
-              }}
-            />
-          ) : (
-            <p>{format(selectedEvent.start, 'hh:mmaaa')}</p>
-          )}
+          <input
+            className={isEditing ? ' ' : styles.disabled}
+            disabled={!isEditing}
+            type="time"
+            value={format(selectedEvent.start, 'HH:mm')}
+            onChange={(e) => {
+              const [hours, minutes] = e.target.value.split(':').map(Number);
+              const newDate = setMinutes(
+                setHours(selectedEvent.start, hours),
+                minutes
+              );
+              setSelectedEvent({
+                ...selectedEvent,
+                start: newDate,
+              });
+            }}
+          />
         </div>
 
         <div className={styles.inputContainer}>
           <label>End Time</label>
-          {isEditing ? (
-            <input
-              disabled={!isEditing}
-              type="time"
-              value={format(selectedEvent.end, 'HH:mm')}
-              onChange={(e) => {
-                const [hours, minutes] = e.target.value.split(':').map(Number);
-                const newDate = setMinutes(
-                  setHours(selectedEvent.end, hours),
-                  minutes
-                );
-                setSelectedEvent({
-                  ...selectedEvent,
-                  end: newDate,
-                });
-              }}
-            />
-          ) : (
-            <p>{format(selectedEvent.end, 'hh:mmaaa')}</p>
-          )}
+          <input
+            className={isEditing ? ' ' : styles.disabled}
+            disabled={!isEditing}
+            type="time"
+            value={format(selectedEvent.end, 'HH:mm')}
+            onChange={(e) => {
+              const [hours, minutes] = e.target.value.split(':').map(Number);
+              const newDate = setMinutes(
+                setHours(selectedEvent.end, hours),
+                minutes
+              );
+              setSelectedEvent({
+                ...selectedEvent,
+                end: newDate,
+              });
+            }}
+          />
         </div>
       </div>
 
       <div className={styles.inputContainer}>
         <label>Room</label>
-        {isEditing ? (
-          <select
-            disabled={!isEditing}
-            value={selectedEvent.resourceId ?? ''}
-            onChange={(e) => {
-              const selectedRoom = resources.find(
-                (room) => room.id === e.target.value
-              );
-              setSelectedEvent({
-                ...selectedEvent,
-                resourceId: e.target.value,
-              });
-              if (selectedRoom) {
-                setSelectedResource(selectedRoom.title);
-              }
-            }}
-          >
-            <option value="" disabled>
-              Select a room
+        <select
+          className={isEditing ? ' ' : styles.disabled}
+          disabled={!isEditing}
+          value={selectedEvent.resourceId ?? ''}
+          onChange={(e) => {
+            const selectedRoom = resources.find(
+              (room) => room.id === e.target.value
+            );
+            setSelectedEvent({
+              ...selectedEvent,
+              resourceId: e.target.value,
+            });
+            if (selectedRoom) {
+              setSelectedResource(selectedRoom.title);
+            }
+          }}
+        >
+          <option value="" disabled>
+            Select a room
+          </option>
+          {resources.map((room) => (
+            <option key={room.id} value={room.id}>
+              {room.title}
             </option>
-            {resources.map((room) => (
-              <option key={room.id} value={room.id}>
-                {room.title}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <p>{selectedRoomTitle}</p>
-        )}
+          ))}
+        </select>
       </div>
 
       {selectedEvent.isOrganizer && (
@@ -193,23 +176,35 @@ const EditEventForm = ({
               {isEditing ? 'Cancel' : 'Edit'}
             </Button>
           </div>
-          <Button
-            type="button"
-            variant="danger"
-            onClick={() => {
-              if (confirmDelete) {
-                handleDelete();
-              } else {
-                setConfirmDelete(true);
-              }
-            }}
-          >
-            {confirmDelete ? (
-              'Confirm Delete'
-            ) : (
-              <Trash2 height={20} width={20} />
+          <div>
+            <Button
+              type="button"
+              variant="danger"
+              onClick={() => {
+                if (confirmDelete) {
+                  handleDelete();
+                } else {
+                  setConfirmDelete(true);
+                }
+              }}
+            >
+              {confirmDelete ? (
+                'Confirm Delete'
+              ) : (
+                <Trash2 height={20} width={20} />
+              )}
+            </Button>
+
+            {confirmDelete && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setConfirmDelete(false)}
+              >
+                Cancel
+              </Button>
             )}
-          </Button>
+          </div>
         </div>
       )}
     </form>
