@@ -8,13 +8,28 @@ import {
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
-
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import styles from './SideNav.module.css';
+import { setHours, setMinutes } from 'date-fns';
 
-function SideNav() {
+function SideNav({calendars}) {
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
+  const [selectedRoom, setSelectedRoom] = React.useState('');
+  //make it so the typing wont update if the end time is lower than the start time 
+  const handleEndTimeChange = (date) => {
+    if (date < startDate) {
+      return;
+    }
+    setEndDate(date);
+  };
+  //Room selection handler 
+  const handleRoomSelect = (e) => {
+    setSelectedRoom(e.target.value);
+  };
   return (
     <nav className={styles.sidenav}>
       <div className={styles.topContainer}>
@@ -70,7 +85,7 @@ function SideNav() {
         >
           <div className={styles.inputContainer}>
             <div className={styles.inputWrapper}>
-              <label className={styles.eventLable} htmlFor="eventName">
+              <label className={styles.eventLabel} htmlFor="eventName">
                 Title
               </label>
               <input
@@ -81,25 +96,52 @@ function SideNav() {
             </div>
 
             <div className={styles.timeRangeContainer}>
+              {/* Logic for Date */}
+              <div className={styles.inputWrapper}>
+                <label className={styles.timeLabel} htmlFor="Date">
+                  Date
+                </label>
+                <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                dateFormat="MMMM d, yyyy"  
+                className={styles.timeInput}
+                shouldCloseOnSelect={true}
+
+                />
+              </div>
               {/* Logic for Start Time */}
               <div className={styles.inputWrapper}>
                 <label className={styles.timeLabel} htmlFor="StartTime">
                   Start Time
                 </label>
-                <input className={styles.timeInput} 
-                type="text"
-                placeholder="04/1/2025 10:00 AM" 
+                <DatePicker
+               selected={startDate}
+               onChange={(date) => setStartDate(date)}
+               showTimeSelect
+               showTimeSelectOnly
+               timeIntervals={15}
+               timeCaption="Time"
+              dateFormat="h:mm aa"
+                className={styles.timeInput}
                 />
               </div>
               {/* Logic for End Time */}
               <div className={styles.inputWrapper}>
-                <label className={styles.timeLable} htmlFor="EndTime">
-                  End Time
-                </label>
-                <input className={styles.timeInput} 
-                type="text" 
-                placeholder='04/1/2025 11:00 AM'
-                />
+                  <label className={styles.timeLabel}>End Time</label>
+                  <DatePicker
+                selected={endDate}
+                onChange={handleEndTimeChange}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="h:mm aa"
+                className={styles.timeInput}
+                minTime={startDate}   
+                maxTime={setHours(setMinutes(new Date(), 45), 23)}
+                minDate={startDate}
+              />
               </div>
             </div>
             {/* Logic for Room Selection */}
@@ -107,11 +149,19 @@ function SideNav() {
               <label className={styles.roomLabel} htmlFor="roomSelect">
                 Select Room
               </label>
-              <input
-              className={styles.roomInput}
-              type="text"
-              placeholder='Tony'
-              />
+              <select 
+              id="roomSelect"
+             className={styles.roomInput}
+             value={selectedRoom}
+             onChange={handleRoomSelect}
+             >
+            <option value="" disabled>Select a room</option>
+            {calendars.map((room) => (
+            <option key={room.id} value={room.id}>
+            {room.title}
+            </option>
+            ))}
+            </select>
             </div>
           </div>
           <div className={styles.buttonContainer}>
