@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from '../Modal/Modal';
 import { combineDateAndTime, roundUpToNext15 } from './helpers';
+import useCreateEvent from '../../api/events/useCreateEvent';
 
 const CreateEventForm = ({ calendars, afterSave }) => {
   const roundedStart = roundUpToNext15(new Date());
@@ -16,6 +17,8 @@ const CreateEventForm = ({ calendars, afterSave }) => {
     end: addMinutes(roundedStart, 15),
     resourceId: '',
   });
+
+  const eventMutation = useCreateEvent();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,7 +48,7 @@ const CreateEventForm = ({ calendars, afterSave }) => {
         : [],
     };
 
-    console.log(eventPayload);
+    eventMutation.mutate(eventPayload);
     afterSave();
   };
 
