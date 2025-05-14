@@ -6,10 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from '../Modal/Modal';
 import { combineDateAndTime, roundUpToNext15 } from './helpers';
-<<<<<<< HEAD
 import useCreateEvent from '../../api/events/mutations';
-=======
->>>>>>> development
 
 const CreateEventForm = ({ calendars, afterSave }) => {
   const roundedStart = roundUpToNext15(new Date());
