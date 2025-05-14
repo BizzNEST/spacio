@@ -8,12 +8,12 @@ import {
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 
 import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
+import logo from '../../assets/placeholderLogo.svg';
 
 function SideNav({ calendars }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
@@ -24,11 +24,11 @@ function SideNav({ calendars }) {
       <div className={styles.topContainer}>
         <div className={styles.logoTitle}>
           <img
-            src="https://plus.unsplash.com/premium_photo-1724222166545-3bcd79fec6ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YXZhdGFyJTIwd2l0aCUyMGJsdWUlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww"
-            alt="User Profile"
-            className={styles.profileImage}
+            src={logo}
+            alt="Placeholder Logo"
+            className={styles.placeholderLogo}
           />
-          <p>Digital NEST</p>
+          <p>spacio</p>
         </div>
 
         <input

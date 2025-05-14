@@ -24,10 +24,6 @@ function Header() {
         <h1>Salinas Center Rooms</h1>
       </div>
       <div className={styles.headerContainer}>
-        <div style={{ position: 'relative' }}>
-          <MagnifyingGlassIcon className={styles.searchIcon} />
-          <input type="text" placeholder="Search" className={styles.search} />
-        </div>
         <Button
           variant={'outline'}
           className={styles.logoutButton}
