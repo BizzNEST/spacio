@@ -22,6 +22,7 @@ const getEvents = async (calendarId = 'primary') => {
         : [];
 
       return {
+        id: event.id,
         title: event.summary || '(No Title)',
         start: new Date(event.start.dateTime || event.start.date),
         end: new Date(event.end.dateTime || event.end.date),

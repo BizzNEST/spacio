@@ -16,6 +16,7 @@ import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
 import ResourceHeader from '../ResourceHeader/ResourceHeader';
 import styles from './CalendarDashboard.module.css';
 import useFilterResourceByFloor from '../../hooks/useFilteredRooms';
+import EditEventForm from '../Forms/EditEventForm';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -32,16 +33,22 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
     format(new Date(), 'EEEE, MMMM dd, yyyy')
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isEventModalOpen, setIsEventModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
+  const [selectedEvent, setSelectedEvent] = React.useState(null);
+
   const [currentView, setCurrentView] = React.useState(Views.DAY);
 
-  //TODO: Filtering is broken since we no longer returning room types
   const filterResources = useFilterResourceByFloor(calendars, filterType);
 
   const handleSelectSlot = (slotInfo) => {
-    console.log('Selected slot:', slotInfo);
     setSelectedSlot(slotInfo);
     setIsModalOpen(true);
+  };
+
+  const handleSelectedEvent = (eventInfo) => {
+    setSelectedEvent(eventInfo);
+    setIsEventModalOpen(true);
   };
 
   const handleClose = () => {
@@ -91,12 +98,29 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
           onNavigate={(newDate) => setCurrentDate(newDate)}
           selectable={true}
           onSelectSlot={handleSelectSlot}
-          onSelectEvent={(data) => console.log('On select event:', data)}
+          onSelectEvent={handleSelectedEvent}
           view={currentView}
           onView={(newView) => setCurrentView(newView)}
         />
       </div>
 
+      {/* Modal for viewing/editing an event */}
+      {isEventModalOpen && (
+        <Modal open={isEventModalOpen} onOpenChange={setIsEventModalOpen}>
+          <Modal.Content
+            title={selectedEvent.title ? selectedEvent.title : '(No title)'}
+          >
+            <EditEventForm
+              selectedEvent={selectedEvent}
+              setSelectedEvent={setSelectedEvent}
+              resources={calendars}
+              afterSave={() => setIsEventModalOpen(false)}
+            />
+          </Modal.Content>
+        </Modal>
+      )}
+
+      {/* Modal for creating a new event from clicking/dragging on the dashboard */}
       {isModalOpen && (
         <Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
           <Modal.Content

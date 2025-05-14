@@ -14,15 +14,22 @@ const outlineStyle = {
 };
 
 const Button = React.forwardRef(
-  ({ type, children, className = '', ...props }, ref) => {
+  ({ variant, children, className = '', type = 'button', ...props }, ref) => {
     let buttonStyles;
 
-    switch (type) {
+    switch (variant) {
       case 'gradient':
         buttonStyles = gradientStyle;
         break;
       case 'outline':
         buttonStyles = outlineStyle;
+        break;
+      case 'danger':
+        buttonStyles = {
+          background: '#FF0000',
+          color: 'white',
+          border: 'none',
+        };
         break;
       default:
         buttonStyles = {};
@@ -31,6 +38,7 @@ const Button = React.forwardRef(
     return (
       <button
         ref={ref}
+        type={type}
         className={`${styles.button} ${className}`}
         style={buttonStyles}
         {...props}
