@@ -22,7 +22,7 @@ export const useFetchAllEvents = (calendars = []) => {
       queryKey: ['events', calendar.id],
       queryFn: () => getEvents(calendar.id),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,
-      // refetchOnWindowFocus: false,
+      refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
     })),
   });
 
