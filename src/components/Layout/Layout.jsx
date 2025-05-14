@@ -25,8 +25,6 @@ function Layout() {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 
-  //console.log(allCalendars);
-
   return (
     <div className={styles.layout}>
       <SideNav calendars={allCalendars} />

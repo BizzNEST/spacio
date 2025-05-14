@@ -12,17 +12,15 @@ import StatusTag from '../StatusTag/StatusTag';
 import styles from './SideNav.module.css';
 import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import { format } from 'date-fns';
+import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
 
 function SideNav({ calendars }) {
   const { data: availabilities, isLoading: isLoadingCalendars } =
     useGetAvailability(calendars);
-  //console.log('SideNav avail:', availabilities);
 
   const availableNow = availabilities.filter(
     (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
   );
-
-  //console.log('NOW:', availableNow);
 
   return (
     <nav className={styles.sidenav}>
@@ -48,27 +46,7 @@ function SideNav({ calendars }) {
         </a>
       </div>
 
-      <div className={styles.roomsAvailable}>
-        {availableNow.map((calendar) => (
-          <Card
-            key={calendar.calendarId}
-            title={calendar.summary}
-            StatusTag={
-              <StatusTag
-                label={'tag'}
-                color={'success'}
-                tagFormat={styles.statusTag}
-              >
-                <FontAwesomeIcon icon={faClock} className={styles.statusIcon} />
-                Now
-              </StatusTag>
-            }
-          >
-            {/* <p>Child 1</p>
-          <p>Child 2</p> */}
-          </Card>
-        ))}
-      </div>
+      <AvailabilityCards calendarList={availableNow} />
 
       <Modal>
         <Modal.Trigger asChild>

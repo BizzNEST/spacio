@@ -14,17 +14,13 @@ const isResourceCalendar = (calendar) => {
 export const useGetAvailability = (calendars = []) => {
   const { isUserLoggedIn, isGapiReady } = useAuth();
 
-  //console.log('calendars:', calendars, 'type:', typeof calendars);
-
   // Filter to only include resource calendars
   const resourceCalendars = calendars.filter(isResourceCalendar);
-
-  //console.log('RESOURCE CAL: ', resourceCalendars);
 
   const isBusy = useQueries({
     queries: resourceCalendars.map((calendar) => ({
       queryKey: ['available', calendar.id],
-      queryFn: () => getAvailability(calendar.id, calendar.summary),
+      queryFn: () => getAvailability(calendar),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,
       // refetchOnWindowFocus: false,
     })),
