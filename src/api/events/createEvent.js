@@ -1,8 +1,6 @@
 import { gapi } from 'gapi-script';
-import { addMinutes } from 'date-fns';
 
-const createEvents = async (formData) => {
-  console.log('In Here');
+const createEvent = async (formData) => {
   try {
     const response = await gapi.client.calendar.events.insert({
       calendarId: 'primary',
@@ -16,4 +14,4 @@ const createEvents = async (formData) => {
   }
 };
 
-export default createEvents;
+export default createEvent;
