@@ -1,17 +1,13 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBorderAll,
-  faRoad,
-  faRobot,
-} from '@fortawesome/free-solid-svg-icons';
+import { faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-
+import NavLink from '../NavLink/NavLink';
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
-
 import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
 
@@ -30,17 +26,23 @@ function SideNav({ calendars }) {
           />
           <p>Digital NEST</p>
         </div>
-
-        <input
-          className={styles.sideSearch}
-          type="text"
-          placeholder="Jump To.."
-        ></input>
-
-        <a className={styles.sideTabs} href="#section">
-          <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
-          Meeting Rooms
-        </a>
+        <NavLink
+          links={[
+            {
+              path: '/home',
+              label: 'Meeting Rooms',
+              className: styles.meetingRooms,
+              icon: <FontAwesomeIcon icon={faCalendar} />,
+            },
+            // {To Do: Uncomment once Floor Plan is implemented}
+            // {
+            //   path: '/floor-map',
+            //   label: 'Floor Map',
+            //   className: styles.floorMap,
+            //   icon: <FontAwesomeIcon icon={faBuilding} />,
+            // },
+          ]}
+        />
       </div>
 
       <Card
