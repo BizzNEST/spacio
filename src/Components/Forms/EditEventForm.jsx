@@ -48,14 +48,12 @@ const EditEventForm = ({
     }
   };
 
-  const selectedRoomTitle =
-    resources.find((room) => room.id === selectedEvent.resourceId)?.title ?? '';
-
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.inputContainer}>
-        <label>Event Name</label>
+        <label htmlFor="name">Event Name</label>
         <input
+          id="name"
           className={isEditing ? ' ' : styles.disabled}
           type="text"
           disabled={!isEditing}
@@ -148,9 +146,6 @@ const EditEventForm = ({
               ...selectedEvent,
               resourceId: e.target.value,
             });
-            if (selectedRoom) {
-              setSelectedResource(selectedRoom.title);
-            }
           }}
         >
           <option value="" disabled>

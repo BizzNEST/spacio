@@ -27,7 +27,7 @@ function Layout() {
 
   return (
     <div className={styles.layout}>
-      <SideNav />
+      <SideNav calendars={allCalendars} />
       <Dashboard>
         <Header />
         <CalendarDashboard events={events} calendars={allCalendars} />

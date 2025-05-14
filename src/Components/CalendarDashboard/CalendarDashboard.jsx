@@ -230,7 +230,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
                     </select>
                   </div>
                 </>
-              )}
+              )},
               <button onClick={handleClose} style={{ marginTop: '1rem' }}>
                 Save Event
               </button>
