@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   padding: 16px 8px 12px;
-  border-bottom: 1px solid #E4E4E7;
 }
 
 .navigationContainer {
@@ -13,7 +12,7 @@
 }
 
 .navigationContainer p {
-  color: #76767A;
+  color: #76767a;
   font-size: 0.9rem;
 }
 
@@ -26,12 +25,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FEFEFE;
-  border: 1px solid #D5D7DA;
+  background-color: #fefefe;
+  border: 1px solid #d5d7da;
   color: #545455;
   cursor: pointer;
   border-radius: 4px;
-  font-size: .8rem;
+  font-size: 0.8rem;
   padding: 4px 8px;
   min-width: 60px;
   min-height: 35px;
@@ -60,3 +59,4 @@
     gap: 8px;
   }
 }
+

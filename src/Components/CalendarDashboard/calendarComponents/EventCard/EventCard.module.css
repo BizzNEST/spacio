@@ -1,16 +1,65 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  color: #616161;
-  background-color: lightblue;
+  gap: 5px;
+  height: 100%;
+  border-radius: 4px;
+  padding: 4px 0.5rem;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .eventTitle {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   font-weight: 600;
 }
 
 .eventTime {
   font-size: 0.6rem;
+}
+
+.attendees {
+  display: flex;
+  gap: 4px;
+  font-size: 0.6rem;
+}
+
+.statusTagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.statusTag {
+  font-size: 0.55rem;
+  border-radius: 8px;
+  padding: 5px 8px;
+}
+
+/* Default Styles from RBC */
+:global(.rbc-events-container) {
+  margin-right: 0 !important;
+}
+
+:global(.rbc-event) {
+  display: none;
+  padding: 0;
+  border: none;
+}
+
+:global(.rbc-event-label) {
+  display: none;
+}
+
+:global(.rbc-events-container) {
+  cursor: pointer;
+}
+
+:global(.rbc-day-slot) {
+  border: none;
+}
+
+:global(.rbc-day-slot, .rbc-event) {
+  border: none;
+  background-color: transparent;
 }

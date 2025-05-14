@@ -10,11 +10,12 @@ import {
 } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
 import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
 import ResourceHeader from '../ResourceHeader/ResourceHeader';
+import styles from './CalendarDashboard.module.css';
+import useFilterResourceByFloor from '../../hooks/useFilteredRooms';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -26,7 +27,7 @@ const localizer = dateFnsLocalizer({
 });
 
 const MeetingRoomCalendar = ({ events, calendars }) => {
-  const [selectedRoomTypes, setSelectedRoomTypes] = useState('all');
+  const [filterType, setFilterType] = useState('all');
   const [currentDate, setCurrentDate] = useState(
     format(new Date(), 'EEEE, MMMM dd, yyyy')
   );
@@ -35,7 +36,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   const [currentView, setCurrentView] = React.useState(Views.DAY);
 
   //TODO: Filtering is broken since we no longer returning room types
-  // const filteredRooms = useFilteredRooms(calendars, selectedRoomTypes);
+  const filterResources = useFilterResourceByFloor(calendars, filterType);
 
   const handleSelectSlot = (slotInfo) => {
     console.log('Selected slot:', slotInfo);
@@ -59,13 +60,13 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
           localizer={localizer}
           events={events}
           components={{
-            event: EventCard,
+            event: (props) => <EventCard {...props} calendars={calendars} />,
             resourceHeader: ResourceHeader,
             toolbar: (props) => (
               <CalendarToolbar
                 {...props}
-                selectedRoomTypes={selectedRoomTypes}
-                setSelectedRoomTypes={setSelectedRoomTypes}
+                filterType={filterType}
+                setFilterType={setFilterType}
                 currentDate={currentDate}
                 setCurrentDate={setCurrentDate}
                 currentView={currentView}
@@ -75,14 +76,14 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
           }}
           defaultView={Views.DAY}
           views={[Views.DAY, Views.WORK_WEEK]}
-          resources={calendars}
+          resources={filterResources}
           resourceIdAccessor="id"
           resourceTitleAccessor="title"
           // resourceHeaderAccessor={ResourceHeader}
-          step={60}
+          step={30}
           timeslots={1}
           min={new Date(new Date().setHours(9, 0, 0))}
-          max={new Date(new Date().setHours(18, 0, 0))}
+          max={new Date(new Date().setHours(19, 0, 0))}
           formats={formats}
           showMultiDayTimes={true}
           toolbar={true}
