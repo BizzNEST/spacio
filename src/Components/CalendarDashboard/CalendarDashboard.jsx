@@ -14,7 +14,7 @@ import styles from './CalendarDashboard.module.css'; // Using CSS modules
 import Modal from '../Modal/Modal';
 import EventCard from './calendarComponents/EventCard/EventCard';
 import CalendarToolbar from '../CalendarToolbar/CalendarToolbar';
-import useFilteredRooms from '../../hooks/useFilteredRooms';
+import ResourceHeader from '../ResourceHeader/ResourceHeader';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -25,32 +25,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-//TODO: This is still test data, we need to get this from Google Calendar API
-// Room resources with additional metadata
-const rooms = [
-  {
-    id: 'Phone Booth 1',
-    title: 'Phone Booth 1',
-    type: 'phone',
-    capacity: 1,
-  },
-  {
-    id: 'Phone Booth 2',
-    title: 'Phone Booth 2',
-    type: 'phone',
-    capacity: 1,
-  },
-  { id: 'TONY', title: 'Tony', type: 'conference', capacity: 8 },
-  { id: 'CPU', title: 'CPU', type: 'conference', capacity: 11 },
-  {
-    id: 'Ideation',
-    title: 'Ideation',
-    type: 'conference',
-    capacity: 12,
-  },
-];
-
-const MeetingRoomCalendar = ({ events }) => {
+const MeetingRoomCalendar = ({ events, calendars }) => {
   const [selectedRoomTypes, setSelectedRoomTypes] = useState('all');
   const [currentDate, setCurrentDate] = useState(
     format(new Date(), 'EEEE, MMMM dd, yyyy')
@@ -59,7 +34,8 @@ const MeetingRoomCalendar = ({ events }) => {
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [currentView, setCurrentView] = React.useState(Views.DAY);
 
-  const filteredRooms = useFilteredRooms(rooms, selectedRoomTypes);
+  //TODO: Filtering is broken since we no longer returning room types
+  // const filteredRooms = useFilteredRooms(calendars, selectedRoomTypes);
 
   const handleSelectSlot = (slotInfo) => {
     console.log('Selected slot:', slotInfo);
@@ -76,7 +52,6 @@ const MeetingRoomCalendar = ({ events }) => {
   const formats = {
     timeGutterFormat: (date) => format(date, 'h:mma'),
   };
-
   return (
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarContainer}>
@@ -85,8 +60,7 @@ const MeetingRoomCalendar = ({ events }) => {
           events={events}
           components={{
             event: EventCard,
-            // TODO: Component for ResourceHeader (Needs a Redesign)
-            // resourceHeader: ResourceHeader,
+            resourceHeader: ResourceHeader,
             toolbar: (props) => (
               <CalendarToolbar
                 {...props}
@@ -101,7 +75,7 @@ const MeetingRoomCalendar = ({ events }) => {
           }}
           defaultView={Views.DAY}
           views={[Views.DAY, Views.WORK_WEEK]}
-          resources={filteredRooms}
+          resources={calendars}
           resourceIdAccessor="id"
           resourceTitleAccessor="title"
           // resourceHeaderAccessor={ResourceHeader}
@@ -223,7 +197,7 @@ const MeetingRoomCalendar = ({ events }) => {
                       <option value="" disabled>
                         Select a room
                       </option>
-                      {rooms.map((room) => (
+                      {calendars.map((room) => (
                         <option key={room.id} value={room.id}>
                           {room.title}
                         </option>

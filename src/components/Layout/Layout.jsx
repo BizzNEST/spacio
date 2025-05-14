@@ -32,7 +32,7 @@ function Layout() {
       <SideNav calendars={allCalendars} />
       <Dashboard>
         <Header />
-        <CalendarDashboard events={events} />
+        <CalendarDashboard events={events} calendars={allCalendars} />
       </Dashboard>
     </div>
   );

@@ -1,0 +1,30 @@
+.resourceHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 0;
+  background: white;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+.resourceTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #3F3F45;
+}
+
+.resourceCapacity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: #AEAEB3;
+}
+
+.resourceCapacity i {
+  font-size: 0.625rem;
+  opacity: 0.7;
+}
