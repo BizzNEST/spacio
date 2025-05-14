@@ -10,7 +10,6 @@ const Modal = ({ children, open, onOpenChange }) => {
     </Dialog.Root>
   );
 };
-
 const ModalContent = ({ title, subtitle, children }) => {
   return (
     <Dialog.Portal>

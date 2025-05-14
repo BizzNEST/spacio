@@ -1,0 +1,11 @@
+/* Base styles shared by all buttons */
+.button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-height: 35px;
+}

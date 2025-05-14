@@ -1,79 +1,77 @@
-import React from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../api/firebase.config';
 import { gapi } from 'gapi-script';
 import PropTypes from 'prop-types';
+import { auth } from '../../api/firebase.config';
 
-const AuthContext = React.createContext();
+// Create the context
+const AuthContext = createContext();
+
+// Fetch environment variables
 const apiKey = import.meta.env.VITE_API_KEY;
 const clientId = import.meta.env.VITE_CLIENT_ID;
 const scope = import.meta.env.VITE_SCOPE;
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = React.useState(null);
-  const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false);
-  const [isGapiReady, setIsGapiReady] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isGapiReady, setIsGapiReady] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, initializeUser);
+  // Firebase Authenication
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        setIsUserLoggedIn(true);
+      } else {
+        setCurrentUser(null);
+        setIsUserLoggedIn(false);
+      }
+    });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
-  async function initializeGapi() {
-    try {
-      await new Promise((resolve) => gapi.load('client:auth2', resolve));
-      await gapi.client.init({
-        apiKey,
-        clientId,
-        discoveryDocs: [
-          'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
-        ],
-        scope,
-      });
-      setIsGapiReady(true);
-    } catch (error) {
-      console.error('Failed to initialize Google API:', error);
-      setIsGapiReady(false);
-    }
-  }
-
-  async function initializeUser(user) {
-    if (user) {
-      setCurrentUser({ ...user });
-      setIsUserLoggedIn(true);
-
+  // Initialize GAPI
+  useEffect(() => {
+    async function initializeGapi() {
       try {
-        await initializeGapi();
-        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-        if (!isSignedIn) {
-          await gapi.auth2.getAuthInstance().signIn();
-        }
-      } catch (error) {
-        console.error('Error during GAPI auth:', error);
-      }
-    } else {
-      setCurrentUser(null);
-      setIsUserLoggedIn(false);
-      setIsGapiReady(false);
-    }
-    setLoading(false);
-  }
+        await new Promise((resolve) => gapi.load('client:auth2', resolve));
+        await gapi.client.init({
+          apiKey,
+          clientId,
+          discoveryDocs: [
+            'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
+          ],
+          scope,
+        });
 
-  const value = {
-    currentUser,
-    isUserLoggedIn,
-    isGapiReady,
-    loading,
-  };
+        const token = localStorage.getItem('google_access_token');
+        if (token) {
+          gapi.client.setToken({ access_token: token });
+        }
+
+        setIsGapiReady(true);
+      } catch (error) {
+        console.error('Error initializing GAPI:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    initializeGapi();
+  }, []);
 
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider
+      value={{ currentUser, isUserLoggedIn, isGapiReady, loading }}
+    >
+      {children}
     </AuthContext.Provider>
   );
 }
+export default AuthContext;
 
 export function useAuth() {
   return React.useContext(AuthContext);

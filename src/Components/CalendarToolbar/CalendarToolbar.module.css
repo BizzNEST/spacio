@@ -1,0 +1,62 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 8px 12px;
+  border-bottom: 1px solid #E4E4E7;
+}
+
+.navigationContainer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.navigationContainer p {
+  color: #76767A;
+  font-size: 0.9rem;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.buttonContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FEFEFE;
+  border: 1px solid #D5D7DA;
+  color: #545455;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: .8rem;
+  padding: 4px 8px;
+  min-width: 60px;
+  min-height: 35px;
+}
+
+.filtersContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle {
+  min-height: 35px;
+  min-width: 70px;
+}
+
+@media (max-width: 769px) {
+  .toolbar {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .navigationContainer {
+    grid-template-rows: auto;
+    gap: 8px;
+  }
+}
