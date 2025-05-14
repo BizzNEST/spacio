@@ -6,7 +6,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from '../Modal/Modal';
 import { combineDateAndTime, roundUpToNext15 } from './helpers';
+<<<<<<< HEAD
 import useCreateEvent from '../../api/events/mutations';
+=======
+>>>>>>> development
 
 const CreateEventForm = ({ calendars, afterSave }) => {
   const roundedStart = roundUpToNext15(new Date());
@@ -70,6 +73,33 @@ const CreateEventForm = ({ calendars, afterSave }) => {
         />
       </div>
 
+      {/* Room Selection */}
+      <div className={styles.inputContainer}>
+        <label>Room</label>
+        <select
+          required
+          value={reservationData.resourceId ?? ''}
+          onChange={(e) => {
+            const selectedRoom = calendars.find(
+              (room) => room.id === e.target.value
+            );
+            setReservationData({
+              ...reservationData,
+              resourceId: e.target.value,
+            });
+          }}
+        >
+          <option value="" disabled>
+            Select a room
+          </option>
+          {calendars.map((room) => (
+            <option key={room.id} value={room.id}>
+              {room.title}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Date Selection */}
       <div className={styles.timeInputContainer}>
         <div className={styles.inputContainer}>
@@ -131,33 +161,6 @@ const CreateEventForm = ({ calendars, afterSave }) => {
             }}
           />
         </div>
-      </div>
-
-      {/* Room Selection */}
-      <div className={styles.inputContainer}>
-        <label>Room</label>
-        <select
-          required
-          value={reservationData.resourceId ?? ''}
-          onChange={(e) => {
-            const selectedRoom = calendars.find(
-              (room) => room.id === e.target.value
-            );
-            setReservationData({
-              ...reservationData,
-              resourceId: e.target.value,
-            });
-          }}
-        >
-          <option value="" disabled>
-            Select a room
-          </option>
-          {calendars.map((room) => (
-            <option key={room.id} value={room.id}>
-              {room.title}
-            </option>
-          ))}
-        </select>
       </div>
 
       <div className={styles.btnContainer}>

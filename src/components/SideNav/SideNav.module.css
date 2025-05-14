@@ -73,59 +73,6 @@
   gap: 0.2rem;
 }
 
-/* New Styles */
-.inputContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.inputWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-}
-
-.timeRangeContainer {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-}
-
-.timeRangeContainer .inputWrapper {
-  flex: 1;
-}
-
-.eventNameInput,
-.timeInput,
-.roomInput {
-  padding: 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.eventLabel,
-.timeLabel,
-.roomLabel {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-}
-
-.buttonContainer {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-
-.bookButton {
-  padding: 12px 40px;
-  font-size: 16px;
-}
 
 /* Styling for Mobile Devices */
 @media screen and (max-width: 768px) {
