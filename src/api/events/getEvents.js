@@ -14,12 +14,22 @@ const getEvents = async (calendarId = 'primary') => {
     });
 
     //Return an array of events objects with the values we want
-    const events = response.result.items.map((event) => ({
-      title: event.summary || '(No Title)',
-      start: new Date(event.start.dateTime || event.start.date),
-      end: new Date(event.end.dateTime || event.end.date),
-      resourceId: calendarId,
-    }));
+    const events = response.result.items.map((event) => {
+      const attendeeNames = event.attendees
+        ? event.attendees
+            .filter((a) => !a.resource)
+            .map((a) => a.displayName || (a.email?.split('@')[0] ?? 'Unknown'))
+        : [];
+
+      return {
+        id: event.id,
+        title: event.summary || '(No Title)',
+        start: new Date(event.start.dateTime || event.start.date),
+        end: new Date(event.end.dateTime || event.end.date),
+        attendees: attendeeNames,
+        resourceId: calendarId,
+      };
+    });
 
     return events;
   } catch (error) {

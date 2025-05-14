@@ -1,15 +1,19 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBorderAll } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-import styles from './SideNav.module.css';
 import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
+import NavLink from '../NavLink/NavLink';
+import styles from './SideNav.module.css';
+import CreateEventForm from '../Forms/CreateEventForm';
 
 function SideNav({ calendars }) {
+  const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
+    React.useState(false);
+
   const { data: availabilities } = useGetAvailability(calendars);
 
   const availableNow = availabilities.filter(
@@ -27,24 +31,33 @@ function SideNav({ calendars }) {
           />
           <p>Digital NEST</p>
         </div>
-
-        <input
-          className={styles.sideSearch}
-          type="text"
-          placeholder="Jump To.."
-        ></input>
-
-        <a className={styles.sideTabs} href="#section">
-          <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
-          Meeting Rooms
-        </a>
+        <NavLink
+          links={[
+            {
+              path: '/home',
+              label: 'Meeting Rooms',
+              className: styles.meetingRooms,
+              icon: <FontAwesomeIcon icon={faCalendar} />,
+            },
+            // {To Do: Uncomment once Floor Plan is implemented}
+            // {
+            //   path: '/floor-map',
+            //   label: 'Floor Map',
+            //   className: styles.floorMap,
+            //   icon: <FontAwesomeIcon icon={faBuilding} />,
+            // },
+          ]}
+        />
       </div>
 
       <AvailabilityCards header="Available Now" calendarList={availableNow} />
 
-      <Modal>
+      <Modal
+        open={isCreateEventModalOpen}
+        onOpenChange={setIsCreateEventModalOpen}
+      >
         <Modal.Trigger asChild>
-          <Button type="gradient" className={styles.bookButton}>
+          <Button variant="gradient" className={styles.bookButton}>
             <FontAwesomeIcon icon={faCalendarAlt} />
             Book a Room
           </Button>
@@ -54,33 +67,10 @@ function SideNav({ calendars }) {
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
         >
-          <div className={styles.inputContainer}>
-            <div className={styles.inputWrapper}>
-              <label className={styles.eventLable} htmlFor="eventName">
-                Event Name
-              </label>
-              <input
-                className={styles.eventNameInput}
-                type="text"
-                placeholder="Enter event name"
-              />
-            </div>
-
-            <div className={styles.dateTimeContainer}>
-              <div className={styles.inputWrapper}>
-                <label className={styles.dateLable} htmlFor="eventDate">
-                  Select Date
-                </label>
-                <input className={styles.dateInput} type="date" />
-              </div>
-              <div className={styles.inputWrapper}>
-                <label className={styles.timeLable} htmlFor="eventTime">
-                  Select Time
-                </label>
-                <input className={styles.timeInput} type="time" />
-              </div>
-            </div>
-          </div>
+          <CreateEventForm
+            calendars={calendars}
+            afterSave={() => setIsCreateEventModalOpen(false)}
+          />
         </Modal.Content>
       </Modal>
     </nav>

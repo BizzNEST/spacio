@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
-const useFilteredRooms = (rooms, selectedRoomType) => {
+const useFilterResourceByFloor = (resources, filterType) => {
   return useMemo(() => {
-    if (selectedRoomType === 'all') {
-      return rooms;
+    if (filterType === 'all') {
+      return resources;
     } else {
-      return rooms.filter((room) => selectedRoomType === room.type);
+      return resources.filter((resource) => filterType === resource.floor);
     }
-  }, [rooms, selectedRoomType]);
+  }, [resources, filterType]);
 };
 
-export default useFilteredRooms;
+export default useFilterResourceByFloor;

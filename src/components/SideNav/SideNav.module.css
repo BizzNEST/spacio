@@ -1,5 +1,5 @@
 .sidenav {
-  background-color: #dad9de;
+  background-color: #fafafa;
   display: grid;
   align-items: center;
   width: max-content;
@@ -36,6 +36,25 @@
   border-radius: 25%;
 }
 
+.meetingRooms {
+  display: flex;
+  gap: 1rem;
+  padding: 12px;
+  background-image: linear-gradient(to right, #3c80f6, #9232e9);
+  border-radius: 11px;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.floorMap {
+  color: black;
+  padding: 15px;
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
+}
 .sideSearch {
   border: none;
   border-radius: 5px;
