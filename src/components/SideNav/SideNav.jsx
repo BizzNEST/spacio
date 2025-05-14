@@ -1,21 +1,20 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBorderAll,
-  faRoad,
-  faRobot,
-} from '@fortawesome/free-solid-svg-icons';
-import { faCalendar, faBuilding } from '@fortawesome/free-regular-svg-icons';
+import { faRobot } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-
+import NavLink from '../NavLink/NavLink';
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 import styles from './SideNav.module.css';
-import NavLink from '../NavLink/NavLink';
+import CreateEventForm from '../Forms/CreateEventForm';
 
-function SideNav() {
+function SideNav({ calendars }) {
+  const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
+    React.useState(false);
+
   return (
     <nav className={styles.sidenav}>
       <div className={styles.topContainer}>
@@ -63,9 +62,12 @@ function SideNav() {
         <p>Child 2</p>
       </Card>
 
-      <Modal>
+      <Modal
+        open={isCreateEventModalOpen}
+        onOpenChange={setIsCreateEventModalOpen}
+      >
         <Modal.Trigger asChild>
-          <Button type="gradient" className={styles.bookButton}>
+          <Button variant="gradient" className={styles.bookButton}>
             <FontAwesomeIcon icon={faCalendarAlt} />
             Book a Room
           </Button>
@@ -75,33 +77,10 @@ function SideNav() {
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
         >
-          <div className={styles.inputContainer}>
-            <div className={styles.inputWrapper}>
-              <label className={styles.eventLable} htmlFor="eventName">
-                Event Name
-              </label>
-              <input
-                className={styles.eventNameInput}
-                type="text"
-                placeholder="Enter event name"
-              />
-            </div>
-
-            <div className={styles.dateTimeContainer}>
-              <div className={styles.inputWrapper}>
-                <label className={styles.dateLable} htmlFor="eventDate">
-                  Select Date
-                </label>
-                <input className={styles.dateInput} type="date" />
-              </div>
-              <div className={styles.inputWrapper}>
-                <label className={styles.timeLable} htmlFor="eventTime">
-                  Select Time
-                </label>
-                <input className={styles.timeInput} type="time" />
-              </div>
-            </div>
-          </div>
+          <CreateEventForm
+            calendars={calendars}
+            afterSave={() => setIsCreateEventModalOpen(false)}
+          />
         </Modal.Content>
       </Modal>
     </nav>

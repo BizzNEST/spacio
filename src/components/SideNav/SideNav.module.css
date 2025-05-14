@@ -1,5 +1,5 @@
 .sidenav {
-  background-color: #dad9de;
+  background-color: #fafafa;
   display: grid;
   align-items: center;
   width: max-content;
@@ -86,13 +86,12 @@
   align-self: end;
 }
 
-
-
 .statusTag {
   font-size: 10px;
   padding: 2px 8px;
   gap: 0.2rem;
 }
+
 
 /* Styling for Mobile Devices */
 @media screen and (max-width: 768px) {

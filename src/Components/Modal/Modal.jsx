@@ -15,10 +15,12 @@ const ModalContent = ({ title, subtitle, children }) => {
     <Dialog.Portal>
       <Dialog.Overlay className={styles.overlayStyles}></Dialog.Overlay>
       <Dialog.Content className={styles.content}>
-        <Dialog.Title className={styles.title}>{title}</Dialog.Title>
-        <Dialog.Description className={styles.description}>
-          {subtitle}
-        </Dialog.Description>
+        <div className={styles.modalHeader}>
+          <Dialog.Title className={styles.title}>{title}</Dialog.Title>
+          <Dialog.Description className={styles.description}>
+            {subtitle}
+          </Dialog.Description>
+        </div>
         {children}
         <Dialog.Close className={styles.closeIcon}>
           <Cross1Icon></Cross1Icon>
