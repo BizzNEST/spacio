@@ -5,18 +5,12 @@ import { faClock } from '@fortawesome/free-regular-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-
-import Card from '../Card/Card';
-import StatusTag from '../StatusTag/StatusTag';
-
 import styles from './SideNav.module.css';
 import { useGetAvailability } from '../../api/availability/useGetAvailability';
-import { format } from 'date-fns';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
 
 function SideNav({ calendars }) {
-  const { data: availabilities, isLoading: isLoadingCalendars } =
-    useGetAvailability(calendars);
+  const { data: availabilities } = useGetAvailability(calendars);
 
   const availableNow = availabilities.filter(
     (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
@@ -46,7 +40,7 @@ function SideNav({ calendars }) {
         </a>
       </div>
 
-      <AvailabilityCards calendarList={availableNow} />
+      <AvailabilityCards header="Available Now" calendarList={availableNow} />
 
       <Modal>
         <Modal.Trigger asChild>
