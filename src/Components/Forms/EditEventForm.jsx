@@ -159,49 +159,47 @@ const EditEventForm = ({
         </select>
       </div>
 
-      {selectedEvent.isOrganizer && (
-        <div className={styles.btnContainer}>
-          <div>
-            {isEditing && (
-              <Button type="submit" variant="gradient">
-                Save Event
-              </Button>
-            )}
-            <Button type="button" onClick={toggleEdit} variant="outline">
-              {isEditing ? 'Cancel' : 'Edit'}
+      <div className={styles.btnContainer}>
+        <div>
+          {isEditing && (
+            <Button type="submit" variant="gradient">
+              Save Event
             </Button>
-          </div>
-          <div>
+          )}
+          <Button type="button" onClick={toggleEdit} variant="outline">
+            {isEditing ? 'Cancel' : 'Edit'}
+          </Button>
+        </div>
+        <div>
+          <Button
+            type="button"
+            variant="danger"
+            onClick={() => {
+              if (confirmDelete) {
+                handleDelete();
+              } else {
+                setConfirmDelete(true);
+              }
+            }}
+          >
+            {confirmDelete ? (
+              'Confirm Delete'
+            ) : (
+              <Trash2 height={20} width={20} />
+            )}
+          </Button>
+
+          {confirmDelete && (
             <Button
               type="button"
-              variant="danger"
-              onClick={() => {
-                if (confirmDelete) {
-                  handleDelete();
-                } else {
-                  setConfirmDelete(true);
-                }
-              }}
+              variant="outline"
+              onClick={() => setConfirmDelete(false)}
             >
-              {confirmDelete ? (
-                'Confirm Delete'
-              ) : (
-                <Trash2 height={20} width={20} />
-              )}
+              Cancel
             </Button>
-
-            {confirmDelete && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setConfirmDelete(false)}
-              >
-                Cancel
-              </Button>
-            )}
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </form>
   );
 };
