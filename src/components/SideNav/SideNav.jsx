@@ -1,19 +1,24 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot } from '@fortawesome/free-solid-svg-icons';
-import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
+import { useGetAvailability } from '../../api/availability/useGetAvailability';
+import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
-import Card from '../Card/Card';
-import StatusTag from '../StatusTag/StatusTag';
 import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
 
 function SideNav({ calendars }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
+
+  const { data: availabilities } = useGetAvailability(calendars);
+
+  const availableNow = availabilities.filter(
+    (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
+  );
 
   return (
     <nav className={styles.sidenav}>
@@ -45,22 +50,7 @@ function SideNav({ calendars }) {
         />
       </div>
 
-      <Card
-        title={'Title'}
-        StatusTag={
-          <StatusTag
-            label={'tag'}
-            color={'success'}
-            tagFormat={styles.statusTag}
-          >
-            <FontAwesomeIcon icon={faRobot} className={styles.statusIcon} />
-            Test
-          </StatusTag>
-        }
-      >
-        <p>Child 1</p>
-        <p>Child 2</p>
-      </Card>
+      <AvailabilityCards header="Available Now" calendarList={availableNow} />
 
       <Modal
         open={isCreateEventModalOpen}
