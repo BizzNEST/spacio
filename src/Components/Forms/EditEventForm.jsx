@@ -3,6 +3,8 @@ import { format, setHours, setMinutes } from 'date-fns';
 import Button from '../Button/Button';
 import { Trash2 } from 'react-feather';
 import styles from './form.module.css';
+import useDeleteEvent from '../../api/events/useDeleteEvents';
+
 
 const EditEventForm = ({
   selectedEvent,
@@ -13,6 +15,7 @@ const EditEventForm = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [draftEvent, setDraftEvent] = React.useState(selectedEvent);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
+  const deleteEventMutation = useDeleteEvent();
 
   React.useEffect(() => {
     if (!isEditing) {
@@ -30,8 +33,8 @@ const EditEventForm = ({
   };
 
   const handleDelete = () => {
-    // Perform the actual delete logic here
-    console.log('Event deleted:', selectedEvent);
+    const eventId = selectedEvent.id;
+    deleteEventMutation.mutate(eventId)
     setConfirmDelete(false);
     afterSave();
   };
@@ -48,14 +51,12 @@ const EditEventForm = ({
     }
   };
 
-  const selectedRoomTitle =
-    resources.find((room) => room.id === selectedEvent.resourceId)?.title ?? '';
-
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.inputContainer}>
-        <label>Event Name</label>
+        <label htmlFor="name">Event Name</label>
         <input
+          id="name"
           className={isEditing ? ' ' : styles.disabled}
           type="text"
           disabled={!isEditing}
@@ -148,9 +149,6 @@ const EditEventForm = ({
               ...selectedEvent,
               resourceId: e.target.value,
             });
-            if (selectedRoom) {
-              setSelectedResource(selectedRoom.title);
-            }
           }}
         >
           <option value="" disabled>
@@ -164,49 +162,47 @@ const EditEventForm = ({
         </select>
       </div>
 
-      {selectedEvent.isOrganizer && (
-        <div className={styles.btnContainer}>
-          <div>
-            {isEditing && (
-              <Button type="submit" variant="gradient">
-                Save Event
-              </Button>
-            )}
-            <Button type="button" onClick={toggleEdit} variant="outline">
-              {isEditing ? 'Cancel' : 'Edit'}
+      <div className={styles.btnContainer}>
+        <div>
+          {isEditing && (
+            <Button type="submit" variant="gradient">
+              Save Event
             </Button>
-          </div>
-          <div>
+          )}
+          <Button type="button" onClick={toggleEdit} variant="outline">
+            {isEditing ? 'Cancel' : 'Edit'}
+          </Button>
+        </div>
+        <div>
+          <Button
+            type="button"
+            variant="danger"
+            onClick={() => {
+              if (confirmDelete) {
+                handleDelete();
+              } else {
+                setConfirmDelete(true);
+              }
+            }}
+          >
+            {confirmDelete ? (
+              'Confirm Delete'
+            ) : (
+              <Trash2 height={20} width={20} />
+            )}
+          </Button>
+
+          {confirmDelete && (
             <Button
               type="button"
-              variant="danger"
-              onClick={() => {
-                if (confirmDelete) {
-                  handleDelete();
-                } else {
-                  setConfirmDelete(true);
-                }
-              }}
+              variant="outline"
+              onClick={() => setConfirmDelete(false)}
             >
-              {confirmDelete ? (
-                'Confirm Delete'
-              ) : (
-                <Trash2 height={20} width={20} />
-              )}
+              Cancel
             </Button>
-
-            {confirmDelete && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setConfirmDelete(false)}
-              >
-                Cancel
-              </Button>
-            )}
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </form>
   );
 };

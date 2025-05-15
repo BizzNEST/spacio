@@ -21,10 +21,6 @@ const getEvents = async (calendarId = 'primary') => {
             .map((a) => a.displayName || (a.email?.split('@')[0] ?? 'Unknown'))
         : [];
 
-      const user = gapi.auth2.getAuthInstance().currentUser.get();
-      const userEmail = user.getBasicProfile().getEmail();
-      const isOrganizer = event.organizer?.email === userEmail;
-
       return {
         id: event.id,
         title: event.summary || '(No Title)',
@@ -32,7 +28,6 @@ const getEvents = async (calendarId = 'primary') => {
         end: new Date(event.end.dateTime || event.end.date),
         attendees: attendeeNames,
         resourceId: calendarId,
-        isOrganizer: isOrganizer,
       };
     });
 

@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
-import getEvents from './getEvents';
 import { useAuth } from '../../contexts/authContext';
 import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
+import getAvailability from './getAvailability';
 
 const isResourceCalendar = (calendar) => {
   return (
@@ -11,35 +11,35 @@ const isResourceCalendar = (calendar) => {
   );
 };
 
-export const useFetchAllEvents = (calendars = []) => {
+export const useGetAvailability = (calendars = []) => {
   const { isUserLoggedIn, isGapiReady } = useAuth();
 
   // Filter to only include resource calendars
   const resourceCalendars = calendars.filter(isResourceCalendar);
 
-  const queryResults = useQueries({
+  const isBusy = useQueries({
     queries: resourceCalendars.map((calendar) => ({
-      queryKey: ['events', calendar.id],
-      queryFn: () => getEvents(calendar.id),
+      queryKey: ['available', calendar.id],
+      queryFn: () => getAvailability(calendar),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,
-      refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
+      // refetchOnWindowFocus: false,
     })),
   });
 
   // Process the results to create a flat array of all events
-  const allEvents = queryResults
+  const allAvailabilites = isBusy
     .filter((result) => result.data) // Filter out any undefined results
     .flatMap((result) => result.data); // Flatten the events from all calendars
 
   // Check if any of the queries are still loading
-  const isLoading = queryResults.some((result) => result.isLoading);
+  const isLoading = isBusy.some((result) => result.isLoading);
 
   // Check if any of the queries have errors
-  const isError = queryResults.some((result) => result.isError);
-  const error = queryResults.find((result) => result.error)?.error;
+  const isError = isBusy.some((result) => result.isError);
+  const error = isBusy.find((result) => result.error)?.error;
 
   return {
-    data: allEvents,
+    data: allAvailabilites,
     isLoading,
     isError,
     error,

@@ -1,35 +1,25 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBorderAll,
-  faRoad,
-  faRobot,
-} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-import Card from '../Card/Card';
-import StatusTag from '../StatusTag/StatusTag';
-import DatePicker from 'react-datepicker';
+import CreateEventForm from '../Forms/CreateEventForm';
+import { useGetAvailability } from '../../api/availability/useGetAvailability';
+import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
+import NavLink from '../NavLink/NavLink';
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './SideNav.module.css';
-import { setHours, setMinutes } from 'date-fns';
 
 function SideNav({calendars}) {
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
-  const [selectedRoom, setSelectedRoom] = React.useState('');
-  //make it so the typing wont update if the end time is lower than the start time 
-  const handleEndTimeChange = (date) => {
-    if (date < startDate) {
-      return;
-    }
-    setEndDate(date);
-  };
-  //Room selection handler 
-  const handleRoomSelect = (e) => {
-    setSelectedRoom(e.target.value);
-  };
+  const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
+    React.useState(false);
+  const { data: availabilities } = useGetAvailability(calendars);
+
+  const availableNow = availabilities.filter(
+    (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
+  );
+
   return (
     <nav className={styles.sidenav}>
       <div className={styles.topContainer}>
@@ -41,37 +31,31 @@ function SideNav({calendars}) {
           />
           <p>Digital NEST</p>
         </div>
-
-        <input
-          className={styles.sideSearch}
-          type="text"
-          placeholder="Jump To.."
-        ></input>
-
-        <a className={styles.sideTabs} href="#section">
-          <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
-          Meeting Rooms
-        </a>
+        <NavLink
+          links={[
+            {
+              path: '/home',
+              label: 'Meeting Rooms',
+              className: styles.meetingRooms,
+              icon: <FontAwesomeIcon icon={faCalendar} />,
+            },
+            // {To Do: Uncomment once Floor Plan is implemented}
+            // {
+            //   path: '/floor-map',
+            //   label: 'Floor Map',
+            //   className: styles.floorMap,
+            //   icon: <FontAwesomeIcon icon={faBuilding} />,
+            // },
+          ]}
+        />
       </div>
 
-      <Card
-        title={'Title'}
-        StatusTag={
-          <StatusTag
-            label={'tag'}
-            color={'success'}
-            tagFormat={styles.statusTag}
-          >
-            <FontAwesomeIcon icon={faRobot} className={styles.statusIcon} />
-            Test
-          </StatusTag>
-        }
-      >
-        <p>Child 1</p>
-        <p>Child 2</p>
-      </Card>
+      <AvailabilityCards header="Available Now" calendarList={availableNow} />
 
-      <Modal>
+      <Modal
+        open={isCreateEventModalOpen}
+        onOpenChange={setIsCreateEventModalOpen}
+      >
         <Modal.Trigger asChild>
           <Button variant="gradient" className={styles.bookButton}>
             <FontAwesomeIcon icon={faCalendarAlt} />
@@ -83,95 +67,10 @@ function SideNav({calendars}) {
           title={'Book a Room'}
           subtitle={'Select your prefered time and date.'}
         >
-          <div className={styles.inputContainer}>
-            <div className={styles.inputWrapper}>
-              <label className={styles.eventLabel} htmlFor="eventName">
-                Title
-              </label>
-              <input
-                className={styles.eventNameInput}
-                type="text"
-                placeholder="Leetcode Session"
-              />
-            </div>
-
-            <div className={styles.timeRangeContainer}>
-              {/* Logic for Date */}
-              <div className={styles.inputWrapper}>
-                <label className={styles.timeLabel} htmlFor="Date">
-                  Date
-                </label>
-                <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                dateFormat="MMMM d, yyyy"  
-                className={styles.timeInput}
-                shouldCloseOnSelect={true}
-
-                />
-              </div>
-              {/* Logic for Start Time */}
-              <div className={styles.inputWrapper}>
-                <label className={styles.timeLabel} htmlFor="StartTime">
-                  Start Time
-                </label>
-                <DatePicker
-               selected={startDate}
-               onChange={(date) => setStartDate(date)}
-               showTimeSelect
-               showTimeSelectOnly
-               timeIntervals={15}
-               timeCaption="Time"
-              dateFormat="h:mm aa"
-                className={styles.timeInput}
-                />
-              </div>
-              {/* Logic for End Time */}
-              <div className={styles.inputWrapper}>
-                  <label className={styles.timeLabel}>End Time</label>
-                  <DatePicker
-                selected={endDate}
-                onChange={handleEndTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={15}
-                timeCaption="Time"
-                dateFormat="h:mm aa"
-                className={styles.timeInput}
-                minTime={startDate}   
-                maxTime={setHours(setMinutes(new Date(), 45), 23)}
-                minDate={startDate}
-              />
-              </div>
-            </div>
-            {/* Logic for Room Selection */}
-            <div className={styles.inputWrapper}>
-              <label className={styles.roomLabel} htmlFor="roomSelect">
-                Select Room
-              </label>
-              <select 
-              id="roomSelect"
-             className={styles.roomInput}
-             value={selectedRoom}
-             onChange={handleRoomSelect}
-             >
-            <option value="" disabled>Select a room</option>
-            {calendars.map((room) => (
-            <option key={room.id} value={room.id}>
-            {room.title}
-            </option>
-            ))}
-            </select>
-            </div>
-          </div>
-          <div className={styles.buttonContainer}>
-            <Button
-            type="gradient"
-            className={styles.bookButton}
-            >
-              Book
-            </Button>
-          </div>
+          <CreateEventForm
+            calendars={calendars}
+            afterSave={() => setIsCreateEventModalOpen(false)}
+          />
         </Modal.Content>
       </Modal>
     </nav>

@@ -36,6 +36,25 @@
   border-radius: 25%;
 }
 
+.meetingRooms {
+  display: flex;
+  gap: 1rem;
+  padding: 12px;
+  background-image: linear-gradient(to right, #3c80f6, #9232e9);
+  border-radius: 11px;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.floorMap {
+  color: black;
+  padding: 15px;
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
+}
 .sideSearch {
   border: none;
   border-radius: 5px;
@@ -65,72 +84,6 @@
 
 .bookButton {
   align-self: end;
-}
-
-.statusTag {
-  font-size: 10px;
-  padding: 2px 8px;
-  gap: 0.2rem;
-}
-
-/* New Styles */
-.inputContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-}
-
-.inputWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-}
-
-.timeRangeContainer {
- display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  width: 100%;
-  margin-bottom: 24px;
-}
-
-
-.timeRangeContainer .inputWrapper {
-  flex: 1;
-  max-width: 100%;
-}
-
-.eventNameInput,
-.timeInput,
-.roomInput {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #E4E4E7;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #374151;
-  box-sizing: border-box;
-}
-
-.eventLabel,
-.timeLabel,
-.roomLabel {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-}
-
-.buttonContainer {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-
-.bookButton {
-  padding: 12px 40px;
-  font-size: 16px;
 }
 
 /* Styling for Mobile Devices */
