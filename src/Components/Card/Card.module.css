@@ -4,7 +4,13 @@
   border-radius: 8px;
   background-color: white;
   width: 200px;
-  padding: 0.4rem 1rem;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: rgb(237, 237, 237);
 }
 
 .cardHeader {
@@ -15,7 +21,7 @@
 }
 
 .cardTitle {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .cardContent {

@@ -10,6 +10,15 @@
   scrollbar-color: grey transparent;
 }
 
+.buttonFormat {
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
 .statusTag {
   font-size: 10px;
   gap: 0.2rem;
