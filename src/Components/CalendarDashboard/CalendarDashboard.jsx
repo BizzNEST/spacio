@@ -78,6 +78,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
                 setCurrentDate={setCurrentDate}
                 currentView={currentView}
                 setCurrentView={setCurrentView}
+                calendars={calendars} 
               />
             ),
           }}
