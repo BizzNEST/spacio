@@ -3,6 +3,8 @@ import { format, setHours, setMinutes } from 'date-fns';
 import Button from '../Button/Button';
 import { Trash2 } from 'react-feather';
 import styles from './form.module.css';
+import useDeleteEvent from '../../api/events/useDeleteEvents';
+
 
 const EditEventForm = ({
   selectedEvent,
@@ -13,6 +15,7 @@ const EditEventForm = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [draftEvent, setDraftEvent] = React.useState(selectedEvent);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
+  const deleteEventMutation = useDeleteEvent();
 
   React.useEffect(() => {
     if (!isEditing) {
@@ -30,8 +33,8 @@ const EditEventForm = ({
   };
 
   const handleDelete = () => {
-    // Perform the actual delete logic here
-    console.log('Event deleted:', selectedEvent);
+    const eventId = selectedEvent.id;
+    deleteEventMutation.mutate(eventId)
     setConfirmDelete(false);
     afterSave();
   };

@@ -3,17 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
+import CreateEventForm from '../Forms/CreateEventForm';
 import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
+import "react-datepicker/dist/react-datepicker.css";
 import styles from './SideNav.module.css';
-import CreateEventForm from '../Forms/CreateEventForm';
 
-function SideNav({ calendars }) {
+function SideNav({calendars}) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
-
   const { data: availabilities } = useGetAvailability(calendars);
 
   const availableNow = availabilities.filter(

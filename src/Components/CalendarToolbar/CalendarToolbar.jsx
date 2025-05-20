@@ -22,8 +22,18 @@ const CalendarToolbar = ({
   setCurrentView,
   currentDate,
   setCurrentDate,
+  calendars,
 }) => {
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
+  
+    // Check for multiple floors
+  const seenFloors = new Set();
+  (calendars || []).forEach(calendar => {
+    if (calendar.floor) {
+      seenFloors.add(calendar.floor);
+    }
+  });
+  const hasMultipleFloors = seenFloors.size > 1;
 
   const handleFilter = (type) => {
     setFilterType(type ? type : 'all');
@@ -80,6 +90,8 @@ const CalendarToolbar = ({
       </div>
 
       <div className={styles.filtersContainer}>
+        
+        {hasMultipleFloors  && (
         <ButtonGroup
           type="single"
           value={filterType}
@@ -96,7 +108,7 @@ const CalendarToolbar = ({
           <ButtonGroup.Item value={'2'} className={styles.toggle} asChild>
             <button>2nd Floor</button>
           </ButtonGroup.Item>
-        </ButtonGroup>
+        </ButtonGroup> )}
 
         <ButtonGroup
           type="single"
