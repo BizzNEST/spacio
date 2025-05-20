@@ -48,8 +48,8 @@ const AvailabilityCards = ({ header, calendarList }) => {
                   </StatusTag>
                 }
               >
-                <p>{calendar.floor}</p>
-                <p>{calendar.capacity}</p>
+                <p>Floor: {calendar.floor}</p>
+                <p>Capacity: {calendar.capacity}</p>
               </Card>
             </Modal.Trigger>
           ))}
