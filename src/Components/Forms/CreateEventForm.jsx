@@ -26,10 +26,6 @@ const CreateEventForm = ({
 
   const eventMutation = useCreateEvent();
 
-  const selectedRoom = calendars.find(
-    (room) => room.calendarId === reservationData.resourceId
-  );
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const startDateTime = combineDateAndTime(
