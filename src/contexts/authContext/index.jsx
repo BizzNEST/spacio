@@ -1,8 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
 import { gapi } from 'gapi-script';
 import PropTypes from 'prop-types';
-import { auth } from '../../api/firebase.config';
+import { useNavigate } from 'react-router-dom';
 
 // Create the context
 const AuthContext = createContext();
@@ -13,25 +12,21 @@ const clientId = import.meta.env.VITE_CLIENT_ID;
 const scope = import.meta.env.VITE_SCOPE;
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isGapiReady, setIsGapiReady] = useState(false);
+  const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Firebase Authenication
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-        setIsUserLoggedIn(true);
-      } else {
-        setCurrentUser(null);
-        setIsUserLoggedIn(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  //Schedule auto logout after specified time in milliseconds
+  function scheduleAutoLogout(timeoutMs) {
+    setTimeout(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('expires_at');
+      setIsUserLoggedIn(false);
+      setAccessToken(null);
+      window.location.href = '/';
+    }, timeoutMs);
+  }
 
   // Initialize GAPI
   useEffect(() => {
@@ -41,15 +36,28 @@ export function AuthProvider({ children }) {
         await gapi.client.init({
           apiKey,
           clientId,
+          scope,
           discoveryDocs: [
             'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
           ],
-          scope,
         });
 
-        const token = localStorage.getItem('google_access_token');
-        if (token) {
-          gapi.client.setToken({ access_token: token });
+        //Retrieve the token and expiration from local storage
+        const storedToken = localStorage.getItem('token');
+        const expiresAt = parseInt(localStorage.getItem('expires_at'), 10);
+
+        //If token exists and is not expired, log user automatically, otherwise, log them out
+        if (storedToken && expiresAt && Date.now() < expiresAt) {
+          gapi.client.setToken({ access_token: storedToken });
+          setAccessToken(storedToken);
+          setIsUserLoggedIn(true);
+
+          // Ensures auto logout even if window is closed
+          scheduleAutoLogout(expiresAt - Date.now());
+        } else {
+          localStorage.removeItem('token');
+          localStorage.removeItem('expires_at');
+          setIsUserLoggedIn(false);
         }
 
         setIsGapiReady(true);
@@ -65,7 +73,15 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, isUserLoggedIn, isGapiReady, loading }}
+      value={{
+        isUserLoggedIn,
+        setIsUserLoggedIn,
+        accessToken,
+        setAccessToken,
+        isGapiReady,
+        loading,
+        scheduleAutoLogout,
+      }}
     >
       {children}
     </AuthContext.Provider>

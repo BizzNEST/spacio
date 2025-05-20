@@ -3,30 +3,45 @@ import styles from './Login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { signInWithGoogle } from '../hooks/auth';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../contexts/authContext';
 
 function Login() {
-  const [isSigningIn, setIsSigningIn] = React.useState(false);
-  const { isUserLoggedIn } = useAuth();
+  const {
+    isUserLoggedIn,
+    setIsUserLoggedIn,
+    setAccessToken,
+    loading,
+    scheduleAutoLogout,
+  } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignIn = (event) => {
-    event.preventDefault();
-    if (!isSigningIn) {
-      setIsSigningIn(true);
-      signInWithGoogle().catch((error) => {
-        console.error('Error signing in: ', error);
-        setIsSigningIn(false);
-      });
-    }
-  };
-
+  //Redirect to home if user is already logged in
   React.useEffect(() => {
-    if (isUserLoggedIn) {
+    if (!loading && isUserLoggedIn) {
       navigate('/home');
     }
-  }, [isUserLoggedIn, navigate]);
+  }, [isUserLoggedIn, loading, navigate]);
+
+  const googleSignIn = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      // Access Token expires in 1 hour
+      const expiresAt = Date.now() + tokenResponse.expires_in * 1000;
+
+      setIsUserLoggedIn(true);
+      setAccessToken(tokenResponse.access_token);
+
+      window.localStorage.setItem('token', tokenResponse.access_token);
+      window.localStorage.setItem('expires_at', expiresAt.toString());
+
+      // Automatically sign out after 1 hour since login
+      scheduleAutoLogout(tokenResponse.expires_in * 1000);
+    },
+    onError: (error) => {
+      console.log('Login Failed:', error);
+      setIsUserLoggedIn(false);
+    },
+  });
 
   return (
     <div className={styles.animatedBackground}>
@@ -36,7 +51,7 @@ function Login() {
           <p className={styles.note}>Reservations made easy.</p>
         </div>
 
-        <button onClick={handleSignIn} className={styles.loginButton}>
+        <button onClick={googleSignIn} className={styles.loginButton}>
           <FontAwesomeIcon icon={faGoogle} />
           Sign in with Google
         </button>

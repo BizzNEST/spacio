@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Header.module.css';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { Sidebar } from 'react-feather';
 import { signOut } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
+import { useAuth } from '../../contexts/authContext';
 
 function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { setIsUserLoggedIn } = useAuth();
 
   const onLogout = () => {
     signOut();
+    setIsUserLoggedIn(false);
     navigate('/');
   };
 
