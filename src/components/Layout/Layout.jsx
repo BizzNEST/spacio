@@ -7,6 +7,7 @@ import Header from '../Header/Header';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
+import useGetUserInfo from '../../api/users/useGetUserInfo';
 
 function Layout() {
   //NOTE: This fetches all calendars that users are subscribed to
@@ -20,6 +21,10 @@ function Layout() {
       enabled: !!allCalendars && allCalendars.length > 0,
     }
   );
+
+  const { data: userInfo } = useGetUserInfo();
+
+  console.log('User info: ', userInfo);
 
   if (isLoadingCalendars || isLoadingEvents) {
     return <Loader label={'Preparing your dashboard...'} />;
