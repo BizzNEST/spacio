@@ -14,7 +14,6 @@ const CreateEventForm = ({
   calendarId,
   calendarName,
 }) => {
-  console.log('Cal id: ', calendarId);
   const roundedStart = roundUpToNext15(new Date());
   const [reservationData, setReservationData] = React.useState({
     name: 'New Event',
@@ -22,6 +21,7 @@ const CreateEventForm = ({
     start: roundedStart,
     end: addMinutes(roundedStart, 15),
     resourceId: calendarId ?? ' ',
+    resourceName: calendarName ?? '',
   });
 
   const eventMutation = useCreateEvent();
@@ -29,8 +29,7 @@ const CreateEventForm = ({
   const selectedRoom = calendars.find(
     (room) => room.calendarId === reservationData.resourceId
   );
-  //console.log('calendars: ', calendars);
-  //console.log('SEL ROOM: ', selectedRoom);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const startDateTime = combineDateAndTime(
@@ -84,10 +83,10 @@ const CreateEventForm = ({
       {/* Room Selection */}
       <div className={styles.inputContainer}>
         <label>Room</label>
-        {console.log('Selected cal ID:', reservationData.resourceId)}
+
         <select
           required
-          value={reservationData.resourceId ?? ''}
+          value={reservationData.resourceName ?? ''}
           onChange={(e) => {
             console.log('Selected value:', e.target.value);
             setReservationData({

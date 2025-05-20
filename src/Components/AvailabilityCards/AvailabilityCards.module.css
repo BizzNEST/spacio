@@ -3,11 +3,13 @@
   flex-direction: column;
   row-gap: 10px;
 
-  padding-right: 5px;
+  padding-right: 10px;
   height: 300px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: grey transparent;
+
+  min-width: 200px;
 }
 
 .buttonFormat {
