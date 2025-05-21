@@ -12,7 +12,9 @@ const isResourceCalendar = (calendar) => {
 };
 
 export const useFetchAllEvents = (calendars = []) => {
-  const { isUserLoggedIn, isGapiReady } = useAuth();
+  const { isUserLoggedIn, isGapiReady, userInfo } = useAuth();
+
+  console.log(userInfo);
 
   // Filter to only include resource calendars
   const resourceCalendars = calendars.filter(isResourceCalendar);
@@ -20,7 +22,7 @@ export const useFetchAllEvents = (calendars = []) => {
   const queryResults = useQueries({
     queries: resourceCalendars.map((calendar) => ({
       queryKey: ['events', calendar.id],
-      queryFn: () => getEvents(calendar.id),
+      queryFn: () => getEvents(calendar.id, userInfo),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,
       refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
     })),

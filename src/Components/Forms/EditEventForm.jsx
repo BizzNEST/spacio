@@ -5,7 +5,6 @@ import { Trash2 } from 'react-feather';
 import styles from './form.module.css';
 import useDeleteEvent from '../../api/events/useDeleteEvents';
 
-
 const EditEventForm = ({
   selectedEvent,
   setSelectedEvent,
@@ -34,7 +33,7 @@ const EditEventForm = ({
 
   const handleDelete = () => {
     const eventId = selectedEvent.id;
-    deleteEventMutation.mutate(eventId)
+    deleteEventMutation.mutate(eventId);
     setConfirmDelete(false);
     afterSave();
   };
@@ -162,47 +161,49 @@ const EditEventForm = ({
         </select>
       </div>
 
-      <div className={styles.btnContainer}>
-        <div>
-          {isEditing && (
-            <Button type="submit" variant="gradient">
-              Save Event
-            </Button>
-          )}
-          <Button type="button" onClick={toggleEdit} variant="outline">
-            {isEditing ? 'Cancel' : 'Edit'}
-          </Button>
-        </div>
-        <div>
-          <Button
-            type="button"
-            variant="danger"
-            onClick={() => {
-              if (confirmDelete) {
-                handleDelete();
-              } else {
-                setConfirmDelete(true);
-              }
-            }}
-          >
-            {confirmDelete ? (
-              'Confirm Delete'
-            ) : (
-              <Trash2 height={20} width={20} />
+      {selectedEvent.isOrganizer && (
+        <div className={styles.btnContainer}>
+          <div>
+            {isEditing && (
+              <Button type="submit" variant="gradient">
+                Save Event
+              </Button>
             )}
-          </Button>
-
-          {confirmDelete && (
+            <Button type="button" onClick={toggleEdit} variant="outline">
+              {isEditing ? 'Cancel' : 'Edit'}
+            </Button>
+          </div>
+          <div>
             <Button
               type="button"
-              variant="outline"
-              onClick={() => setConfirmDelete(false)}
+              variant="danger"
+              onClick={() => {
+                if (confirmDelete) {
+                  handleDelete();
+                } else {
+                  setConfirmDelete(true);
+                }
+              }}
             >
-              Cancel
+              {confirmDelete ? (
+                'Confirm Delete'
+              ) : (
+                <Trash2 height={20} width={20} />
+              )}
             </Button>
-          )}
+
+            {confirmDelete && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setConfirmDelete(false)}
+              >
+                Cancel
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </form>
   );
 };

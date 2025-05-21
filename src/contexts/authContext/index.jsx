@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { gapi } from 'gapi-script';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
 
 // Create the context
 const AuthContext = createContext();
@@ -16,6 +15,7 @@ export function AuthProvider({ children }) {
   const [isGapiReady, setIsGapiReady] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
 
   //Schedule auto logout after specified time in milliseconds
   function scheduleAutoLogout(timeoutMs) {
@@ -81,6 +81,8 @@ export function AuthProvider({ children }) {
         isGapiReady,
         loading,
         scheduleAutoLogout,
+        userInfo,
+        setUserInfo,
       }}
     >
       {children}

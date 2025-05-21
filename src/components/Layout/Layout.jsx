@@ -8,8 +8,10 @@ import useGetCalendars from '../../api/calendars/useGetCalendars';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
 import useGetUserInfo from '../../api/users/useGetUserInfo';
+import { useAuth } from '../../contexts/authContext';
 
 function Layout() {
+  const { setUserInfo } = useAuth();
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
@@ -22,12 +24,14 @@ function Layout() {
     }
   );
 
-  const { data: userInfo } = useGetUserInfo();
+  const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
 
-  console.log('User info: ', userInfo);
-
-  if (isLoadingCalendars || isLoadingEvents) {
+  if (isLoadingCalendars || isLoadingEvents || isLoadingUserInfo) {
     return <Loader label={'Preparing your dashboard...'} />;
+  }
+
+  if (userInfo) {
+    setUserInfo(userInfo);
   }
 
   return (

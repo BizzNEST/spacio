@@ -4,12 +4,13 @@ import { useAuth } from '../../contexts/authContext';
 
 const useGetUserInfo = () => {
   const { isUserLoggedIn, isGapiReady, accessToken } = useAuth();
+
   return useQuery({
     queryKey: ['userInfo'],
-    queryFn: getUserInfo(accessToken),
+    queryFn: () => getUserInfo(accessToken),
     enabled: isUserLoggedIn && isGapiReady,
     retry: 2,
-    refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
+    refetchOnWindowFocus: false,
   });
 };
 
