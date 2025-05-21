@@ -26,12 +26,14 @@ function Layout() {
 
   const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
 
+  React.useEffect(() => {
+    if (userInfo) {
+      setUserInfo(userInfo);
+    }
+  }, [userInfo, setUserInfo]);
+
   if (isLoadingCalendars || isLoadingEvents || isLoadingUserInfo) {
     return <Loader label={'Preparing your dashboard...'} />;
-  }
-
-  if (userInfo) {
-    setUserInfo(userInfo);
   }
 
   return (

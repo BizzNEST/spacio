@@ -95,7 +95,7 @@ const CreateEventForm = ({
             Select a room
           </option>
           {calendars.map((room) => (
-            <option key={room.id} value={room.id}>
+            <option key={room.calendarId} value={room.id}>
               {room.title}
             </option>
           ))}

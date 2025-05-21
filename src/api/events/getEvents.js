@@ -2,7 +2,6 @@ import { gapi } from 'gapi-script';
 import { startOfToday } from 'date-fns';
 
 const getEvents = async (calendarId = 'primary', userInfo) => {
-  console.log(userInfo);
   try {
     //Make the request to Google Calendar with specified parameters
     const response = await gapi.client.calendar.events.list({
