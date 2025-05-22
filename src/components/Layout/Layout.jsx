@@ -7,8 +7,11 @@ import Header from '../Header/Header';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
+import useGetUserInfo from '../../api/users/useGetUserInfo';
+import { useAuth } from '../../contexts/authContext';
 
 function Layout() {
+  const { setUserInfo } = useAuth();
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
@@ -21,7 +24,15 @@ function Layout() {
     }
   );
 
-  if (isLoadingCalendars || isLoadingEvents) {
+  const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
+
+  React.useEffect(() => {
+    if (userInfo) {
+      setUserInfo(userInfo);
+    }
+  }, [userInfo, setUserInfo]);
+
+  if (isLoadingCalendars || isLoadingEvents || isLoadingUserInfo) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 

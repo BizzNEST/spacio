@@ -1,7 +1,7 @@
 import { gapi } from 'gapi-script';
 import { startOfToday } from 'date-fns';
 
-const getEvents = async (calendarId = 'primary') => {
+const getEvents = async (calendarId = 'primary', userInfo) => {
   try {
     //Make the request to Google Calendar with specified parameters
     const response = await gapi.client.calendar.events.list({
@@ -21,6 +21,8 @@ const getEvents = async (calendarId = 'primary') => {
             .map((a) => a.displayName || (a.email?.split('@')[0] ?? 'Unknown'))
         : [];
 
+      const isOrganizer = event.organizer?.email === userInfo.email;
+
       return {
         id: event.id,
         title: event.summary || '(No Title)',
@@ -28,6 +30,7 @@ const getEvents = async (calendarId = 'primary') => {
         end: new Date(event.end.dateTime || event.end.date),
         attendees: attendeeNames,
         resourceId: calendarId,
+        isOrganizer,
       };
     });
 
