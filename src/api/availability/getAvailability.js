@@ -1,5 +1,5 @@
 import { gapi } from 'gapi-script';
-import { addMinutes, format } from 'date-fns';
+import { addMinutes, differenceInMinutes, format } from 'date-fns';
 
 export const getAvailability = async (calendar) => {
   const curTime = new Date();
@@ -9,12 +9,32 @@ export const getAvailability = async (calendar) => {
       timeMin: curTime.toISOString(),
       timeMax: addMinutes(curTime, 30).toISOString(),
       timeZone: 'America/Los Angeles',
-      items: [
-        {
-          id: calendar.id,
-        },
-      ],
+      items: [{ id: calendar.id }],
     });
+
+    const isAvailable =
+      response.result.calendars[calendar.id].busy.length === 0;
+
+    let busyStartTime = null;
+    let busyEndTime = null;
+    let nextAvailableTime = null;
+
+    if (!isAvailable) {
+      //If the room is not available, store the busy slots
+      busyStartTime = format(
+        response.result.calendars[calendar.id].busy[0].start,
+        'hh:mmaaa'
+      );
+      busyEndTime = format(
+        response.result.calendars[calendar.id].busy[0].end,
+        'hh:mmaaa'
+      );
+
+      nextAvailableTime = differenceInMinutes(
+        response.result.calendars[calendar.id].busy[0].end,
+        curTime
+      );
+    }
 
     const busyTimes = {
       timeMin: format(response.result.timeMin, 'hh:mm'),
@@ -25,7 +45,10 @@ export const getAvailability = async (calendar) => {
       location: calendar.location,
       capacity: calendar.capacity,
       floor: calendar.floor,
-      //freeAgain: response.result.calendars[calendarId].busy[0].end || [],
+      busyStartTime,
+      busyEndTime,
+      isAvailable,
+      nextAvailableTimeInMinutes: nextAvailableTime,
     };
 
     return busyTimes;
@@ -45,11 +68,7 @@ export const getAvailabilityByCalendarId = async (
       timeMin: startTime,
       timeMax: endTime,
       timeZone: 'America/Los Angeles',
-      items: [
-        {
-          id: calendarId,
-        },
-      ],
+      items: [{ id: calendarId }],
     });
 
     const busyTimes = {
@@ -57,7 +76,6 @@ export const getAvailabilityByCalendarId = async (
       timeMax: format(response.result.timeMax, 'hh:mm'),
       id: calendarId,
       busy: response.result.calendars[calendarId].busy,
-      //freeAgain: response.result.calendars[calendarId].busy[0].end || [],
     };
 
     return busyTimes;
