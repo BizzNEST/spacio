@@ -13,15 +13,26 @@ const CreateEventForm = ({
   afterSave,
   calendarId,
   calendarName,
+  selectedSlot, // from dragging on the calendar
 }) => {
   const roundedStart = roundUpToNext15(new Date());
+
+  // Get the selected slot's resource name
+  let selectedSlotResourceName;
+  if (selectedSlot) {
+    const { title } = calendars.find(
+      (calendar) => calendar.id === selectedSlot.resourceId
+    );
+    selectedSlotResourceName = title;
+  }
+
   const [reservationData, setReservationData] = React.useState({
     name: 'New Event',
     date: new Date(),
-    start: roundedStart,
-    end: addMinutes(roundedStart, 15),
-    resourceId: calendarId ?? '',
-    resourceName: calendarName ?? '',
+    start: selectedSlot?.start ?? roundedStart,
+    end: selectedSlot?.end ?? addMinutes(roundedStart, 15),
+    resourceId: calendarId ?? selectedSlot?.resourceId ?? '',
+    resourceName: calendarName ?? selectedSlotResourceName ?? '',
   });
 
   const isInvalidDateSelection = reservationData.start >= reservationData.end;
