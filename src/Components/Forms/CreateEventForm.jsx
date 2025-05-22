@@ -24,6 +24,8 @@ const CreateEventForm = ({
     resourceName: calendarName ?? '',
   });
 
+  const isInvalidDateSelection = reservationData.start >= reservationData.end;
+
   const eventMutation = useCreateEvent();
 
   const handleSubmit = async (event) => {
@@ -39,7 +41,6 @@ const CreateEventForm = ({
     );
 
     const eventPayload = {
-      calendarId: 'primary',
       summary: reservationData.name,
       start: {
         dateTime: startDateTime.toISOString(),
@@ -174,8 +175,20 @@ const CreateEventForm = ({
         </div>
       </div>
 
+      {/* Error Message if start time is after end time */}
+      {reservationData.start &&
+        reservationData.end &&
+        isInvalidDateSelection && (
+          <p className={styles.error}>Start time must be before end time.</p>
+        )}
+
       <div className={styles.btnContainer}>
-        <Button type="submit" variant="gradient">
+        <Button
+          type="submit"
+          variant="gradient"
+          disabled={isInvalidDateSelection}
+          className={isInvalidDateSelection ? styles.disabledBtn : ''}
+        >
           Book
         </Button>
         <Modal.Close asChild>
