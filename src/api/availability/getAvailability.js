@@ -7,7 +7,7 @@ export const getAvailability = async (calendar) => {
     //Retrieve all the calendars from the user's calendar list
     const response = await gapi.client.calendar.freebusy.query({
       timeMin: curTime.toISOString(),
-      timeMax: addMinutes(curTime, 60).toISOString(),
+      timeMax: addMinutes(curTime, 30).toISOString(),
       timeZone: 'America/Los Angeles',
       items: [{ id: calendar.id }],
     });
