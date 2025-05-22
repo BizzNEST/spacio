@@ -20,13 +20,13 @@ const CreateEventForm = ({
     date: new Date(),
     start: roundedStart,
     end: addMinutes(roundedStart, 15),
-    resourceId: calendarId ?? ' ',
+    resourceId: calendarId ?? '',
     resourceName: calendarName ?? '',
   });
 
   const eventMutation = useCreateEvent();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const startDateTime = combineDateAndTime(
       reservationData.date,
@@ -54,7 +54,11 @@ const CreateEventForm = ({
         : [],
     };
 
-    eventMutation.mutate(eventPayload);
+    const response = await eventMutation.mutateAsync(eventPayload);
+    if (response.success === false) {
+      alert(response.message);
+      return;
+    }
     afterSave();
   };
 
@@ -82,20 +86,25 @@ const CreateEventForm = ({
 
         <select
           required
-          value={reservationData.resourceName ?? ''}
+          value={reservationData.resourceId || ''}
           onChange={(e) => {
-            console.log('Selected value:', e.target.value);
-            setReservationData({
-              ...reservationData,
+            setReservationData((prev) => ({
+              ...prev,
               resourceId: e.target.value,
-            });
+              resourceName: e.target.options[e.target.selectedIndex].text,
+            }));
           }}
         >
-          <option value="" disabled>
-            Select a room
+          <option
+            value={reservationData.resourceId || ''}
+            disabled={!reservationData.resourceId}
+          >
+            {reservationData.resourceName !== ''
+              ? reservationData.resourceName
+              : 'Select a room'}
           </option>
           {calendars.map((room) => (
-            <option key={room.calendarId} value={room.id}>
+            <option key={room.id} value={room.id}>
               {room.title}
             </option>
           ))}
