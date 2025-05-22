@@ -3,7 +3,7 @@ import { getAvailabilityByCalendarId } from '../availability/getAvailability';
 import { format } from 'date-fns';
 
 //Payload: calendarId, summary, start, end, attendees
-const createEvent = async (payload) => {
+const updateEvent = async (payload) => {
   try {
     const resourceId = payload.attendees[0]?.email;
 
@@ -35,17 +35,18 @@ const createEvent = async (payload) => {
       };
     }
 
-    //Create the event now that we know the room is available
-    const response = await gapi.client.calendar.events.insert({
+    //Update the event now that we know the room is available
+    const response = await gapi.client.calendar.events.patch({
       calendarId: 'primary',
+      eventId: payload.id,
       resource: payload,
     });
 
     return response;
   } catch (error) {
-    console.error('Error creating event:', error);
+    console.error('Error updating event:', error);
     return [];
   }
 };
 
-export default createEvent;
+export default updateEvent;
