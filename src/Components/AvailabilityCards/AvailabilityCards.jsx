@@ -9,7 +9,20 @@ import CreateEventForm from '../Forms/CreateEventForm';
 
 const AvailabilityCards = ({ header, calendarList }) => {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
-    React.useState(false);
+    React.useState(false); 
+
+
+    const getTagColor = (resource) => {
+      if(resource.isAvailable == false)  
+        return "warning";
+
+      else {
+        if (resource.isBusySoon == true)
+          return 'notice'
+        else return "success"
+      }
+    }
+console.log(calendarList)
 
   const [selectedCalendarId, setSelectedCalendarId] = useState('');
   const [selectedCalendarName, setSelectedCalendarName] = useState('');
@@ -35,8 +48,7 @@ const AvailabilityCards = ({ header, calendarList }) => {
                 title={calendar.title}
                 StatusTag={
                   <StatusTag
-                    label={'tag'}
-                    color={'success'}
+                    color={getTagColor (calendar)}
                     tagFormat={styles.statusTag}
                   >
                     <FontAwesomeIcon

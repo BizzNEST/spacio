@@ -10,14 +10,18 @@ import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './SideNav.module.css';
+import { CalendarIcon } from '@radix-ui/react-icons';
 
 function SideNav({ calendars }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
   const { data: availabilities } = useGetAvailability(calendars);
 
-  const availableNow = availabilities.filter(
-    (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
+  const availableCalendars = availabilities.filter(
+    calendar => calendar.isAvailable == true
+  );
+  const busyCalendars = availabilities.filter(
+    calendar => calendar.isAvailable == false
   );
 
   return (
@@ -50,7 +54,8 @@ function SideNav({ calendars }) {
         />
       </div>
 
-      <AvailabilityCards header="Available Now" calendarList={availableNow} />
+      <AvailabilityCards header="Available Now" calendarList={availableCalendars} />
+      <AvailabilityCards header="Busy" calendarList={busyCalendars}/>
 
       <Modal
         open={isCreateEventModalOpen}
