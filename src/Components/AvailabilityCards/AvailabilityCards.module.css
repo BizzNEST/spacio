@@ -24,6 +24,6 @@
 .statusTag {
   font-size: 10px;
   gap: 0.2rem;
-  width: 12px;
   height: 8px;
+  min-width: 35px;
 }

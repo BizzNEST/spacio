@@ -10,10 +10,10 @@ const colorStyles = {
 };
 
 const StatusTag = ({  color = 'tagLight', tagFormat, children }) => {
-  const isValid = ['success', 'warning', 'tagDark', 'tagLight'].includes(color);
+  const isValid = ['success', 'warning', 'notice', 'tagDark', 'tagLight'].includes(color);
   if (!isValid) {
     throw new Error(
-      'Only accepted values are: success, warning, tagLight, tagDark'
+      'Only accepted values are: success, warning, notice, tagLight, tagDark'
     );
   }
   const tagStyles = colorStyles[color];
