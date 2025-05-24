@@ -1,14 +1,22 @@
+.availabilityListContainer {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+}
+
+.availabilityListContainer>h3 {
+  font-size: 1rem;
+}
+
 .roomsAvailable {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
-
   padding-right: 10px;
-  height: 300px;
+  max-height: 13.75rem;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: grey transparent;
-
   min-width: 200px;
 }
 

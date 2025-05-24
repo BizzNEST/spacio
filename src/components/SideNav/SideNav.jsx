@@ -4,24 +4,21 @@ import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
 import CreateEventForm from '../Forms/CreateEventForm';
-import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './SideNav.module.css';
-import { CalendarIcon } from '@radix-ui/react-icons';
 
-function SideNav({ calendars }) {
+function SideNav({ availabilities }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
-  const { data: availabilities } = useGetAvailability(calendars);
 
   const availableCalendars = availabilities.filter(
-    calendar => calendar.isAvailable == true
+    (calendar) => calendar.isAvailable == true
   );
   const busyCalendars = availabilities.filter(
-    calendar => calendar.isAvailable == false
+    (calendar) => calendar.isAvailable == false
   );
 
   return (
@@ -52,10 +49,20 @@ function SideNav({ calendars }) {
             // },
           ]}
         />
-      </div>
 
-      <AvailabilityCards header="Available Now" calendarList={availableCalendars} />
-      <AvailabilityCards header="Busy" calendarList={busyCalendars}/>
+        <div className={styles.availabilityContainer}>
+          {availableCalendars.length > 0 && (
+            <AvailabilityCards
+              header="Available"
+              calendarList={availableCalendars}
+            />
+          )}
+
+          {busyCalendars.length > 0 && (
+            <AvailabilityCards header="Busy" calendarList={busyCalendars} />
+          )}
+        </div>
+      </div>
 
       <Modal
         open={isCreateEventModalOpen}
@@ -73,7 +80,7 @@ function SideNav({ calendars }) {
           subtitle={'Select your prefered time and date.'}
         >
           <CreateEventForm
-            calendars={calendars}
+            calendars={availableCalendars}
             afterSave={() => setIsCreateEventModalOpen(false)}
           />
         </Modal.Content>

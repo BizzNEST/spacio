@@ -1,62 +1,72 @@
 import React, { useState } from 'react';
-import styles from './AvailabilityCards.module.css';
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faCheckCircle, faHourglassHalf } from '@fortawesome/free-solid-svg-icons';
+import {
+  faClock,
+  faCheckCircle,
+  faHourglassHalf,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import CreateEventForm from '../Forms/CreateEventForm';
+import styles from './AvailabilityCards.module.css';
 
 const AvailabilityCards = ({ header, calendarList }) => {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
-    React.useState(false); 
+    React.useState(false);
 
+  const getTagColor = (resource) => {
+    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
+    const isBusySoon =
+      resource.timeBeforeBusyInMinutes < 15 &&
+      resource.timeBeforeBusyInMinutes != 0;
 
-
-    const getTagColor = (resource) => {
-    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15
-    const isBusySoon = resource.timeBeforeBusyInMinutes < 15 && resource.timeBeforeBusyInMinutes != 0
-
-    if(resource.isAvailable == false){
-      if(isAvailableSoon || isBusySoon){ 
-        return "notice";
-      }
-      return "warning";  
-    }  
-      return "success";
+    //If the room is not available or will be busy soon
+    if (resource.isAvailable == false) {
+      return isAvailableSoon || isBusySoon ? 'notice' : 'warning';
     }
 
-    const getTagLabel = (resource) => {
-      const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15
-      const isBusySoon = resource.timeBeforeBusyInMinutes < 15 && resource.timeBeforeBusyInMinutes != 0
-      if(resource.isAvailable == false){
-        if(isAvailableSoon){
-          return `Free in ${resource.nextAvailableTimeInMinutes + 1}m`
-        // return `${resource.nextAvailableTimeInMinutes + 1}m`
-        }
-          if (isBusySoon){ 
-            return "Busy Soon"
+    //Otherwise, the room is available
+    return 'success';
+  };
 
-          }
-          return "Busy"
-      }  
-        return "Now"
-    }
-    const getTagIcon = (resource => {
-      const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15
-      const isBusySoon = resource.timeBeforeBusyInMinutes < 15 && resource.timeBeforeBusyInMinutes != 0
-      if(resource.isAvailable == false){ 
-        
-        if(isAvailableSoon || isBusySoon){
-         return faHourglassHalf
-        }
-         return faClock
+  const getTagLabel = (resource) => {
+    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
+    const isBusySoon =
+      resource.timeBeforeBusyInMinutes < 15 &&
+      resource.timeBeforeBusyInMinutes != 0;
+
+    //If the room is not available or will be busy soon
+    if (resource.isAvailable == false) {
+      //Check if the room is available soon
+      if (isAvailableSoon) {
+        return `Free in ${resource.nextAvailableTimeInMinutes + 1}m`;
       }
-        return faCheckCircle
-    })
 
+      //Otherwise, check if the room will be busy soon
+      if (isBusySoon) {
+        return 'Busy Soon';
+      }
 
-console.log(calendarList)
+      //Otherwise, the room is busy
+      return 'Busy';
+    }
+
+    return 'Now';
+  };
+
+  const getTagIcon = (resource) => {
+    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
+    const isBusySoon =
+      resource.timeBeforeBusyInMinutes < 15 &&
+      resource.timeBeforeBusyInMinutes != 0;
+
+    if (resource.isAvailable == false) {
+      return isAvailableSoon || isBusySoon ? faHourglassHalf : faClock;
+    }
+
+    return faCheckCircle;
+  };
 
   const [selectedCalendarId, setSelectedCalendarId] = useState('');
   const [selectedCalendarName, setSelectedCalendarName] = useState('');
@@ -67,7 +77,7 @@ console.log(calendarList)
   };
 
   return (
-    <div>
+    <div className={styles.availabilityListContainer}>
       <h3>{header}</h3>
 
       <div className={styles.roomsAvailable}>
@@ -82,14 +92,14 @@ console.log(calendarList)
                 title={calendar.title}
                 StatusTag={
                   <StatusTag
-                    color={getTagColor (calendar) }
+                    color={getTagColor(calendar)}
                     tagFormat={styles.statusTag}
                   >
                     <FontAwesomeIcon
-                      icon={ getTagIcon(calendar)}
+                      icon={getTagIcon(calendar)}
                       className={styles.statusIcon}
                     />
-                  { getTagLabel (calendar)}
+                    {getTagLabel(calendar)}
                   </StatusTag>
                 }
               >
