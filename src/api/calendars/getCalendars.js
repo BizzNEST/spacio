@@ -22,28 +22,24 @@ const getCalendars = async () => {
     const querySnapshot = await getDocs(collection(db, 'rooms'));
     const documents = [];
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.data());
       documents.push({ id: doc.id, ...doc.data() });
     });
 
-    console.log('DOCS: ', documents);
-    return documents;
+    const calendars = documents.map((calendar, index) => {
+      const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
 
-    //   return {
-    //     id: doc.resourceEmail,
-    //     title: getTrimmedName(calendar.summary),
-    //     capacity: getResourceCapacity(calendar.summary),
-    //     floor: getResourceFloor(calendar.summary),
-    //     primary: calendar.primary || false,
-    //     backgroundColor: color.backgroundColor,
-    //     foregroundColor: color.foregroundColor,
-    //     location: getResourceLocation(calendar.summary),
-    //   };
-    // });
+      return {
+        id: calendar.resourceEmail,
+        title: calendar.name,
+        capacity: calendar.capacity,
+        floor: calendar.floor,
+        backgroundColor: color.backgroundColor,
+        foregroundColor: color.foregroundColor,
+        location: calendar.location,
+      };
+    });
 
-    //Filter to only include resource calendars
-    return calendars.filter(isResourceCalendar);
+    return calendars;
   } catch (error) {
     console.error('Error fetching calendar list:', error);
     return [];

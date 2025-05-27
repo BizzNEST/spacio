@@ -3,22 +3,23 @@ import getEvents from './getEvents';
 import { useAuth } from '../../contexts/authContext';
 import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 
-const isResourceCalendar = (calendar) => {
-  return (
-    calendar.resourceType === 'room' ||
-    calendar.id.includes('resource.calendar.google.com') ||
-    calendarToRoomMap[calendar.id] != null // If it exists in your room mapping
-  );
-};
+// const isResourceCalendar = (calendar) => {
+//   console.log('input calendar: ', calendar);
+//   return (
+//     calendar.resourceType === 'room' ||
+//     calendar.id.includes('resource.calendar.google.com') ||
+//     calendarToRoomMap[calendar.id] != null // If it exists in your room mapping
+//   );
+// };
 
 export const useFetchAllEvents = (calendars = []) => {
   const { isUserLoggedIn, isGapiReady } = useAuth();
 
   // Filter to only include resource calendars
-  const resourceCalendars = calendars.filter(isResourceCalendar);
+  //const resourceCalendars = calendars.filter(isResourceCalendar);
 
   const queryResults = useQueries({
-    queries: resourceCalendars.map((calendar) => ({
+    queries: calendars.map((calendar) => ({
       queryKey: ['events', calendar.id],
       queryFn: () => getEvents(calendar.id),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,

@@ -8,10 +8,11 @@ import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 import styles from './SideNav.module.css';
+import SelectMenu from '../SelectMenu/SelectMenu';
 
-function SideNav({calendars}) {
+function SideNav({ calendars, center, setCenter }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
   const { data: availabilities } = useGetAvailability(calendars);
@@ -49,6 +50,8 @@ function SideNav({calendars}) {
           ]}
         />
       </div>
+
+      <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
 
       <AvailabilityCards header="Available Now" calendarList={availableNow} />
 
