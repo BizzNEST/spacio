@@ -94,7 +94,7 @@ const CreateEventForm = ({
 
       {/* Room Selection */}
       <div className={styles.inputContainer}>
-        <label>Room</label>
+        <label>Available Rooms</label>
 
         <select
           required

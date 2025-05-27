@@ -3,6 +3,8 @@ import { useAuth } from '../../contexts/authContext';
 import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 import { getAvailability } from './getAvailability';
 
+const ONE_MINUTE = 60000
+
 const isResourceCalendar = (calendar) => {
   return (
     calendar.resourceType === 'room' ||
@@ -22,6 +24,7 @@ export const useGetAvailability = (calendars = []) => {
       queryKey: ['available', calendar.id],
       queryFn: () => getAvailability(calendar),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,
+      refetchInterval: ONE_MINUTE
       // refetchOnWindowFocus: false,
     })),
   });

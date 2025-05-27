@@ -1,15 +1,72 @@
 import React, { useState } from 'react';
-import styles from './AvailabilityCards.module.css';
 import Card from '../Card/Card';
 import StatusTag from '../StatusTag/StatusTag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import {
+  faClock,
+  faCheckCircle,
+  faHourglassHalf,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
 import CreateEventForm from '../Forms/CreateEventForm';
+import styles from './AvailabilityCards.module.css';
 
 const AvailabilityCards = ({ header, calendarList }) => {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
+
+  const getTagColor = (resource) => {
+    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
+    const isBusySoon =
+      resource.timeBeforeBusyInMinutes < 15 &&
+      resource.timeBeforeBusyInMinutes != 0;
+
+    //If the room is not available or will be busy soon
+    if (resource.isAvailable == false) {
+      return isAvailableSoon || isBusySoon ? 'notice' : 'warning';
+    }
+
+    //Otherwise, the room is available
+    return 'success';
+  };
+
+  const getTagLabel = (resource) => {
+    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
+    const isBusySoon =
+      resource.timeBeforeBusyInMinutes < 15 &&
+      resource.timeBeforeBusyInMinutes != 0;
+
+    //If the room is not available or will be busy soon
+    if (resource.isAvailable == false) {
+      //Check if the room is available soon
+      if (isAvailableSoon) {
+        return `Free in ${resource.nextAvailableTimeInMinutes + 1}m`;
+      }
+
+      //Otherwise, check if the room will be busy soon
+      if (isBusySoon) {
+        return 'Busy Soon';
+      }
+
+      //Otherwise, the room is busy
+      return 'Busy';
+    }
+
+    return 'Now';
+  };
+
+  const getTagIcon = (resource) => {
+    const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
+    const isBusySoon =
+      resource.timeBeforeBusyInMinutes < 15 &&
+      resource.timeBeforeBusyInMinutes != 0;
+
+    if (resource.isAvailable == false) {
+      return isAvailableSoon || isBusySoon ? faHourglassHalf : faClock;
+    }
+
+    return faCheckCircle;
+  };
 
   const [selectedCalendarId, setSelectedCalendarId] = useState('');
   const [selectedCalendarName, setSelectedCalendarName] = useState('');
@@ -20,7 +77,7 @@ const AvailabilityCards = ({ header, calendarList }) => {
   };
 
   return (
-    <div>
+    <div className={styles.availabilityListContainer}>
       <h3>{header}</h3>
 
       <div className={styles.roomsAvailable}>
@@ -35,15 +92,14 @@ const AvailabilityCards = ({ header, calendarList }) => {
                 title={calendar.title}
                 StatusTag={
                   <StatusTag
-                    label={'tag'}
-                    color={'success'}
+                    color={getTagColor(calendar)}
                     tagFormat={styles.statusTag}
                   >
                     <FontAwesomeIcon
-                      icon={faClock}
+                      icon={getTagIcon(calendar)}
                       className={styles.statusIcon}
                     />
-                    Now
+                    {getTagLabel(calendar)}
                   </StatusTag>
                 }
               >

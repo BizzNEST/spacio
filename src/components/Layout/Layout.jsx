@@ -5,6 +5,7 @@ import Dashboard from '../Dashboard/Dashboard';
 import CalendarDashboard from '../CalendarDashboard/CalendarDashboard';
 import Header from '../Header/Header';
 import useGetCalendars from '../../api/calendars/useGetCalendars';
+import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
 import useGetUserInfo from '../../api/users/useGetUserInfo';
@@ -15,7 +16,6 @@ function Layout() {
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
-
   //NOTE: This fetches 25 events from all subscribed calendars
   const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
     allCalendars,
@@ -23,8 +23,11 @@ function Layout() {
       enabled: !!allCalendars && allCalendars.length > 0,
     }
   );
-
+  //NOTE: This fetches logged in user info
   const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
+  //NOTE: This fetches availability for all subscribed calendars
+  const { data: calendarAvailabilities, isLoading: isLoadingAvailabilities } =
+    useGetAvailability(allCalendars);
 
   React.useEffect(() => {
     if (userInfo) {
@@ -32,13 +35,18 @@ function Layout() {
     }
   }, [userInfo, setUserInfo]);
 
-  if (isLoadingCalendars || isLoadingEvents || isLoadingUserInfo) {
+  if (
+    isLoadingCalendars ||
+    isLoadingEvents ||
+    isLoadingUserInfo ||
+    isLoadingAvailabilities
+  ) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 
   return (
     <div className={styles.layout}>
-      <SideNav calendars={allCalendars} />
+      <SideNav availabilities={calendarAvailabilities} />
       <Dashboard>
         <Header />
         <CalendarDashboard events={events} calendars={allCalendars} />

@@ -1,9 +1,10 @@
 .sidenav {
-  background-color: #fafafa;
   display: grid;
+  grid-template-rows: 1fr auto;
   align-items: center;
+  background-color: #fafafa;
   width: max-content;
-  padding: 30px 10px;
+  padding: 20px 10px;
 }
 
 .topContainer {
@@ -47,6 +48,13 @@
   text-decoration: none;
 }
 
+.availabilityContainer {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+
 .floorMap {
   color: black;
   padding: 15px;
@@ -55,6 +63,7 @@
   gap: 1rem;
   font-size: 1rem;
 }
+
 .sideSearch {
   border: none;
   border-radius: 5px;

@@ -19,7 +19,7 @@ export const getAvailability = async (calendar) => {
     let busyEndTime = null;
     let nextAvailableTime = null;
     let timeBeforeBusy = null;
-
+  
     if (!isAvailable) {
       //If the room is not available, store the busy slots
       busyStartTime = format(
