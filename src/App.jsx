@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import '@radix-ui/themes/styles.css';
 import { RouterProvider } from 'react-router-dom';
 import routes from './pages/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
