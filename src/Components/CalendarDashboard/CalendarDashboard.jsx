@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
-import {
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  setMinutes,
-  setHours,
-} from 'date-fns';
+import { format, parse, startOfWeek, getDay } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Modal from '../Modal/Modal';
@@ -17,6 +10,7 @@ import ResourceHeader from '../ResourceHeader/ResourceHeader';
 import styles from './CalendarDashboard.module.css';
 import useFilterResourceByFloor from '../../hooks/useFilteredRooms';
 import EditEventForm from '../Forms/EditEventForm';
+import CreateEventForm from '../Forms/CreateEventForm';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -32,7 +26,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   const [currentDate, setCurrentDate] = useState(
     format(new Date(), 'EEEE, MMMM dd, yyyy')
   );
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
   const [isEventModalOpen, setIsEventModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [selectedEvent, setSelectedEvent] = React.useState(null);
@@ -43,7 +37,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
 
   const handleSelectSlot = (slotInfo) => {
     setSelectedSlot(slotInfo);
-    setIsModalOpen(true);
+    setIsCreateModalOpen(true);
   };
 
   const handleSelectedEvent = (eventInfo) => {
@@ -51,15 +45,11 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
     setIsEventModalOpen(true);
   };
 
-  const handleClose = () => {
-    setIsModalOpen(false);
-    setSelectedSlot(null);
-  };
-
   // Format the time in the agenda view
   const formats = {
     timeGutterFormat: (date) => format(date, 'h:mma'),
   };
+
   return (
     <div className={styles.meetingRoomsContainer}>
       <div className={styles.calendarContainer}>
@@ -78,6 +68,7 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
                 setCurrentDate={setCurrentDate}
                 currentView={currentView}
                 setCurrentView={setCurrentView}
+                calendars={calendars}
               />
             ),
           }}
@@ -121,8 +112,8 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
       )}
 
       {/* Modal for creating a new event from clicking/dragging on the dashboard */}
-      {isModalOpen && (
-        <Modal open={isModalOpen} onOpenChange={setIsModalOpen}>
+      {isCreateModalOpen && (
+        <Modal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
           <Modal.Content
             title="Book a Room"
             subtitle={
@@ -131,110 +122,11 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
                 : 'Select a date and time'
             }
           >
-            <div>
-              {selectedSlot && (
-                <>
-                  <div>
-                    <label>Title:</label>
-                    <input
-                      type="text"
-                      value={selectedSlot.title ?? ''}
-                      placeholder="Event Title"
-                      onChange={(e) =>
-                        setSelectedSlot({
-                          ...selectedSlot,
-                          title: e.target.value,
-                        })
-                      }
-                    />
-
-                    <label>Date:</label>
-                    <input
-                      type="date"
-                      value={format(selectedSlot.start, 'yyyy-MM-dd')}
-                      onChange={(e) => {
-                        const [year, month, day] = e.target.value
-                          .split('-')
-                          .map(Number);
-                        const newDate = new Date(selectedSlot.start); // clone original date
-                        newDate.setFullYear(year, month - 1, day); // update date part only
-
-                        setSelectedSlot({
-                          ...selectedSlot,
-                          start: newDate,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label>Start Time:</label>
-                    <input
-                      type="time"
-                      value={format(selectedSlot.start, 'HH:mm')}
-                      onChange={(e) => {
-                        const [hours, minutes] = e.target.value
-                          .split(':')
-                          .map(Number);
-                        const newDate = setMinutes(
-                          setHours(selectedSlot.start, hours),
-                          minutes
-                        );
-                        setSelectedSlot({
-                          ...selectedSlot,
-                          start: newDate,
-                        });
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <label>End Time:</label>
-                    <input
-                      type="time"
-                      value={format(selectedSlot.end, 'HH:mm')}
-                      onChange={(e) => {
-                        const [hours, minutes] = e.target.value
-                          .split(':')
-                          .map(Number);
-                        const newDate = setMinutes(
-                          setHours(selectedSlot.end, hours),
-                          minutes
-                        );
-                        setSelectedSlot({
-                          ...selectedSlot,
-                          end: newDate,
-                        });
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <label>Room:</label>
-                    <select
-                      value={selectedSlot.resourceId ?? ''}
-                      onChange={(e) =>
-                        setSelectedSlot({
-                          ...selectedSlot,
-                          resourceId: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="" disabled>
-                        Select a room
-                      </option>
-                      {calendars.map((room) => (
-                        <option key={room.id} value={room.id}>
-                          {room.title}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </>
-              )},
-              <button onClick={handleClose} style={{ marginTop: '1rem' }}>
-                Save Event
-              </button>
-            </div>
+            <CreateEventForm
+              calendars={calendars}
+              selectedSlot={selectedSlot}
+              afterSave={() => setIsCreateModalOpen(false)}
+            />
           </Modal.Content>
         </Modal>
       )}

@@ -8,19 +8,38 @@ import Modal from '../Modal/Modal';
 import { combineDateAndTime, roundUpToNext15 } from './helpers';
 import useCreateEvent from '../../api/events/useCreateEvent';
 
-const CreateEventForm = ({ calendars, afterSave }) => {
+const CreateEventForm = ({
+  calendars,
+  afterSave,
+  calendarId,
+  calendarName,
+  selectedSlot, // from dragging on the calendar
+}) => {
   const roundedStart = roundUpToNext15(new Date());
+
+  // Get the selected slot's resource name
+  let selectedSlotResourceName;
+  if (selectedSlot) {
+    const { title } = calendars.find(
+      (calendar) => calendar.id === selectedSlot.resourceId
+    );
+    selectedSlotResourceName = title;
+  }
+
   const [reservationData, setReservationData] = React.useState({
     name: 'New Event',
     date: new Date(),
-    start: roundedStart,
-    end: addMinutes(roundedStart, 15),
-    resourceId: '',
+    start: selectedSlot?.start ?? roundedStart,
+    end: selectedSlot?.end ?? addMinutes(roundedStart, 15),
+    resourceId: calendarId ?? selectedSlot?.resourceId ?? '',
+    resourceName: calendarName ?? selectedSlotResourceName ?? '',
   });
+
+  const isInvalidDateSelection = reservationData.start >= reservationData.end;
 
   const eventMutation = useCreateEvent();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const startDateTime = combineDateAndTime(
       reservationData.date,
@@ -33,7 +52,6 @@ const CreateEventForm = ({ calendars, afterSave }) => {
     );
 
     const eventPayload = {
-      calendarId: 'primary',
       summary: reservationData.name,
       start: {
         dateTime: startDateTime.toISOString(),
@@ -48,7 +66,11 @@ const CreateEventForm = ({ calendars, afterSave }) => {
         : [],
     };
 
-    eventMutation.mutate(eventPayload);
+    const response = await eventMutation.mutateAsync(eventPayload);
+    if (response.success === false) {
+      alert(response.message);
+      return;
+    }
     afterSave();
   };
 
@@ -72,22 +94,26 @@ const CreateEventForm = ({ calendars, afterSave }) => {
 
       {/* Room Selection */}
       <div className={styles.inputContainer}>
-        <label>Room</label>
+        <label>Available Rooms</label>
+
         <select
           required
-          value={reservationData.resourceId ?? ''}
+          value={reservationData.resourceId || ''}
           onChange={(e) => {
-            const selectedRoom = calendars.find(
-              (room) => room.id === e.target.value
-            );
-            setReservationData({
-              ...reservationData,
+            setReservationData((prev) => ({
+              ...prev,
               resourceId: e.target.value,
-            });
+              resourceName: e.target.options[e.target.selectedIndex].text,
+            }));
           }}
         >
-          <option value="" disabled>
-            Select a room
+          <option
+            value={reservationData.resourceId || ''}
+            disabled={!reservationData.resourceId}
+          >
+            {reservationData.resourceName !== ''
+              ? reservationData.resourceName
+              : 'Select a room'}
           </option>
           {calendars.map((room) => (
             <option key={room.id} value={room.id}>
@@ -160,8 +186,20 @@ const CreateEventForm = ({ calendars, afterSave }) => {
         </div>
       </div>
 
+      {/* Error Message if start time is after end time */}
+      {reservationData.start &&
+        reservationData.end &&
+        isInvalidDateSelection && (
+          <p className={styles.error}>Start time must be before end time.</p>
+        )}
+
       <div className={styles.btnContainer}>
-        <Button type="submit" variant="gradient">
+        <Button
+          type="submit"
+          variant="gradient"
+          disabled={isInvalidDateSelection}
+          className={isInvalidDateSelection ? styles.disabledBtn : ''}
+        >
           Book
         </Button>
         <Modal.Close asChild>

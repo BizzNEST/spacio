@@ -1,7 +1,7 @@
 .topContainer {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 12px;
   align-self: start;
   width: 100%;
 }
@@ -30,6 +30,46 @@
   height: 50px;
   width: 50px;
   border-radius: 5px;
+}
+
+.profileImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 25%;
+}
+
+.meetingRooms {
+  display: flex;
+  gap: 1rem;
+  padding: 12px;
+  background-image: linear-gradient(to right, #3c80f6, #9232e9);
+  border-radius: 11px;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 50px;
+}
+
+.availabilityContainer {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.floorMap {
+  color: black;
+  padding: 15px;
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
 }
 
 .sideSearch {

@@ -1,10 +1,11 @@
 import { useQueries } from '@tanstack/react-query';
-import getEvents from './getEvents';
 import { useAuth } from '../../contexts/authContext';
 import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
+import { getAvailability } from './getAvailability';
+
+const ONE_MINUTE = 60000
 
 // const isResourceCalendar = (calendar) => {
-//   console.log('input calendar: ', calendar);
 //   return (
 //     calendar.resourceType === 'room' ||
 //     calendar.id.includes('resource.calendar.google.com') ||
@@ -12,35 +13,36 @@ import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 //   );
 // };
 
-export const useFetchAllEvents = (calendars = []) => {
-  const { isUserLoggedIn, isGapiReady, userInfo } = useAuth();
+export const useGetAvailability = (calendars = []) => {
+  const { isUserLoggedIn, isGapiReady } = useAuth();
 
   // Filter to only include resource calendars
   //const resourceCalendars = calendars.filter(isResourceCalendar);
 
-  const queryResults = useQueries({
+  const isBusy = useQueries({
     queries: calendars.map((calendar) => ({
-      queryKey: ['events', calendar.id],
-      queryFn: () => getEvents(calendar.id, userInfo),
-      enabled: isUserLoggedIn && isGapiReady && !!calendar && !!userInfo,
-      refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
+      queryKey: ['available', calendar.id],
+      queryFn: () => getAvailability(calendar),
+      enabled: isUserLoggedIn && isGapiReady && !!calendar,
+      refetchInterval: ONE_MINUTE
+      // refetchOnWindowFocus: false,
     })),
   });
 
   // Process the results to create a flat array of all events
-  const allEvents = queryResults
+  const allAvailabilites = isBusy
     .filter((result) => result.data) // Filter out any undefined results
     .flatMap((result) => result.data); // Flatten the events from all calendars
 
   // Check if any of the queries are still loading
-  const isLoading = queryResults.some((result) => result.isLoading);
+  const isLoading = isBusy.some((result) => result.isLoading);
 
   // Check if any of the queries have errors
-  const isError = queryResults.some((result) => result.isError);
-  const error = queryResults.find((result) => result.error)?.error;
+  const isError = isBusy.some((result) => result.isError);
+  const error = isBusy.find((result) => result.error)?.error;
 
   return {
-    data: allEvents,
+    data: allAvailabilites,
     isLoading,
     isError,
     error,

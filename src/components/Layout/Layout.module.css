@@ -16,6 +16,7 @@
   display: grid;
   align-items: center;
   padding: 20px 10px;
+  padding-top: 0;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: lightgray;

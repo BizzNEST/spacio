@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import Login from './Login';
 import Layout from '../components/Layout/Layout';
-import Dashboard from '../components/Dashboard/Dashboard';
+
 import ProtectedRoute from '../Components/ProtectedRoute/ProtectedRoute';
 
 const routes = createBrowserRouter(
@@ -17,7 +17,8 @@ const routes = createBrowserRouter(
       {/* Protected Route for Dashboard */}
       <Route element={<ProtectedRoute />}>
         <Route path="/home" element={<Layout />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/*To Do: Uncomment once Floor Plan is implemented}  */}
+        {/* <Route path="/floor-map" element={<p>Floor Plan Page</p>} /> */}
       </Route>
     </>
   )

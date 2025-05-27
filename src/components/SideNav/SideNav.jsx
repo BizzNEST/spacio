@@ -1,23 +1,34 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBorderAll,
-  faRoad,
-  faRobot,
-} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../Modal/Modal';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
-import Card from '../Card/Card';
-import StatusTag from '../StatusTag/StatusTag';
-
 import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
 import logo from '../../assets/placeholderLogo.svg';
+import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
+import NavLink from '../NavLink/NavLink';
+import 'react-datepicker/dist/react-datepicker.css';
+import SelectMenu from '../SelectMenu/SelectMenu';
+import { ClipLoader } from 'react-spinners';
 
-function SideNav({ calendars, isCollapsed, className }) {
+function SideNav({
+  availabilities,
+  center,
+  setCenter,
+  isLoadingAvailabilities,
+  isCollapsed,
+  className,
+}) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
+
+  const availableCalendars = availabilities.filter(
+    (calendar) => calendar.isAvailable == true
+  );
+  const busyCalendars = availabilities.filter(
+    (calendar) => calendar.isAvailable == false
+  );
 
   return (
     <nav className={`${className} ${isCollapsed ? styles.collapsed : ''}`}>
@@ -32,38 +43,49 @@ function SideNav({ calendars, isCollapsed, className }) {
           />
           {!isCollapsed && <p>spacio</p>}
         </div>
+        <NavLink
+          links={[
+            {
+              path: '/home',
+              label: 'Meeting Rooms',
+              className: styles.meetingRooms,
+              icon: <FontAwesomeIcon icon={faCalendar} />,
+            },
+            // {To Do: Uncomment once Floor Plan is implemented}
+            // {
+            //   path: '/floor-map',
+            //   label: 'Floor Map',
+            //   className: styles.floorMap,
+            //   icon: <FontAwesomeIcon icon={faBuilding} />,
+            // },
+          ]}
+        />
 
         {!isCollapsed && (
-          <input
-            className={styles.sideSearch}
-            type="text"
-            placeholder="Jump To.."
-          />
-        )}
+          <>
+            <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
+            {isLoadingAvailabilities ? (
+              <div className={styles.loadingContainer}>
+                <ClipLoader />
+              </div>
+            ) : (
+              <div className={styles.availabilityContainer}>
+                {availableCalendars.length > 0 && (
+                  <AvailabilityCards
+                    header="Available"
+                    calendarList={availableCalendars}
+                  />
+                )}
 
-        {!isCollapsed && (
-          <a className={styles.sideTabs} href="#section">
-            <FontAwesomeIcon className={styles.iconGrid} icon={faBorderAll} />
-            {!isCollapsed && <span>Meeting Rooms</span>}
-          </a>
-        )}
-        {!isCollapsed && (
-          <Card
-            title={'Title'}
-            StatusTag={
-              <StatusTag
-                label={'tag'}
-                color={'success'}
-                tagFormat={styles.statusTag}
-              >
-                <FontAwesomeIcon icon={faRobot} className={styles.statusIcon} />
-                Test
-              </StatusTag>
-            }
-          >
-            <p>Child 1</p>
-            <p>Child 2</p>
-          </Card>
+                {busyCalendars.length > 0 && (
+                  <AvailabilityCards
+                    header="Busy"
+                    calendarList={busyCalendars}
+                  />
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -91,7 +113,7 @@ function SideNav({ calendars, isCollapsed, className }) {
           subtitle={'Select your prefered time and date.'}
         >
           <CreateEventForm
-            calendars={calendars}
+            calendars={availableCalendars}
             afterSave={() => setIsCreateEventModalOpen(false)}
           />
         </Modal.Content>
