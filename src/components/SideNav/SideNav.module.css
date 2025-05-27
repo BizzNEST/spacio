@@ -1,11 +1,3 @@
-.sidenav {
-  background-color: #fafafa;
-  display: grid;
-  align-items: center;
-  width: max-content;
-  padding: 30px 10px;
-}
-
 .topContainer {
   display: flex;
   flex-direction: column;
@@ -23,10 +15,14 @@
   font-size: 2.5rem;
 }
 
+.logoCollapsed {
+  padding: 1rem;
+}
+
 .placeholderLogo {
   width: 70px;
   height: 70px;
-  padding-top: 9px;
+  padding-top: 13px;
 }
 
 .image {
@@ -67,12 +63,15 @@
   align-self: end;
 }
 
-.statusTag {
-  font-size: 10px;
-  padding: 2px 8px;
-  gap: 0.2rem;
+.buttonCollapsed {
+  border: none;
+  background: none;
 }
 
+.calendarIconCollapsed {
+  display: inline-block;
+  font-size: 24px;
+}
 
 /* Styling for Mobile Devices */
 @media screen and (max-width: 768px) {

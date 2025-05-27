@@ -5,8 +5,9 @@ import { Sidebar } from 'react-feather';
 import { signOut } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
+import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 
-function Header() {
+function Header({ isCollapsed, setIsCollapsed }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -18,9 +19,16 @@ function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        <button className={styles.menuButton}>
-          <Sidebar color="#6E6E73" aria-label="Toggle Sidebar" />
-        </button>
+        <div
+          className={styles.sidebarToggleIcon}
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          {isCollapsed ? (
+            <GoSidebarCollapse className={styles.collapseIcon} />
+          ) : (
+            <GoSidebarExpand className={styles.expandIcon} />
+          )}
+        </div>
         <h1>Salinas Center Rooms</h1>
       </div>
       <div className={styles.headerContainer}>

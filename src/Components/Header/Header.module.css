@@ -3,8 +3,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  color: #6E6E73;
-  border-bottom: 1px solid #E4E4E7;
+  color: #6e6e73;
+  border-bottom: 1px solid #e4e4e7;
 }
 
 .headerContainer {
@@ -13,10 +13,13 @@
   gap: 8px;
 }
 
-.menuButton {
-  border: none;
-  background-color: transparent;
+.collapseIcon,
+.expandIcon {
+  font-size: 24px;
+  color: #444;
   cursor: pointer;
+  transition: color 0.3s ease;
+  transition-duration: 200;
 }
 
 .searchIcon {
@@ -36,7 +39,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #E4E4E7;
+  border: 1px solid #e4e4e7;
   padding: 5px 12px;
   padding-left: 36px;
   border-radius: 8px;
@@ -68,8 +71,5 @@
     margin-left: auto;
     padding-top: 5px;
     transition: transform 0.5s ease-in-out;
-
   }
-
-
 }

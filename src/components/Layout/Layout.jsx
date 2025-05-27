@@ -21,15 +21,24 @@ function Layout() {
     }
   );
 
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const toggleSideNav = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
   if (isLoadingCalendars || isLoadingEvents) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 
   return (
-    <div className={styles.layout}>
-      <SideNav calendars={allCalendars} />
-      <Dashboard>
-        <Header />
+    <div className={`${isCollapsed ? styles.layoutCollapsed : styles.layout}`}>
+      <SideNav
+        className={styles.sideNav}
+        calendars={allCalendars}
+        isCollapsed={isCollapsed}
+      />
+      <Dashboard className={styles.dashboard}>
+        <Header isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         <CalendarDashboard events={events} calendars={allCalendars} />
       </Dashboard>
     </div>
