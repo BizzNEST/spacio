@@ -10,8 +10,15 @@ import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './SideNav.module.css';
 import SelectMenu from '../SelectMenu/SelectMenu';
+import { Spinner } from '@radix-ui/themes/dist/cjs/index.js';
+import { ClipLoader } from 'react-spinners';
 
-function SideNav({ availabilities, center, setCenter }) {
+function SideNav({
+  availabilities,
+  center,
+  setCenter,
+  isLoadingAvailabilities,
+}) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
 
@@ -50,21 +57,25 @@ function SideNav({ availabilities, center, setCenter }) {
             // },
           ]}
         />
-
         <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
+        {isLoadingAvailabilities ? (
+          <div className={styles.loadingContainer}>
+            <ClipLoader />
+          </div>
+        ) : (
+          <div className={styles.availabilityContainer}>
+            {availableCalendars.length > 0 && (
+              <AvailabilityCards
+                header="Available"
+                calendarList={availableCalendars}
+              />
+            )}
 
-        <div className={styles.availabilityContainer}>
-          {availableCalendars.length > 0 && (
-            <AvailabilityCards
-              header="Available"
-              calendarList={availableCalendars}
-            />
-          )}
-
-          {busyCalendars.length > 0 && (
-            <AvailabilityCards header="Busy" calendarList={busyCalendars} />
-          )}
-        </div>
+            {busyCalendars.length > 0 && (
+              <AvailabilityCards header="Busy" calendarList={busyCalendars} />
+            )}
+          </div>
+        )}
       </div>
 
       <Modal

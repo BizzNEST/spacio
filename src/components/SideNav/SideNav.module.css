@@ -48,6 +48,14 @@
   text-decoration: none;
 }
 
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 50px;
+}
+
 .availabilityContainer {
   display: grid;
   gap: 8px;

@@ -34,7 +34,7 @@ function Layout() {
     ? allCalendars.filter((calendar) => calendar.location === center)
     : [];
 
-  //NOTE: This fetches availability for all subscribed calendars
+  //NOTE: This fetches availability for all calendars at center
   const { data: calendarAvailabilities, isLoading: isLoadingAvailabilities } =
     useGetAvailability(centerCalendars);
 
@@ -47,8 +47,9 @@ function Layout() {
   if (
     isLoadingCalendars ||
     isLoadingEvents ||
-    isLoadingUserInfo ||
-    isLoadingAvailabilities
+    isLoadingUserInfo
+    // ||
+    // isLoadingAvailabilities
   ) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
@@ -59,6 +60,7 @@ function Layout() {
         availabilities={calendarAvailabilities}
         center={center}
         setCenter={setCenter}
+        isLoadingAvailabilities={isLoadingAvailabilities}
       />
       <Dashboard>
         <Header centerName={center} />
