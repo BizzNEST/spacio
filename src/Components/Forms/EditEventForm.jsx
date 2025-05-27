@@ -1,10 +1,12 @@
 import React from 'react';
-import { format, setHours, setMinutes } from 'date-fns';
+import { addMinutes, format, setHours, setMinutes } from 'date-fns';
 import Button from '../Button/Button';
 import { Trash2 } from 'react-feather';
 import styles from './form.module.css';
 import useDeleteEvent from '../../api/events/useDeleteEvents';
-
+import DatePicker from 'react-datepicker';
+import { combineDateAndTime } from './helpers';
+import useUpdateEvent from '../../api/events/useUpdateEvent';
 
 const EditEventForm = ({
   selectedEvent,
@@ -15,6 +17,10 @@ const EditEventForm = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [draftEvent, setDraftEvent] = React.useState(selectedEvent);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
+
+  const isInvalidDateSelection = selectedEvent.start >= selectedEvent.end;
+
+  const updateEventMutation = useUpdateEvent();
   const deleteEventMutation = useDeleteEvent();
 
   React.useEffect(() => {
@@ -23,18 +29,55 @@ const EditEventForm = ({
     }
   }, [selectedEvent, isEditing]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    //Save changes and reset draft
     setSelectedEvent(draftEvent);
     setIsEditing(false);
     setDraftEvent(null);
-    console.log(selectedEvent);
+
+    //Combine date and time
+    const startDateTime = combineDateAndTime(
+      selectedEvent.date,
+      selectedEvent.start
+    );
+
+    const endDateTime = combineDateAndTime(
+      selectedEvent.date,
+      selectedEvent.end
+    );
+
+    //Prepare event payload
+    const eventPayload = {
+      id: selectedEvent.id,
+      summary: selectedEvent.title,
+      start: {
+        dateTime: startDateTime.toISOString(),
+        timeZone: 'America/Los_Angeles',
+      },
+      end: {
+        dateTime: endDateTime.toISOString(),
+        timeZone: 'America/Los_Angeles',
+      },
+      attendees: selectedEvent.resourceId
+        ? [{ email: selectedEvent.resourceId }]
+        : [],
+    };
+
+    //Update event
+    const response = await updateEventMutation.mutateAsync(eventPayload);
+    if (response.success === false) {
+      alert(response.message);
+      return;
+    }
+
     afterSave();
   };
 
   const handleDelete = () => {
     const eventId = selectedEvent.id;
-    deleteEventMutation.mutate(eventId)
+    deleteEventMutation.mutate(eventId);
     setConfirmDelete(false);
     afterSave();
   };
@@ -53,6 +96,7 @@ const EditEventForm = ({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {/* Name Selection */}
       <div className={styles.inputContainer}>
         <label htmlFor="name">Event Name</label>
         <input
@@ -71,70 +115,7 @@ const EditEventForm = ({
         />
       </div>
 
-      <div className={styles.timeInputContainer}>
-        <div className={styles.inputContainer}>
-          <label>Date</label>
-          <input
-            className={isEditing ? ' ' : styles.disabled}
-            disabled={!isEditing}
-            type="date"
-            value={format(selectedEvent.start, 'yyyy-MM-dd')}
-            onChange={(e) => {
-              const [year, month, day] = e.target.value.split('-').map(Number);
-              const newDate = new Date(selectedEvent.start);
-              newDate.setFullYear(year, month - 1, day);
-
-              setSelectedEvent({
-                ...selectedEvent,
-                start: newDate,
-              });
-            }}
-          />
-        </div>
-
-        <div className={styles.inputContainer}>
-          <label>Start Time</label>
-          <input
-            className={isEditing ? ' ' : styles.disabled}
-            disabled={!isEditing}
-            type="time"
-            value={format(selectedEvent.start, 'HH:mm')}
-            onChange={(e) => {
-              const [hours, minutes] = e.target.value.split(':').map(Number);
-              const newDate = setMinutes(
-                setHours(selectedEvent.start, hours),
-                minutes
-              );
-              setSelectedEvent({
-                ...selectedEvent,
-                start: newDate,
-              });
-            }}
-          />
-        </div>
-
-        <div className={styles.inputContainer}>
-          <label>End Time</label>
-          <input
-            className={isEditing ? ' ' : styles.disabled}
-            disabled={!isEditing}
-            type="time"
-            value={format(selectedEvent.end, 'HH:mm')}
-            onChange={(e) => {
-              const [hours, minutes] = e.target.value.split(':').map(Number);
-              const newDate = setMinutes(
-                setHours(selectedEvent.end, hours),
-                minutes
-              );
-              setSelectedEvent({
-                ...selectedEvent,
-                end: newDate,
-              });
-            }}
-          />
-        </div>
-      </div>
-
+      {/* Room Selection */}
       <div className={styles.inputContainer}>
         <label>Room</label>
         <select
@@ -162,47 +143,137 @@ const EditEventForm = ({
         </select>
       </div>
 
-      <div className={styles.btnContainer}>
-        <div>
-          {isEditing && (
-            <Button type="submit" variant="gradient">
-              Save Event
-            </Button>
-          )}
-          <Button type="button" onClick={toggleEdit} variant="outline">
-            {isEditing ? 'Cancel' : 'Edit'}
-          </Button>
-        </div>
-        <div>
-          <Button
-            type="button"
-            variant="danger"
-            onClick={() => {
-              if (confirmDelete) {
-                handleDelete();
-              } else {
-                setConfirmDelete(true);
-              }
+      {/* Date Selection */}
+      <div className={styles.timeInputContainer}>
+        <div className={styles.inputContainer}>
+          <label>Date</label>
+          <DatePicker
+            disabled={!isEditing}
+            className={
+              isEditing
+                ? styles.datePicker
+                : `${styles.datePicker} ${styles.disabled}`
+            }
+            selected={selectedEvent.date}
+            onChange={(date) => {
+              setSelectedEvent({
+                ...selectedEvent,
+                date: date,
+              });
             }}
-          >
-            {confirmDelete ? (
-              'Confirm Delete'
-            ) : (
-              <Trash2 height={20} width={20} />
-            )}
-          </Button>
+          />
+        </div>
 
-          {confirmDelete && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setConfirmDelete(false)}
-            >
-              Cancel
-            </Button>
-          )}
+        {/* Start Time Selection */}
+        <div className={styles.inputContainer}>
+          <label>Start Time</label>
+          <DatePicker
+            disabled={!isEditing}
+            className={
+              isEditing
+                ? styles.datePicker
+                : `${styles.datePicker} ${styles.disabled}`
+            }
+            selected={selectedEvent.start}
+            timeCaption="Start"
+            dateFormat="hh:mm aa"
+            timeIntervals={15}
+            showTimeSelect
+            showTimeSelectOnly
+            showTimeCaption={false}
+            minTime={setHours(setMinutes(new Date(), 45), 8)}
+            maxTime={setHours(setMinutes(new Date(), 0), 18)}
+            onChange={(startTime) => {
+              setSelectedEvent({
+                ...selectedEvent,
+                start: startTime,
+              });
+            }}
+          />
+        </div>
+
+        {/* End Time Selection */}
+        <div className={styles.inputContainer}>
+          <label>End Time</label>
+          <DatePicker
+            disabled={!isEditing}
+            className={
+              isEditing
+                ? styles.datePicker
+                : `${styles.datePicker} ${styles.disabled}`
+            }
+            selected={selectedEvent.end}
+            timeCaption="End"
+            dateFormat="hh:mm aa"
+            timeIntervals={15}
+            showTimeSelect
+            showTimeSelectOnly
+            showTimeCaption={false}
+            minTime={addMinutes(selectedEvent.start, 15)}
+            maxTime={setHours(setMinutes(new Date(), 0), 18)}
+            onChange={(endTime) => {
+              setSelectedEvent({
+                ...selectedEvent,
+                end: endTime,
+              });
+            }}
+          />
         </div>
       </div>
+
+      {/* Error Message if start time is after end time */}
+      {selectedEvent.start && selectedEvent.end && isInvalidDateSelection && (
+        <p className={styles.error}>Start time must be before end time.</p>
+      )}
+
+      {selectedEvent.isOrganizer && (
+        <div className={styles.btnContainer}>
+          <div>
+            {isEditing && (
+              <Button
+                type="submit"
+                variant="gradient"
+                disabled={isInvalidDateSelection}
+                className={isInvalidDateSelection ? styles.disabledBtn : ''}
+              >
+                Save Event
+              </Button>
+            )}
+            <Button type="button" onClick={toggleEdit} variant="outline">
+              {isEditing ? 'Cancel' : 'Edit'}
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="button"
+              variant="danger"
+              onClick={() => {
+                if (confirmDelete) {
+                  handleDelete();
+                } else {
+                  setConfirmDelete(true);
+                }
+              }}
+            >
+              {confirmDelete ? (
+                'Confirm Delete'
+              ) : (
+                <Trash2 height={20} width={20} />
+              )}
+            </Button>
+
+            {confirmDelete && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setConfirmDelete(false)}
+              >
+                Cancel
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
     </form>
   );
 };

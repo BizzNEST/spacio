@@ -57,3 +57,14 @@
 .disabled {
     opacity: 0.8;
 }
+
+.disabledBtn {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.error {
+    font-size: 0.9rem;
+    color: red;
+}

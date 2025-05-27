@@ -4,7 +4,6 @@ import Modal from '../Modal/Modal';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
 import CreateEventForm from '../Forms/CreateEventForm';
-import { useGetAvailability } from '../../api/availability/useGetAvailability';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
@@ -12,13 +11,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './SideNav.module.css';
 import SelectMenu from '../SelectMenu/SelectMenu';
 
-function SideNav({ calendars, center, setCenter }) {
+function SideNav({ availabilities, center, setCenter }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
-  const { data: availabilities } = useGetAvailability(calendars);
 
-  const availableNow = availabilities.filter(
-    (calendar) => Array.isArray(calendar.busy) && calendar.busy.length === 0
+  const availableCalendars = availabilities.filter(
+    (calendar) => calendar.isAvailable == true
+  );
+  const busyCalendars = availabilities.filter(
+    (calendar) => calendar.isAvailable == false
   );
 
   return (
@@ -49,11 +50,23 @@ function SideNav({ calendars, center, setCenter }) {
             // },
           ]}
         />
+
+        <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
+
+        <AvailabilityCards header="Available Now" calendarList={availableNow} />
+        <div className={styles.availabilityContainer}>
+          {availableCalendars.length > 0 && (
+            <AvailabilityCards
+              header="Available"
+              calendarList={availableCalendars}
+            />
+          )}
+
+          {busyCalendars.length > 0 && (
+            <AvailabilityCards header="Busy" calendarList={busyCalendars} />
+          )}
+        </div>
       </div>
-
-      <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
-
-      <AvailabilityCards header="Available Now" calendarList={availableNow} />
 
       <Modal
         open={isCreateEventModalOpen}
@@ -71,7 +84,7 @@ function SideNav({ calendars, center, setCenter }) {
           subtitle={'Select your prefered time and date.'}
         >
           <CreateEventForm
-            calendars={calendars}
+            calendars={availableCalendars}
             afterSave={() => setIsCreateEventModalOpen(false)}
           />
         </Modal.Content>

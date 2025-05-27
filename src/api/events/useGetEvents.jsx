@@ -13,7 +13,7 @@ import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 // };
 
 export const useFetchAllEvents = (calendars = []) => {
-  const { isUserLoggedIn, isGapiReady } = useAuth();
+  const { isUserLoggedIn, isGapiReady, userInfo } = useAuth();
 
   // Filter to only include resource calendars
   //const resourceCalendars = calendars.filter(isResourceCalendar);
@@ -21,8 +21,8 @@ export const useFetchAllEvents = (calendars = []) => {
   const queryResults = useQueries({
     queries: calendars.map((calendar) => ({
       queryKey: ['events', calendar.id],
-      queryFn: () => getEvents(calendar.id),
-      enabled: isUserLoggedIn && isGapiReady && !!calendar,
+      queryFn: () => getEvents(calendar.id, userInfo),
+      enabled: isUserLoggedIn && isGapiReady && !!calendar && !!userInfo,
       refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
     })),
   });
