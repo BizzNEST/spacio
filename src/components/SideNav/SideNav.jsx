@@ -43,23 +43,26 @@ function SideNav({
           />
           {!isCollapsed && <p>spacio</p>}
         </div>
-        <NavLink
-          links={[
-            {
-              path: '/home',
-              label: 'Meeting Rooms',
-              className: styles.meetingRooms,
-              icon: <FontAwesomeIcon icon={faCalendar} />,
-            },
-            // {To Do: Uncomment once Floor Plan is implemented}
-            // {
-            //   path: '/floor-map',
-            //   label: 'Floor Map',
-            //   className: styles.floorMap,
-            //   icon: <FontAwesomeIcon icon={faBuilding} />,
-            // },
-          ]}
-        />
+
+        {!isCollapsed && (
+          <NavLink
+            links={[
+              {
+                path: '/home',
+                label: 'Meeting Rooms',
+                className: styles.meetingRooms,
+                icon: <FontAwesomeIcon icon={faCalendar} />,
+              },
+              // {To Do: Uncomment once Floor Plan is implemented}
+              // {
+              //   path: '/floor-map',
+              //   label: 'Floor Map',
+              //   className: styles.floorMap,
+              //   icon: <FontAwesomeIcon icon={faBuilding} />,
+              // },
+            ]}
+          />
+        )}
 
         {!isCollapsed && (
           <>
