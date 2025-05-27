@@ -11,8 +11,12 @@ import Loader from '../Loader/Loader';
 import useGetUserInfo from '../../api/users/useGetUserInfo';
 import { useAuth } from '../../contexts/authContext';
 
+const centerName = localStorage.getItem('center');
+
 function Layout() {
   const { setUserInfo } = useAuth();
+  const [center, setCenter] = React.useState(`${centerName ?? 'Salinas'}`);
+
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
@@ -25,9 +29,14 @@ function Layout() {
   );
   //NOTE: This fetches logged in user info
   const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
-  //NOTE: This fetches availability for all subscribed calendars
+
+  const centerCalendars = !isLoadingCalendars
+    ? allCalendars.filter((calendar) => calendar.location === center)
+    : [];
+
+  //NOTE: This fetches availability for all calendars at center
   const { data: calendarAvailabilities, isLoading: isLoadingAvailabilities } =
-    useGetAvailability(allCalendars);
+    useGetAvailability(centerCalendars);
 
   React.useEffect(() => {
     if (userInfo) {
@@ -38,18 +47,24 @@ function Layout() {
   if (
     isLoadingCalendars ||
     isLoadingEvents ||
-    isLoadingUserInfo ||
-    isLoadingAvailabilities
+    isLoadingUserInfo
+    // ||
+    // isLoadingAvailabilities
   ) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 
   return (
     <div className={styles.layout}>
-      <SideNav availabilities={calendarAvailabilities} />
+      <SideNav
+        availabilities={calendarAvailabilities}
+        center={center}
+        setCenter={setCenter}
+        isLoadingAvailabilities={isLoadingAvailabilities}
+      />
       <Dashboard>
-        <Header />
-        <CalendarDashboard events={events} calendars={allCalendars} />
+        <Header centerName={center} />
+        <CalendarDashboard events={events} calendars={centerCalendars} />
       </Dashboard>
     </div>
   );

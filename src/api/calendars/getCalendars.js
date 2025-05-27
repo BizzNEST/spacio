@@ -6,31 +6,40 @@ import {
   getTrimmedName,
   isResourceCalendar,
 } from './helpers';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase.config';
 
 const getCalendars = async () => {
   try {
-    //Retrieve all the calendars from the user's calendar list
-    const response = await gapi.client.calendar.calendarList.list();
-    const calendarItems = response.result.items;
+    // //Retrieve all the calendars from the user's calendar list
+    // const response = await gapi.client.calendar.calendarList.list();
+    // const calendarItems = response.result.items;
 
-    //Finally, return an array of calendars with the parameters we want for convenience
-    const calendars = calendarItems.map((calendar, index) => {
+    // //Finally, return an array of calendars with the parameters we want for convenience
+    // const calendars = calendarItems.map((calendar, index) => {
+    //   const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
+
+    const querySnapshot = await getDocs(collection(db, 'rooms'));
+    const documents = [];
+    querySnapshot.forEach((doc) => {
+      documents.push({ id: doc.id, ...doc.data() });
+    });
+
+    const calendars = documents.map((calendar, index) => {
       const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
 
       return {
-        id: calendar.id,
-        title: getTrimmedName(calendar.summary),
-        capacity: getResourceCapacity(calendar.summary),
-        floor: getResourceFloor(calendar.summary),
-        primary: calendar.primary || false,
+        id: calendar.resourceEmail,
+        title: calendar.name,
+        capacity: calendar.capacity,
+        floor: calendar.floor,
         backgroundColor: color.backgroundColor,
         foregroundColor: color.foregroundColor,
-        location: getResourceLocation(calendar.summary),
+        location: calendar.location,
       };
     });
 
-    //Filter to only include resource calendars
-    return calendars.filter(isResourceCalendar);
+    return calendars;
   } catch (error) {
     console.error('Error fetching calendar list:', error);
     return [];

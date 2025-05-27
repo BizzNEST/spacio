@@ -10,7 +10,7 @@
 .topContainer {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 12px;
   align-self: start;
   width: 100%;
 }
@@ -48,12 +48,19 @@
   text-decoration: none;
 }
 
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 50px;
+}
+
 .availabilityContainer {
   display: grid;
   gap: 8px;
   width: 100%;
 }
-
 
 .floorMap {
   color: black;

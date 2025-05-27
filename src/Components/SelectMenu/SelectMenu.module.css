@@ -1,0 +1,16 @@
+.selectCenterLabel {
+  font-size: 15px;
+  padding-left: 3px;
+}
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.dropDownBox {
+  width: 100%;
+  padding: 5px 8px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}

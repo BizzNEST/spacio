@@ -86,7 +86,7 @@ const AvailabilityCards = ({ header, calendarList }) => {
           onOpenChange={setIsCreateEventModalOpen}
         >
           {calendarList.map((calendar) => (
-            <Modal.Trigger key={calendar.id} asChild>
+            <Modal.Trigger asChild key={calendar.id}>
               <Card
                 onClick={() => handleClick(calendar.id, calendar.title)}
                 title={calendar.title}

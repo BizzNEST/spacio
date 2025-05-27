@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
 import { useAuth } from '../../contexts/authContext';
 
-function Header() {
+function Header({ centerName }) {
   const navigate = useNavigate();
   const { setIsUserLoggedIn } = useAuth();
 
@@ -23,7 +23,7 @@ function Header() {
         <button className={styles.menuButton}>
           <Sidebar color="#6E6E73" aria-label="Toggle Sidebar" />
         </button>
-        <h1>Salinas Center Rooms</h1>
+        <h1>{centerName} Rooms</h1>
       </div>
       <div className={styles.headerContainer}>
         <div style={{ position: 'relative' }}>
