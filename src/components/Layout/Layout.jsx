@@ -17,10 +17,6 @@ function Layout() {
   const { setUserInfo } = useAuth();
   const [center, setCenter] = React.useState(`${centerName ?? 'Salinas'}`);
 
-  const centerCalendars = allCalendars.filter(
-    (calendar) => calendar.location === center
-  );
-
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
@@ -33,6 +29,10 @@ function Layout() {
   );
   //NOTE: This fetches logged in user info
   const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
+
+  const centerCalendars = !isLoadingCalendars
+    ? allCalendars.filter((calendar) => calendar.location === center)
+    : [];
 
   //NOTE: This fetches availability for all subscribed calendars
   const { data: calendarAvailabilities, isLoading: isLoadingAvailabilities } =

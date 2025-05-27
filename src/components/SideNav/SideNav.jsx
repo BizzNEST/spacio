@@ -53,7 +53,6 @@ function SideNav({ availabilities, center, setCenter }) {
 
         <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
 
-        <AvailabilityCards header="Available Now" calendarList={availableNow} />
         <div className={styles.availabilityContainer}>
           {availableCalendars.length > 0 && (
             <AvailabilityCards
