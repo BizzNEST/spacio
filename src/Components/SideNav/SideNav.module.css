@@ -1,0 +1,121 @@
+.topContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-self: start;
+  width: 100%;
+}
+
+.logoTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80%;
+  font-size: 2.5rem;
+}
+
+.logoCollapsed {
+  padding: 1rem;
+}
+
+.placeholderLogo {
+  width: 70px;
+  height: 70px;
+  padding-top: 13px;
+}
+
+.image {
+  background-color: #a6a6a6;
+  height: 50px;
+  width: 50px;
+  border-radius: 5px;
+}
+
+.profileImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 25%;
+}
+
+.meetingRooms {
+  display: flex;
+  gap: 1rem;
+  padding: 12px;
+  background-image: linear-gradient(to right, #3c80f6, #9232e9);
+  border-radius: 11px;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 50px;
+}
+
+.availabilityContainer {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.floorMap {
+  color: black;
+  padding: 15px;
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
+}
+
+.sideSearch {
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.sideTabs {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  color: #666666;
+  width: 100%;
+  border-right: solid orange 5px;
+  font-weight: 300;
+  text-decoration: none;
+}
+
+.sideTabs:hover {
+  background-color: #e9e9e9;
+  color: #666666;
+}
+
+.iconGrid {
+  font-size: 30px;
+}
+
+.bookButton {
+  align-self: end;
+}
+
+.buttonCollapsed {
+  border: none;
+  background: none;
+}
+
+.calendarIconCollapsed {
+  display: inline-block;
+  font-size: 24px;
+}
+
+/* Styling for Mobile Devices */
+@media screen and (max-width: 768px) {
+  .sidenav {
+    display: none;
+  }
+}
