@@ -109,23 +109,6 @@ const CalendarToolbar = ({
             <button>2nd Floor</button>
           </ButtonGroup.Item>
         </ButtonGroup> )}
-
-        <ButtonGroup
-          type="single"
-          value={currentView}
-          onValueChange={(value) => setCurrentView(value)}
-        >
-          {VIEW_OPTION.map(({ id, label }) => (
-            <ButtonGroup.Item
-              key={id}
-              value={id}
-              className={styles.toggle}
-              asChild
-            >
-              <button>{label}</button>
-            </ButtonGroup.Item>
-          ))}
-        </ButtonGroup>
       </div>
     </div>
   );

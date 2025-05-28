@@ -42,9 +42,8 @@
   display: flex;
   gap: 1rem;
   padding: 12px;
-  background-image: linear-gradient(to right, #3c80f6, #9232e9);
   border-radius: 11px;
-  color: white;
+  color: black;
   font-size: 1rem;
   text-decoration: none;
 }
@@ -110,6 +109,7 @@
 
 .calendarIconCollapsed {
   display: inline-block;
+  color: #3c80f6;
   font-size: 24px;
 }
 
