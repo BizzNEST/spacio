@@ -10,7 +10,6 @@ import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './SideNav.module.css';
 import SelectMenu from '../SelectMenu/SelectMenu';
-import { Spinner } from '@radix-ui/themes/dist/cjs/index.js';
 import { ClipLoader } from 'react-spinners';
 
 function SideNav({
