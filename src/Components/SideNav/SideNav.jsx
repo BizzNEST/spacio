@@ -11,6 +11,8 @@ import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectMenu from '../SelectMenu/SelectMenu';
 import { ClipLoader } from 'react-spinners';
+import Logo from '../../assets/logo.svg?react';
+import Icon from '../../assets/icon.svg?react';
 
 function SideNav({
   availabilities,
@@ -34,14 +36,20 @@ function SideNav({
     <nav className={`${className} ${isCollapsed ? styles.collapsed : ''}`}>
       <div className={styles.topContainer}>
         <div className={styles.logoTitle}>
-          <img
+          {isCollapsed ? (
+            <Icon className={styles.logoCollapsed} />
+          ) : (
+            <Logo className={styles.Logo} />
+          )}
+
+          {/* <img
             src={logo}
             alt="Placeholder Logo"
             className={
               isCollapsed ? styles.logoCollapsed : styles.placeholderLogo
             }
           />
-          {!isCollapsed && <p>spacio</p>}
+          {!isCollapsed && <p>spacio</p>} */}
         </div>
 
         {!isCollapsed && (
