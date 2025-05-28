@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './Header.module.css';
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Sidebar } from 'react-feather';
 import { signOut } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
 import { useAuth } from '../../contexts/authContext';
+import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 
-function Header({ centerName }) {
+function Header({ isCollapsed, setIsCollapsed, centerName }) {
   const navigate = useNavigate();
   const { setIsUserLoggedIn } = useAuth();
 
@@ -20,16 +19,19 @@ function Header({ centerName }) {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        <button className={styles.menuButton}>
-          <Sidebar color="#6E6E73" aria-label="Toggle Sidebar" />
-        </button>
+        <div
+          className={styles.sidebarToggleIcon}
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          {isCollapsed ? (
+            <GoSidebarCollapse className={styles.collapseIcon} />
+          ) : (
+            <GoSidebarExpand className={styles.expandIcon} />
+          )}
+        </div>
         <h1>{centerName} Rooms</h1>
       </div>
       <div className={styles.headerContainer}>
-        <div style={{ position: 'relative' }}>
-          <MagnifyingGlassIcon className={styles.searchIcon} />
-          <input type="text" placeholder="Search" className={styles.search} />
-        </div>
         <Button
           variant={'outline'}
           className={styles.logoutButton}

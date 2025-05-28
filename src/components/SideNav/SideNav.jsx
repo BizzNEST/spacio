@@ -1,16 +1,15 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../Modal/Modal';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
+import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
+import logo from '../../assets/placeholderLogo.svg';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
-import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from './SideNav.module.css';
 import SelectMenu from '../SelectMenu/SelectMenu';
-import { Spinner } from '@radix-ui/themes/dist/cjs/index.js';
 import { ClipLoader } from 'react-spinners';
 
 function SideNav({
@@ -18,6 +17,8 @@ function SideNav({
   center,
   setCenter,
   isLoadingAvailabilities,
+  isCollapsed,
+  className,
 }) {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] =
     React.useState(false);
@@ -30,51 +31,64 @@ function SideNav({
   );
 
   return (
-    <nav className={styles.sidenav}>
+    <nav className={`${className} ${isCollapsed ? styles.collapsed : ''}`}>
       <div className={styles.topContainer}>
         <div className={styles.logoTitle}>
           <img
-            src="https://plus.unsplash.com/premium_photo-1724222166545-3bcd79fec6ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YXZhdGFyJTIwd2l0aCUyMGJsdWUlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww"
-            alt="User Profile"
-            className={styles.profileImage}
+            src={logo}
+            alt="Placeholder Logo"
+            className={
+              isCollapsed ? styles.logoCollapsed : styles.placeholderLogo
+            }
           />
-          <p>Digital NEST</p>
+          {!isCollapsed && <p>spacio</p>}
         </div>
-        <NavLink
-          links={[
-            {
-              path: '/home',
-              label: 'Meeting Rooms',
-              className: styles.meetingRooms,
-              icon: <FontAwesomeIcon icon={faCalendar} />,
-            },
-            // {To Do: Uncomment once Floor Plan is implemented}
-            // {
-            //   path: '/floor-map',
-            //   label: 'Floor Map',
-            //   className: styles.floorMap,
-            //   icon: <FontAwesomeIcon icon={faBuilding} />,
-            // },
-          ]}
-        />
-        <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
-        {isLoadingAvailabilities ? (
-          <div className={styles.loadingContainer}>
-            <ClipLoader />
-          </div>
-        ) : (
-          <div className={styles.availabilityContainer}>
-            {availableCalendars.length > 0 && (
-              <AvailabilityCards
-                header="Available"
-                calendarList={availableCalendars}
-              />
-            )}
 
-            {busyCalendars.length > 0 && (
-              <AvailabilityCards header="Busy" calendarList={busyCalendars} />
+        {!isCollapsed && (
+          <NavLink
+            links={[
+              {
+                path: '/home',
+                label: 'Meeting Rooms',
+                className: styles.meetingRooms,
+                icon: <FontAwesomeIcon icon={faCalendar} />,
+              },
+              // {To Do: Uncomment once Floor Plan is implemented}
+              // {
+              //   path: '/floor-map',
+              //   label: 'Floor Map',
+              //   className: styles.floorMap,
+              //   icon: <FontAwesomeIcon icon={faBuilding} />,
+              // },
+            ]}
+          />
+        )}
+
+        {!isCollapsed && (
+          <>
+            <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
+            {isLoadingAvailabilities ? (
+              <div className={styles.loadingContainer}>
+                <ClipLoader />
+              </div>
+            ) : (
+              <div className={styles.availabilityContainer}>
+                {availableCalendars.length > 0 && (
+                  <AvailabilityCards
+                    header="Available"
+                    calendarList={availableCalendars}
+                  />
+                )}
+
+                {busyCalendars.length > 0 && (
+                  <AvailabilityCards
+                    header="Busy"
+                    calendarList={busyCalendars}
+                  />
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
       </div>
 
@@ -83,9 +97,17 @@ function SideNav({
         onOpenChange={setIsCreateEventModalOpen}
       >
         <Modal.Trigger asChild>
-          <Button variant="gradient" className={styles.bookButton}>
-            <FontAwesomeIcon icon={faCalendarAlt} />
-            Book a Room
+          <Button
+            variant={isCollapsed ? 'ghost' : 'gradient'}
+            className={isCollapsed ? styles.buttonCollapsed : styles.bookButton}
+          >
+            <FontAwesomeIcon
+              icon={faCalendarAlt}
+              className={
+                isCollapsed ? styles.calendarIconCollapsed : styles.calendarIcon
+              }
+            />
+            {!isCollapsed && <span>Book a Room</span>}
           </Button>
         </Modal.Trigger>
 

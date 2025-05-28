@@ -16,6 +16,7 @@ const centerName = localStorage.getItem('center');
 function Layout() {
   const { setUserInfo } = useAuth();
   const [center, setCenter] = React.useState(`${centerName ?? 'Salinas'}`);
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
 
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
@@ -55,15 +56,21 @@ function Layout() {
   }
 
   return (
-    <div className={styles.layout}>
+    <div className={`${isCollapsed ? styles.layoutCollapsed : styles.layout}`}>
       <SideNav
+        className={styles.sideNav}
         availabilities={calendarAvailabilities}
         center={center}
         setCenter={setCenter}
         isLoadingAvailabilities={isLoadingAvailabilities}
+        isCollapsed={isCollapsed}
       />
-      <Dashboard>
-        <Header centerName={center} />
+      <Dashboard className={styles.dashboard}>
+        <Header
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+          centerName={center}
+        />
         <CalendarDashboard events={events} calendars={centerCalendars} />
       </Dashboard>
     </div>
