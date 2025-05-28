@@ -14,12 +14,25 @@ const getEvents = async (calendarId = 'primary', userInfo) => {
     });
 
     //Return an array of events objects with the values we want
-    const events = response.result.items.map((event) => {
-      const attendeeNames = event.attendees
-        ? event.attendees
-            .filter((a) => !a.resource)
-            .map((a) => a.displayName || (a.email?.split('@')[0] ?? 'Unknown'))
-        : [];
+    const events = response.result.items
+      .map((event) => {
+        if (!event.start.dateTime || !event.end.dateTime) {
+          return {};
+        }
+
+        // Check if this event has resources and if they're accepted
+        if (event.attendees) {
+          for (const attendee of event.attendees) {
+            if (attendee.resource && attendee.responseStatus !== 'accepted') {
+              return {}; 
+            }
+          }
+        }
+        const attendeeNames = event.attendees
+          ? event.attendees
+              .filter((a) => !a.resource)
+              .map((a) => a.displayName || (a.email?.split('@')[0] ?? 'Unknown'))
+          : [];
 
       const isOrganizer = event.organizer?.email === userInfo.email;
 
@@ -29,6 +42,7 @@ const getEvents = async (calendarId = 'primary', userInfo) => {
         start: new Date(event.start.dateTime),
         end: new Date(event.end.dateTime),
         date: new Date(event.start.dateTime),
+
         attendees: attendeeNames,
         resourceId: calendarId,
         isOrganizer,
