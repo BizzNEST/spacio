@@ -78,7 +78,9 @@ const AvailabilityCards = ({ header, calendarList }) => {
 
   return (
     <div className={styles.availabilityListContainer}>
-      <h3>{header}</h3>
+      <h3>
+        {header} ({calendarList.length})
+      </h3>
 
       <div className={styles.roomsAvailable}>
         <Modal

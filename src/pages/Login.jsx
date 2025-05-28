@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../contexts/authContext';
 
+import Logo from '../assets/logo.svg?react';
+
 function Login() {
   const {
     isUserLoggedIn,
@@ -47,7 +49,7 @@ function Login() {
     <div className={styles.animatedBackground}>
       <div className={styles.container}>
         <div className={styles.title}>
-          <h1>OfficeFlow</h1>
+          <Logo className={styles.logo} />
           <p className={styles.note}>Reservations made easy.</p>
         </div>
 
