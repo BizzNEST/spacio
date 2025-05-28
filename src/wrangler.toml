@@ -1,0 +1,12 @@
+name = "spacio"
+type = "javascript"
+
+account_id = "96d11628c1a1306abb0872b7c103f026"  # Optional for Pages, required for Workers
+compatibility_date = "2025-05-28"
+
+[site]
+bucket = "./dist"
+entry-point = "."
+
+[build]
+command = "npm run build"

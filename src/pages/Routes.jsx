@@ -4,8 +4,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Login from './Login';
-import Layout from '../components/Layout/Layout';
-
+import Layout from '../Components/Layout/Layout';
 import ProtectedRoute from '../Components/ProtectedRoute/ProtectedRoute';
 
 const routes = createBrowserRouter(
