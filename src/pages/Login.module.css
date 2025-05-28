@@ -1,18 +1,17 @@
 .animatedBackground {
-	background: linear-gradient(
-		45deg,
+  background: linear-gradient(
+    45deg,
     #9dffdb,
     #8bee6c,
     #6ceea2,
     #4185d9,
     #4144d9,
     #4185d9,
-		#91efff,
-		#d5f9ff
-	);
-	background-size: 400% 400%;
-	animation: gradient 10s ease infinite;
-	
+    #91efff,
+    #d5f9ff
+  );
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
 }
 
 .container {
@@ -26,18 +25,26 @@
   color: white;
 }
 
+.logo {
+  align-self: center;
+  width: 80%;
+  fill: white;
+}
+
 .title {
-  font-size: 36px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 }
 
 .note {
-  font-size: 25px;
+  font-size: 34px;
 }
 
 .loginButton {
   background-color: white;
-  width: 250px;
-  height: 35px;
+  width: 260px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,16 +52,17 @@
   border-radius: 5px;
   border: none;
   color: rgb(114, 118, 128);
+  font-size: 20px;
 }
 
 @keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
