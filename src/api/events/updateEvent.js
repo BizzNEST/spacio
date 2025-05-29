@@ -7,6 +7,19 @@ const updateEvent = async (payload) => {
   try {
     const resourceId = payload.attendees[0]?.email;
 
+    // Get current event details
+    const existingEvent = await gapi.client.calendar.events.get({
+      calendarId: 'primary',
+      eventId: payload.id,
+    });
+
+    //Retrieve start and end times
+    const existingStart = existingEvent.result.start.dateTime;
+    const existingEnd = existingEvent.result.end.dateTime;
+    //Convert them into milliseconds
+    const existingStartTime = new Date(existingStart).getTime();
+    const existingEndTime = new Date(existingEnd).getTime();
+
     //Make sure resource is available before creating event
     const availablityResponse = await getAvailabilityByCalendarId(
       resourceId,
@@ -14,8 +27,18 @@ const updateEvent = async (payload) => {
       payload.end.dateTime
     );
 
-    //If availablityResponse.busy array is empty, then the room is available
-    const isAvailable = availablityResponse.busy.length === 0;
+    // Filter out the already existing busy slot
+    const filteredBusy = availablityResponse.busy.filter((slot) => {
+      const busyStartTime = new Date(slot.start).getTime();
+      const busyEndTime = new Date(slot.end).getTime();
+
+      return !(
+        busyStartTime === existingStartTime && busyEndTime === existingEndTime
+      );
+    });
+
+    //If we have no busy slots other than the existing one, then the room is available
+    const isAvailable = filteredBusy.length === 0;
 
     let busyStartTime = null;
     let busyEndTime = null;
@@ -26,13 +49,7 @@ const updateEvent = async (payload) => {
       busyEndTime = format(availablityResponse.busy[0].end, 'hh:mmaaa');
 
       //Return busy message
-      return {
-        success: false,
-        message: `This room is busy from ${busyStartTime} to ${busyEndTime}`,
-        busySlots: availablityResponse.busy,
-        busyStartTime,
-        busyEndTime,
-      };
+      throw new Error(`Room is busy from ${busyStartTime} to ${busyEndTime}`);
     }
 
     //Update the event now that we know the room is available
@@ -45,7 +62,7 @@ const updateEvent = async (payload) => {
     return response;
   } catch (error) {
     console.error('Error updating event:', error);
-    return [];
+    throw error;
   }
 };
 

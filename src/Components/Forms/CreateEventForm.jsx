@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Modal from '../Modal/Modal';
 import { combineDateAndTime, roundUpToNext15 } from './helpers';
 import useCreateEvent from '../../api/events/useCreateEvent';
+import { toast } from 'react-toastify';
 
 const CreateEventForm = ({
   calendars,
@@ -66,12 +67,21 @@ const CreateEventForm = ({
         : [],
     };
 
-    const response = await eventMutation.mutateAsync(eventPayload);
-    if (response.success === false) {
-      alert(response.message);
+    try {
+      await toast.promise(eventMutation.mutateAsync(eventPayload), {
+        pending: 'Booking room. Please wait...',
+        success: 'Room booked successfully!',
+        error: {
+          render({ data }) {
+            return data?.message || 'Something went wrong! Please try again.';
+          },
+        },
+      });
+
+      afterSave();
+    } catch {
       return;
     }
-    afterSave();
   };
 
   return (
