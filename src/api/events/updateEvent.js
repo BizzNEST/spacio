@@ -37,7 +37,7 @@ const updateEvent = async (payload) => {
       );
     });
 
-    //If availablityResponse.busy array is empty, then the room is available
+    //If we have no busy slots other than the existing one, then the room is available
     const isAvailable = filteredBusy.length === 0;
 
     let busyStartTime = null;
