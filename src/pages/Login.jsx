@@ -8,6 +8,8 @@ import { useAuth } from '../contexts/authContext';
 
 import Logo from '../assets/logo.svg?react';
 
+const scopes = import.meta.env.VITE_SCOPE;
+
 function Login() {
   const {
     isUserLoggedIn,
@@ -43,6 +45,7 @@ function Login() {
       console.log('Login Failed:', error);
       setIsUserLoggedIn(false);
     },
+    scope: scopes,
   });
 
   return (
