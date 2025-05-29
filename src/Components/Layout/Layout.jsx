@@ -10,6 +10,7 @@ import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
 import useGetUserInfo from '../../api/users/useGetUserInfo';
 import { useAuth } from '../../contexts/authContext';
+import useGetPeople from '../../api/people/useGetPeople';
 
 const centerName = localStorage.getItem('center');
 
@@ -21,19 +22,23 @@ function Layout() {
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
-  //NOTE: This fetches 25 events from all subscribed calendars
-  const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
-    allCalendars,
-    {
-      enabled: !!allCalendars && allCalendars.length > 0,
-    }
-  );
-  //NOTE: This fetches logged in user info
-  const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
 
   const centerCalendars = !isLoadingCalendars
     ? allCalendars.filter((calendar) => calendar.location === center)
     : [];
+
+  //NOTE: This fetches all people in domain
+  const { data: people, isLoading: isLoadingPeople } =
+    useGetPeople(allCalendars);
+
+  //NOTE: This fetches 25 events from all subscribed calendars
+  const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
+    centerCalendars,
+    people
+  );
+
+  //NOTE: This fetches logged in user info
+  const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
 
   //NOTE: This fetches availability for all calendars at center
   const { data: calendarAvailabilities, isLoading: isLoadingAvailabilities } =
@@ -45,13 +50,7 @@ function Layout() {
     }
   }, [userInfo, setUserInfo]);
 
-  if (
-    isLoadingCalendars ||
-    isLoadingEvents ||
-    isLoadingUserInfo
-    // ||
-    // isLoadingAvailabilities
-  ) {
+  if (isLoadingCalendars || isLoadingUserInfo || isLoadingPeople) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 
@@ -71,7 +70,11 @@ function Layout() {
           setIsCollapsed={setIsCollapsed}
           centerName={center}
         />
-        <CalendarDashboard events={events} calendars={centerCalendars} />
+        <CalendarDashboard
+          events={events}
+          calendars={centerCalendars}
+          isLoadingEvents={isLoadingEvents}
+        />
       </Dashboard>
     </div>
   );

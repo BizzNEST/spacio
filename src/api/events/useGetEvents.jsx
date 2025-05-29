@@ -1,28 +1,16 @@
 import { useQueries } from '@tanstack/react-query';
 import getEvents from './getEvents';
 import { useAuth } from '../../contexts/authContext';
-import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 
-// const isResourceCalendar = (calendar) => {
-//   console.log('input calendar: ', calendar);
-//   return (
-//     calendar.resourceType === 'room' ||
-//     calendar.id.includes('resource.calendar.google.com') ||
-//     calendarToRoomMap[calendar.id] != null // If it exists in your room mapping
-//   );
-// };
-
-export const useFetchAllEvents = (calendars = []) => {
+export const useFetchAllEvents = (calendars = [], people) => {
   const { isUserLoggedIn, isGapiReady, userInfo } = useAuth();
-
-  // Filter to only include resource calendars
-  //const resourceCalendars = calendars.filter(isResourceCalendar);
 
   const queryResults = useQueries({
     queries: calendars.map((calendar) => ({
       queryKey: ['events', calendar.id],
-      queryFn: () => getEvents(calendar.id, userInfo),
-      enabled: isUserLoggedIn && isGapiReady && !!calendar && !!userInfo,
+      queryFn: () => getEvents(calendar.id, userInfo, people),
+      enabled:
+        isUserLoggedIn && isGapiReady && !!calendar && !!userInfo && !!people,
       refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
     })),
   });

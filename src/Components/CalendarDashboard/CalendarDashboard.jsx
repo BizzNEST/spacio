@@ -11,6 +11,7 @@ import styles from './CalendarDashboard.module.css';
 import useFilterResourceByFloor from '../../hooks/useFilteredRooms';
 import EditEventForm from '../Forms/EditEventForm';
 import CreateEventForm from '../Forms/CreateEventForm';
+import { ClipLoader } from 'react-spinners';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -21,7 +22,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const MeetingRoomCalendar = ({ events, calendars }) => {
+const MeetingRoomCalendar = ({ events, calendars, isLoadingEvents }) => {
   const [filterType, setFilterType] = useState('all');
   const [currentDate, setCurrentDate] = useState(
     format(new Date(), 'EEEE, MMMM dd, yyyy')
@@ -30,7 +31,6 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   const [isEventModalOpen, setIsEventModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [selectedEvent, setSelectedEvent] = React.useState(null);
-
   const [currentView, setCurrentView] = React.useState(Views.DAY);
 
   const filterResources = useFilterResourceByFloor(calendars, filterType);
@@ -49,6 +49,15 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   const formats = {
     timeGutterFormat: (date) => format(date, 'h:mma'),
   };
+
+  if (isLoadingEvents) {
+    return (
+      <div className={styles.loaderContainer}>
+        <p>Loading Calendar...</p>
+        <ClipLoader />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.meetingRoomsContainer}>
@@ -100,6 +109,9 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
         <Modal open={isEventModalOpen} onOpenChange={setIsEventModalOpen}>
           <Modal.Content
             title={selectedEvent.title ? selectedEvent.title : '(No title)'}
+            subtitle={
+              selectedEvent.bookedBy && `Booked by: ${selectedEvent.bookedBy}`
+            }
           >
             <EditEventForm
               selectedEvent={selectedEvent}
