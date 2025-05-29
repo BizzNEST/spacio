@@ -43,7 +43,8 @@
   gap: 1rem;
   padding: 12px;
   border-radius: 11px;
-  color: black;
+  background-image: linear-gradient(to right, #3c80f6, #9232e9);
+  color: white;
   font-size: 1rem;
   text-decoration: none;
 }
@@ -58,7 +59,7 @@
 
 .availabilityContainer {
   display: grid;
-  gap: 8px;
+  gap: 20px;
   width: 100%;
 }
 
@@ -99,7 +100,7 @@
 }
 
 .bookButton {
-  align-self: end;
+  width: 100%;
 }
 
 .buttonCollapsed {

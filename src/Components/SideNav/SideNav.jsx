@@ -44,7 +44,7 @@ function SideNav({
           {!isCollapsed && <p>spacio</p>}
         </div>
 
-        {!isCollapsed && (
+        {/* {!isCollapsed && (
           <NavLink
             links={[
               {
@@ -62,7 +62,41 @@ function SideNav({
               // },
             ]}
           />
-        )}
+        )} */}
+
+        <Modal
+          open={isCreateEventModalOpen}
+          onOpenChange={setIsCreateEventModalOpen}
+        >
+          <Modal.Trigger asChild>
+            <Button
+              variant={isCollapsed ? 'ghost' : 'gradient'}
+              className={
+                isCollapsed ? styles.buttonCollapsed : styles.bookButton
+              }
+            >
+              <FontAwesomeIcon
+                icon={faCalendarAlt}
+                className={
+                  isCollapsed
+                    ? styles.calendarIconCollapsed
+                    : styles.calendarIcon
+                }
+              />
+              {!isCollapsed && <span>Book a Room</span>}
+            </Button>
+          </Modal.Trigger>
+
+          <Modal.Content
+            title={'Book a Room'}
+            subtitle={'Select your prefered time and date.'}
+          >
+            <CreateEventForm
+              calendars={availableCalendars}
+              afterSave={() => setIsCreateEventModalOpen(false)}
+            />
+          </Modal.Content>
+        </Modal>
 
         {!isCollapsed && (
           <>
@@ -91,36 +125,6 @@ function SideNav({
           </>
         )}
       </div>
-
-      <Modal
-        open={isCreateEventModalOpen}
-        onOpenChange={setIsCreateEventModalOpen}
-      >
-        <Modal.Trigger asChild>
-          <Button
-            variant={isCollapsed ? 'ghost' : 'gradient'}
-            className={isCollapsed ? styles.buttonCollapsed : styles.bookButton}
-          >
-            <FontAwesomeIcon
-              icon={faCalendarAlt}
-              className={
-                isCollapsed ? styles.calendarIconCollapsed : styles.calendarIcon
-              }
-            />
-            {!isCollapsed && <span>Book a Room</span>}
-          </Button>
-        </Modal.Trigger>
-
-        <Modal.Content
-          title={'Book a Room'}
-          subtitle={'Select your prefered time and date.'}
-        >
-          <CreateEventForm
-            calendars={availableCalendars}
-            afterSave={() => setIsCreateEventModalOpen(false)}
-          />
-        </Modal.Content>
-      </Modal>
     </nav>
   );
 }
