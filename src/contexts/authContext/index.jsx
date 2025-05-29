@@ -34,11 +34,11 @@ export function AuthProvider({ children }) {
       try {
         await new Promise((resolve) => gapi.load('client:auth2', resolve));
         await gapi.client.init({
-          apiKey,
           clientId,
           scope,
           discoveryDocs: [
             'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
+            'https://admin.googleapis.com/$discovery/rest?version=directory_v1',
           ],
         });
 

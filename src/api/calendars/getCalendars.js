@@ -9,6 +9,8 @@ import {
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase.config';
 
+const apiKey = import.meta.env.VITE_API_KEY;
+
 const getCalendars = async () => {
   try {
     // //Retrieve all the calendars from the user's calendar list
@@ -18,6 +20,12 @@ const getCalendars = async () => {
     // //Finally, return an array of calendars with the parameters we want for convenience
     // const calendars = calendarItems.map((calendar, index) => {
     //   const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
+
+    const response = await gapi.client.directory.resources.calendars.list({
+      customer: 'my_customer',
+    });
+
+    console.log('response: ', response);
 
     const querySnapshot = await getDocs(collection(db, 'rooms'));
     const documents = [];
