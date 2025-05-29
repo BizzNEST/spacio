@@ -83,10 +83,14 @@ const AvailabilityCards = ({ header, calendarList }) => {
                     color={getTagColor(calendar)}
                     tagFormat={styles.statusTag}
                   >
-                    <FontAwesomeIcon
-                      icon={getTagIcon(calendar)}
-                      className={styles.statusIcon}
-                    />
+                    {(calendar.nextAvailableTimeInMinutes > 15 ||
+                      calendar.isAvailable) && (
+                      <FontAwesomeIcon
+                        icon={getTagIcon(calendar)}
+                        className={styles.statusIcon}
+                      />
+                    )}
+
                     {getTagLabel(calendar)}
                   </StatusTag>
                 }
