@@ -7,6 +7,8 @@ import useDeleteEvent from '../../api/events/useDeleteEvents';
 import DatePicker from 'react-datepicker';
 import { combineDateAndTime } from './helpers';
 import useUpdateEvent from '../../api/events/useUpdateEvent';
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditEventForm = ({
   selectedEvent,
@@ -64,21 +66,28 @@ const EditEventForm = ({
         ? [{ email: selectedEvent.resourceId }]
         : [],
     };
-
-    //Update event
-    const response = await updateEventMutation.mutateAsync(eventPayload);
-    if (response.success === false) {
-      alert(response.message);
-      return;
-    }
-
-    afterSave();
   };
 
-  const handleDelete = () => {
+  //Update event
+  const handleUpdate = async (eventPayload) => {
+    try {
+      await toast.promise(
+        updateEventMutation.mutateAsync(eventPayload),
+        {
+          pending: 'Updating event...',
+          success: 'Event updated successfully!',
+          error: 'Failed to update event.',
+        },
+        { className: styles.toast }
+      );
+      afterSave();
+    } catch (error) {}
+  };
+  const handleDelete = async () => {
     const eventId = selectedEvent.id;
     deleteEventMutation.mutate(eventId);
     setConfirmDelete(false);
+    toast('Reservation deleted successully');
     afterSave();
   };
 

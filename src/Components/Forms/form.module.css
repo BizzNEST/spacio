@@ -1,70 +1,73 @@
+.toast {
+  z-index: 2;
+  position: absolute;
+}
 .form {
-    display: grid;
-    gap: 14px;
+  display: grid;
+  gap: 14px;
 }
 
 .inputContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .inputContainer label {
-    font-size: 14px;
-    font-weight: 400;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .inputContainer input {
-    padding: 4px 8px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
+  padding: 4px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
 }
 
 .datePicker {
-    max-width: 140px;
-    width: 100%;
+  max-width: 140px;
+  width: 100%;
 }
 
 .inputContainer select {
-    padding: 8px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    background-color: #ffffff;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #ffffff;
 }
 
 .timeInputContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
 }
 
 .btnContainer {
-    display: flex;
-    gap: 8px;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .btnContainer div {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .btnContainer button {
-    min-width: 75px;
+  min-width: 75px;
 }
 
 .disabled {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .disabledBtn {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-
 .error {
-    font-size: 0.9rem;
-    color: red;
+  font-size: 0.9rem;
+  color: red;
 }

@@ -1,4 +1,7 @@
 import "@radix-ui/themes/styles.css";
+.toast {
+  z-index: 2;
+}
 /* 1. Use a more-intuitive box-sizing model */
 *,
 *::before,

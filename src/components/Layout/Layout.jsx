@@ -10,6 +10,8 @@ import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
 import useGetUserInfo from '../../api/users/useGetUserInfo';
 import { useAuth } from '../../contexts/authContext';
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const centerName = localStorage.getItem('center');
 
