@@ -67,27 +67,21 @@ const CreateEventForm = ({
         : [],
     };
 
-    // const response = await eventMutation.mutateAsync(eventPayload);
-    // if (response.success === false) {
-    //   alert(response.message);
-    //   return;
-    // }
-
-    toast.promise(
-      eventMutation.mutateAsync(eventPayload),
-      {
-        pending: 'Booking room. Please wait.',
+    try {
+      await toast.promise(eventMutation.mutateAsync(eventPayload), {
+        pending: 'Booking room. Please wait...',
         success: 'Room booked successfully!',
         error: {
           render({ data }) {
-            // data is the error object thrown from createEvent
-            return data?.message || 'Something went wrong!';
+            return data?.message || 'Something went wrong! Please try again.';
           },
         },
-      },
-      { className: styles.toast }
-    );
-    afterSave();
+      });
+
+      afterSave();
+    } catch {
+      return;
+    }
   };
 
   return (

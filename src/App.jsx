@@ -22,13 +22,11 @@ function App() {
             className={'toast'}
             position="bottom-center"
             autoClose={5000}
-            hideProgressBar={false}
+            hideProgressBar
             newestOnTop={false}
             closeOnClick={false}
             rtl={false}
-            pauseOnFocusLoss
             draggable
-            pauseOnHover
             theme="colored"
             transition={Bounce}
           />
