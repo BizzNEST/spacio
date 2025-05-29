@@ -30,7 +30,6 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
   const [isEventModalOpen, setIsEventModalOpen] = React.useState(false);
   const [selectedSlot, setSelectedSlot] = React.useState(null);
   const [selectedEvent, setSelectedEvent] = React.useState(null);
-
   const [currentView, setCurrentView] = React.useState(Views.DAY);
 
   const filterResources = useFilterResourceByFloor(calendars, filterType);
@@ -100,6 +99,9 @@ const MeetingRoomCalendar = ({ events, calendars }) => {
         <Modal open={isEventModalOpen} onOpenChange={setIsEventModalOpen}>
           <Modal.Content
             title={selectedEvent.title ? selectedEvent.title : '(No title)'}
+            subtitle={
+              selectedEvent.bookedBy && `Booked by: ${selectedEvent.bookedBy}`
+            }
           >
             <EditEventForm
               selectedEvent={selectedEvent}

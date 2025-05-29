@@ -10,6 +10,7 @@ import { useFetchAllEvents } from '../../api/events/useGetEvents';
 import Loader from '../Loader/Loader';
 import useGetUserInfo from '../../api/users/useGetUserInfo';
 import { useAuth } from '../../contexts/authContext';
+import useGetPeople from '../../api/people/useGetPeople';
 
 const centerName = localStorage.getItem('center');
 
@@ -21,13 +22,17 @@ function Layout() {
   //NOTE: This fetches all calendars that users are subscribed to
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
+
+  //NOTE: This fetches all people in domain
+  const { data: people, isLoading: isLoadingPeople } =
+    useGetPeople(allCalendars);
+
   //NOTE: This fetches 25 events from all subscribed calendars
   const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
     allCalendars,
-    {
-      enabled: !!allCalendars && allCalendars.length > 0,
-    }
+    people
   );
+
   //NOTE: This fetches logged in user info
   const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
 
@@ -48,9 +53,8 @@ function Layout() {
   if (
     isLoadingCalendars ||
     isLoadingEvents ||
-    isLoadingUserInfo
-    // ||
-    // isLoadingAvailabilities
+    isLoadingUserInfo ||
+    isLoadingPeople
   ) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
