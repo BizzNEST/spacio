@@ -7,6 +7,7 @@ import useDeleteEvent from '../../api/events/useDeleteEvents';
 import DatePicker from 'react-datepicker';
 import { combineDateAndTime } from './helpers';
 import useUpdateEvent from '../../api/events/useUpdateEvent';
+import { toast } from 'react-toastify';
 
 const EditEventForm = ({
   selectedEvent,
@@ -66,11 +67,15 @@ const EditEventForm = ({
     };
 
     //Update event
-    const response = await updateEventMutation.mutateAsync(eventPayload);
-    if (response.success === false) {
-      alert(response.message);
-      return;
-    }
+    toast.promise(updateEventMutation.mutateAsync(eventPayload), {
+      pending: 'Updating room. Please wait...',
+      success: 'Room updated successfully!',
+      error: {
+        render({ data }) {
+          return data?.message || 'Something went wrong! Please try again.';
+        },
+      },
+    });
 
     afterSave();
   };
@@ -78,6 +83,7 @@ const EditEventForm = ({
   const handleDelete = () => {
     const eventId = selectedEvent.id;
     deleteEventMutation.mutate(eventId);
+    toast.success('Reservation deleted sucessfully!');
     setConfirmDelete(false);
     afterSave();
   };

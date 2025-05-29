@@ -5,9 +5,7 @@ import { faCalendarAlt, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
 import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
-import logo from '../../assets/placeholderLogo.svg';
 import AvailabilityCards from '../AvailabilityCards/AvailabilityCards';
-import NavLink from '../NavLink/NavLink';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectMenu from '../SelectMenu/SelectMenu';
 import { ClipLoader } from 'react-spinners';
@@ -119,6 +117,7 @@ function SideNav({
                   <AvailabilityCards
                     header="Available"
                     calendarList={availableCalendars}
+                    availableOptions={availableCalendars}
                   />
                 )}
 
@@ -126,6 +125,7 @@ function SideNav({
                   <AvailabilityCards
                     header="Busy"
                     calendarList={busyCalendars}
+                    availableOptions={availableCalendars}
                   />
                 )}
               </div>
