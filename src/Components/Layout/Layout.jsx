@@ -23,22 +23,22 @@ function Layout() {
   const { data: allCalendars, isLoading: isLoadingCalendars } =
     useGetCalendars();
 
+  const centerCalendars = !isLoadingCalendars
+    ? allCalendars.filter((calendar) => calendar.location === center)
+    : [];
+
   //NOTE: This fetches all people in domain
   const { data: people, isLoading: isLoadingPeople } =
     useGetPeople(allCalendars);
 
   //NOTE: This fetches 25 events from all subscribed calendars
   const { data: events, isLoading: isLoadingEvents } = useFetchAllEvents(
-    allCalendars,
+    centerCalendars,
     people
   );
 
   //NOTE: This fetches logged in user info
   const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserInfo();
-
-  const centerCalendars = !isLoadingCalendars
-    ? allCalendars.filter((calendar) => calendar.location === center)
-    : [];
 
   //NOTE: This fetches availability for all calendars at center
   const { data: calendarAvailabilities, isLoading: isLoadingAvailabilities } =
@@ -50,12 +50,7 @@ function Layout() {
     }
   }, [userInfo, setUserInfo]);
 
-  if (
-    isLoadingCalendars ||
-    isLoadingEvents ||
-    isLoadingUserInfo ||
-    isLoadingPeople
-  ) {
+  if (isLoadingCalendars || isLoadingUserInfo || isLoadingPeople) {
     return <Loader label={'Preparing your dashboard...'} />;
   }
 
@@ -75,7 +70,11 @@ function Layout() {
           setIsCollapsed={setIsCollapsed}
           centerName={center}
         />
-        <CalendarDashboard events={events} calendars={centerCalendars} />
+        <CalendarDashboard
+          events={events}
+          calendars={centerCalendars}
+          isLoadingEvents={isLoadingEvents}
+        />
       </Dashboard>
     </div>
   );
