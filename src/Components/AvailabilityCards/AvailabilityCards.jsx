@@ -17,13 +17,10 @@ const AvailabilityCards = ({ header, calendarList }) => {
 
   const getTagColor = (resource) => {
     const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
-    const isBusySoon =
-      resource.timeBeforeBusyInMinutes < 15 &&
-      resource.timeBeforeBusyInMinutes != 0;
 
     //If the room is not available or will be busy soon
     if (resource.isAvailable == false) {
-      return isAvailableSoon || isBusySoon ? 'notice' : 'warning';
+      return isAvailableSoon ? 'info' : 'warning';
     }
 
     //Otherwise, the room is available
@@ -32,20 +29,12 @@ const AvailabilityCards = ({ header, calendarList }) => {
 
   const getTagLabel = (resource) => {
     const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
-    const isBusySoon =
-      resource.timeBeforeBusyInMinutes < 15 &&
-      resource.timeBeforeBusyInMinutes != 0;
 
     //If the room is not available or will be busy soon
     if (resource.isAvailable == false) {
       //Check if the room is available soon
       if (isAvailableSoon) {
         return `Free in ${resource.nextAvailableTimeInMinutes + 1}m`;
-      }
-
-      //Otherwise, check if the room will be busy soon
-      if (isBusySoon) {
-        return 'Busy Soon';
       }
 
       //Otherwise, the room is busy
@@ -57,12 +46,9 @@ const AvailabilityCards = ({ header, calendarList }) => {
 
   const getTagIcon = (resource) => {
     const isAvailableSoon = resource.nextAvailableTimeInMinutes < 15;
-    const isBusySoon =
-      resource.timeBeforeBusyInMinutes < 15 &&
-      resource.timeBeforeBusyInMinutes != 0;
 
     if (resource.isAvailable == false) {
-      return isAvailableSoon || isBusySoon ? faHourglassHalf : faClock;
+      return isAvailableSoon ? '' : faClock;
     }
 
     return faCheckCircle;
