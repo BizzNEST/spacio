@@ -10,7 +10,7 @@ const SelectMenu = memo(function SelectMenu({ center, setCenter }) {
   return (
     <div className={styles.selectWrapper}>
       <label className={styles.selectCenterLabel} htmlFor="center">
-        Select center:
+        Select center
       </label>
       <select
         className={styles.dropDownBox}

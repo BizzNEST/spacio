@@ -49,13 +49,7 @@ const updateEvent = async (payload) => {
       busyEndTime = format(availablityResponse.busy[0].end, 'hh:mmaaa');
 
       //Return busy message
-      return {
-        success: false,
-        message: `This room is busy from ${busyStartTime} to ${busyEndTime}`,
-        busySlots: availablityResponse.busy,
-        busyStartTime,
-        busyEndTime,
-      };
+      throw new Error(`Room is busy from ${busyStartTime} to ${busyEndTime}`);
     }
 
     //Update the event now that we know the room is available
@@ -68,7 +62,7 @@ const updateEvent = async (payload) => {
     return response;
   } catch (error) {
     console.error('Error updating event:', error);
-    return [];
+    throw error;
   }
 };
 
