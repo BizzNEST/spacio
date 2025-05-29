@@ -7,6 +7,19 @@ const updateEvent = async (payload) => {
   try {
     const resourceId = payload.attendees[0]?.email;
 
+    // Get current event details
+    const existingEvent = await gapi.client.calendar.events.get({
+      calendarId: 'primary',
+      eventId: payload.id,
+    });
+
+    //Retrieve start and end times
+    const existingStart = existingEvent.result.start.dateTime;
+    const existingEnd = existingEvent.result.end.dateTime;
+    //Convert them into milliseconds
+    const existingStartTime = new Date(existingStart).getTime();
+    const existingEndTime = new Date(existingEnd).getTime();
+
     //Make sure resource is available before creating event
     const availablityResponse = await getAvailabilityByCalendarId(
       resourceId,
@@ -14,8 +27,18 @@ const updateEvent = async (payload) => {
       payload.end.dateTime
     );
 
+    // Filter out the already existing busy slot
+    const filteredBusy = availablityResponse.busy.filter((slot) => {
+      const busyStartTime = new Date(slot.start).getTime();
+      const busyEndTime = new Date(slot.end).getTime();
+
+      return !(
+        busyStartTime === existingStartTime && busyEndTime === existingEndTime
+      );
+    });
+
     //If availablityResponse.busy array is empty, then the room is available
-    const isAvailable = availablityResponse.busy.length === 0;
+    const isAvailable = filteredBusy.length === 0;
 
     let busyStartTime = null;
     let busyEndTime = null;
