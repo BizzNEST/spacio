@@ -25,14 +25,8 @@ const createEvent = async (payload) => {
       busyStartTime = format(availablityResponse.busy[0].start, 'hh:mmaaa');
       busyEndTime = format(availablityResponse.busy[0].end, 'hh:mmaaa');
 
-      //Return busy message
-      return {
-        success: false,
-        message: `This room is busy from ${busyStartTime} to ${busyEndTime}`,
-        busySlots: availablityResponse.busy,
-        busyStartTime,
-        busyEndTime,
-      };
+      //Return busy error
+      throw new Error(`Room is busy from ${busyStartTime} to ${busyEndTime}`);
     }
 
     //Create the event now that we know the room is available
@@ -44,7 +38,7 @@ const createEvent = async (payload) => {
     return response;
   } catch (error) {
     console.error('Error creating event:', error);
-    return [];
+    throw error;
   }
 };
 
