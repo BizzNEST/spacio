@@ -3,28 +3,17 @@ import { useAuth } from '../../contexts/authContext';
 import { calendarToRoomMap } from '../../helpers/calendarToRoomMap';
 import { getAvailability } from './getAvailability';
 
-const ONE_MINUTE = 60000
-
-// const isResourceCalendar = (calendar) => {
-//   return (
-//     calendar.resourceType === 'room' ||
-//     calendar.id.includes('resource.calendar.google.com') ||
-//     calendarToRoomMap[calendar.id] != null // If it exists in your room mapping
-//   );
-// };
+const ONE_MINUTE = 60000;
 
 export const useGetAvailability = (calendars = []) => {
   const { isUserLoggedIn, isGapiReady } = useAuth();
-
-  // Filter to only include resource calendars
-  //const resourceCalendars = calendars.filter(isResourceCalendar);
 
   const isBusy = useQueries({
     queries: calendars.map((calendar) => ({
       queryKey: ['available', calendar.id],
       queryFn: () => getAvailability(calendar),
       enabled: isUserLoggedIn && isGapiReady && !!calendar,
-      refetchInterval: ONE_MINUTE
+      refetchInterval: ONE_MINUTE,
       // refetchOnWindowFocus: false,
     })),
   });
