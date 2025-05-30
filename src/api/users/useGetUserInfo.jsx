@@ -10,7 +10,7 @@ const useGetUserInfo = () => {
     queryFn: () => getUserInfo(accessToken),
     enabled: isUserLoggedIn && isGapiReady,
     retry: 2,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: false, // <- Keep this since we only need to fetch user info once
   });
 };
 
