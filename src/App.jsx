@@ -21,11 +21,12 @@ function App() {
           <ToastContainer
             className={'toast'}
             position="bottom-center"
-            autoClose={5000}
-            hideProgressBar
+            autoClose={8000}
+            hideProgressBar={false}
             newestOnTop={false}
-            closeOnClick={false}
+            closeOnClick={true}
             rtl={false}
+            pauseOnHover={false}
             draggable
             theme="colored"
             transition={Bounce}

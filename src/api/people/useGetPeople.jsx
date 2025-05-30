@@ -9,7 +9,7 @@ const useGetPeople = (calendars) => {
     queryFn: getPeople,
     enabled: isUserLoggedIn && isGapiReady && !!calendars,
     retry: 2,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: false, // <- Keep this since we only need to fetch people once
   });
 };
 

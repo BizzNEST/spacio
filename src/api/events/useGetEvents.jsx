@@ -11,7 +11,6 @@ export const useFetchAllEvents = (calendars = [], people) => {
       queryFn: () => getEvents(calendar.id, userInfo, people),
       enabled:
         isUserLoggedIn && isGapiReady && !!calendar && !!userInfo && !!people,
-      refetchOnWindowFocus: false, // <-- NOTE: Remove this once ready for production
     })),
   });
 

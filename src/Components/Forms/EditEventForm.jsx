@@ -82,7 +82,8 @@ const EditEventForm = ({
 
   const handleDelete = () => {
     const eventId = selectedEvent.id;
-    deleteEventMutation.mutate(eventId);
+    const resourceId = selectedEvent.resourceId;
+    deleteEventMutation.mutate({ eventId, resourceId });
     toast.success('Reservation deleted sucessfully!');
     setConfirmDelete(false);
     afterSave();

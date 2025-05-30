@@ -6,8 +6,14 @@ const useCreateEvent = () => {
 
   return useMutation({
     mutationFn: (newEvent) => createEvent(newEvent),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['events'] });
+    onSuccess: (_data, variables) => {
+      const resourceId = variables?.attendees?.[0]?.email;
+
+      if (resourceId) {
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: ['events', resourceId] });
+        }, 8000);
+      }
     },
     onError: (error) => {
       console.log('Error Creating Event', error);

@@ -7,7 +7,9 @@ const useUpdateEvent = () => {
   return useMutation({
     mutationFn: (updatedEvent) => updateEvent(updatedEvent),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['events'] });
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['events'] });
+      }, 8000);
     },
     onError: (error) => {
       console.log('Error Creating Event', error);
