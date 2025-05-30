@@ -2,11 +2,11 @@ import { gapi } from 'gapi-script';
 
 const deleteEvent = async (eventId) => {
   try {
-    const response = await gapi.client.calendar.events.delete({
+    await gapi.client.calendar.events.delete({
       calendarId: 'primary',
-      eventId: eventId,
+      eventId,
     });
-    return response;
+    return { success: true };
   } catch (error) {
     console.error('Error deleting event:', error);
     throw error;
