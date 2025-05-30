@@ -26,3 +26,10 @@
 .cardContent {
   font-size: 0.6rem;
 }
+
+@media (max-width: 768px) {
+  .card {
+    min-height: 65px;
+  }
+
+}

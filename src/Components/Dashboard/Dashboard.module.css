@@ -17,7 +17,7 @@
 /* Styling for Mobile Devices */
 @media (max-width: 768px) {
   .dashboardContent {
-    padding: 22px 28px;
+    display: none;
   }
 
   .bookRoomButton {
