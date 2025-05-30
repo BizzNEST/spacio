@@ -118,4 +118,8 @@
   .sidenav {
     display: none;
   }
+
+  .bookButton {
+    min-height: 50px;
+  }
 }
