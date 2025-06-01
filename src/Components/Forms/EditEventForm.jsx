@@ -1,5 +1,5 @@
 import React from 'react';
-import { addMinutes, format, setHours, setMinutes } from 'date-fns';
+import { addMinutes, set, setHours, setMinutes } from 'date-fns';
 import Button from '../Button/Button';
 import { Trash2 } from 'react-feather';
 import styles from './form.module.css';
@@ -18,6 +18,8 @@ const EditEventForm = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [draftEvent, setDraftEvent] = React.useState(selectedEvent);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
+  const [requestError, setRequestError] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const isInvalidDateSelection = selectedEvent.start >= selectedEvent.end;
 
@@ -32,11 +34,10 @@ const EditEventForm = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     //Save changes and reset draft
     setSelectedEvent(draftEvent);
-    setIsEditing(false);
-    setDraftEvent(null);
 
     //Combine date and time
     const startDateTime = combineDateAndTime(
@@ -67,15 +68,18 @@ const EditEventForm = ({
     };
 
     //Update event
-    toast.promise(updateEventMutation.mutateAsync(eventPayload), {
-      pending: 'Updating room. Please wait...',
-      success: 'Room updated successfully!',
-      error: {
-        render({ data }) {
-          return data?.message || 'Something went wrong! Please try again.';
-        },
-      },
-    });
+    try {
+      await updateEventMutation.mutateAsync(eventPayload);
+      toast.success('Reservation updated successfully!');
+      setIsSubmitting(false);
+    } catch (error) {
+      setIsSubmitting(false);
+      setRequestError(error.message);
+      return;
+    }
+
+    setIsEditing(false);
+    setDraftEvent(null);
 
     afterSave();
   };
@@ -233,6 +237,9 @@ const EditEventForm = ({
         <p className={styles.error}>Start time must be before end time.</p>
       )}
 
+      {/* Error Message if request fails */}
+      {requestError && <p className={styles.error}>{requestError}</p>}
+
       {selectedEvent.isOrganizer && (
         <div className={styles.btnContainer}>
           <div>
@@ -241,9 +248,13 @@ const EditEventForm = ({
                 type="submit"
                 variant="gradient"
                 disabled={isInvalidDateSelection}
-                className={isInvalidDateSelection ? styles.disabledBtn : ''}
+                className={
+                  isInvalidDateSelection || isSubmitting
+                    ? styles.disabledBtn
+                    : ''
+                }
               >
-                Save Event
+                {isSubmitting ? 'Updating...' : 'Save Changes'}
               </Button>
             )}
             <Button type="button" onClick={toggleEdit} variant="outline">

@@ -36,6 +36,10 @@
   min-height: 35px;
 }
 
+.buttonContainer button:hover {
+  background: #F6F6F7;
+}
+
 .filtersContainer {
   display: flex;
   gap: 8px;
@@ -59,4 +63,3 @@
     gap: 8px;
   }
 }
-
