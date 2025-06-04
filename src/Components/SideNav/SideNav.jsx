@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../Modal/Modal';
-import { faCalendarAlt, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button/Button';
 import styles from './SideNav.module.css';
 import CreateEventForm from '../Forms/CreateEventForm';
@@ -106,7 +106,7 @@ function SideNav({
 
         {!isCollapsed && (
           <>
-            <SelectMenu center={center} setCenter={setCenter}></SelectMenu>
+            <SelectMenu center={center} setCenter={setCenter} />
             {isLoadingAvailabilities ? (
               <div className={styles.loadingContainer}>
                 <ClipLoader />

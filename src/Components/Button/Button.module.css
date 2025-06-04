@@ -9,3 +9,39 @@
   cursor: pointer;
   min-height: 35px;
 }
+
+.gradient {
+  background: linear-gradient(90deg, rgba(60, 128, 246, 1), rgba(146, 50, 233, 1));
+  background-size: 200% 100%;
+  background-position: left;
+  transition: background-position .5s ease-in-out;
+  color: white;
+  border: none;
+}
+
+.gradient:hover {
+  background-position: right;
+}
+
+.outline {
+  background: transparent;
+  color: #7A7A7F;
+  border: 1px solid #D6D6DB;
+}
+
+.outline:hover {
+  background: #F6F6F7;
+}
+
+.danger {
+  transition: .2s ease;
+  background: #FF0000;
+  color: white;
+  border: none;
+}
+
+.danger:hover {
+  background: white;
+  color: #FF0000;
+  border: #FF0000 1px solid;
+}

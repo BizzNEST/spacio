@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../Button/Button';
 import styles from './form.module.css';
 import { addMinutes, setHours, setMinutes } from 'date-fns';
+import { ClipLoader } from 'react-spinners';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from '../Modal/Modal';
@@ -16,6 +17,8 @@ const CreateEventForm = ({
   calendarName,
   selectedSlot, // from dragging on the calendar
 }) => {
+  const [requestError, setRequestError] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const roundedStart = roundUpToNext15(new Date());
 
   // Get the selected slot's resource name
@@ -42,6 +45,7 @@ const CreateEventForm = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
     const startDateTime = combineDateAndTime(
       reservationData.date,
       reservationData.start
@@ -68,20 +72,17 @@ const CreateEventForm = ({
     };
 
     try {
-      await toast.promise(eventMutation.mutateAsync(eventPayload), {
-        pending: 'Booking room. Please wait...',
-        success: 'Room booked successfully!',
-        error: {
-          render({ data }) {
-            return data?.message || 'Something went wrong! Please try again.';
-          },
-        },
-      });
-
-      afterSave();
-    } catch {
+      await eventMutation.mutateAsync(eventPayload);
+      toast.success('Room booked successfully!');
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error('Error creating event:', error);
+      setIsSubmitting(false);
+      setRequestError(error.message);
       return;
     }
+
+    afterSave();
   };
 
   return (
@@ -203,14 +204,19 @@ const CreateEventForm = ({
           <p className={styles.error}>Start time must be before end time.</p>
         )}
 
+      {/* Error Message if request fails */}
+      {requestError && <p className={styles.error}>{requestError}</p>}
+
       <div className={styles.btnContainer}>
         <Button
           type="submit"
           variant="gradient"
           disabled={isInvalidDateSelection}
-          className={isInvalidDateSelection ? styles.disabledBtn : ''}
+          className={
+            isInvalidDateSelection || isSubmitting ? styles.disabledBtn : ''
+          }
         >
-          Book
+          {isSubmitting ? 'Booking...' : 'Book Room'}
         </Button>
         <Modal.Close asChild>
           <Button type="button" variant="outline">
