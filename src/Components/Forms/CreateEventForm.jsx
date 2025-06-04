@@ -29,7 +29,7 @@ const CreateEventForm = ({
 
   const [reservationData, setReservationData] = React.useState({
     name: 'New Event',
-    date: new Date(),
+    date: selectedSlot?.start ?? new Date(),
     start: selectedSlot?.start ?? roundedStart,
     end: selectedSlot?.end ?? addMinutes(roundedStart, 15),
     resourceId: calendarId ?? selectedSlot?.resourceId ?? '',
