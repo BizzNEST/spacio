@@ -1,5 +1,5 @@
 import { gapi } from 'gapi-script';
-import { startOfToday } from 'date-fns';
+import { addMonths, startOfToday } from 'date-fns';
 
 const getEvents = async (calendarId = 'primary', userInfo, people) => {
   try {
@@ -7,9 +7,9 @@ const getEvents = async (calendarId = 'primary', userInfo, people) => {
     const response = await gapi.client.calendar.events.list({
       calendarId,
       timeMin: startOfToday().toISOString(),
+      timeMax: addMonths(startOfToday(), 3).toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 25,
       orderBy: 'startTime',
     });
 

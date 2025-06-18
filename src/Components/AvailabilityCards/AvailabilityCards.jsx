@@ -80,13 +80,16 @@ const AvailabilityCards = ({ header, calendarList, availableOptions }) => {
     setSelectedCalendarName(name);
   };
 
+  const scrollActive =
+    calendarList.length > 3 ? styles.containerBottomScroll : '';
+
   return (
     <div className={styles.availabilityListContainer}>
       <h3>
         {header} ({calendarList.length})
       </h3>
 
-      <div className={styles.roomsAvailable}>
+      <div className={`${styles.roomsAvailable} ${scrollActive}`}>
         <Modal
           open={isCreateEventModalOpen}
           onOpenChange={setIsCreateEventModalOpen}

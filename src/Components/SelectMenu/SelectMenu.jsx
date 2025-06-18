@@ -22,6 +22,7 @@ const SelectMenu = memo(function SelectMenu({ center, setCenter }) {
         <option value="Salinas">Salinas</option>
         <option value="HQ">HQ</option>
         <option value="Watsonville">Watsonville</option>
+        <option value="bizzNEST">bizzNEST (Watsonville)</option>
         <option value="Stockton">Stockton</option>
         <option value="Modesto">Modesto</option>
       </select>

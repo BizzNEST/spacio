@@ -87,8 +87,8 @@ const MeetingRoomCalendar = ({ events, calendars, isLoadingEvents }) => {
           resourceIdAccessor="id"
           resourceTitleAccessor="title"
           // resourceHeaderAccessor={ResourceHeader}
-          step={30}
-          timeslots={1}
+          step={15}
+          timeslots={2}
           min={new Date(new Date().setHours(9, 0, 0))}
           max={new Date(new Date().setHours(19, 0, 0))}
           formats={formats}
