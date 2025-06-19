@@ -1,11 +1,19 @@
 import { gapi } from 'gapi-script';
 import { getAvailabilityByCalendarId } from '../availability/getAvailability';
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 
 //Payload: calendarId, summary, start, end, attendees
 const createEvent = async (payload) => {
   try {
     const resourceId = payload.attendees[0]?.email;
+
+    const inPast = isPast(payload.end.dateTime);
+
+    if (inPast) {
+      throw new Error(
+        'Unable to reserve room in past, please use current or future times.'
+      );
+    }
 
     //Make sure resource is available before creating event
     const availablityResponse = await getAvailabilityByCalendarId(
