@@ -109,7 +109,7 @@ const CreateEventForm = ({
 
         <select
           required
-          value={reservationData.resourceId || ''}
+          value={reservationData.resourceId ?? ''}
           onChange={(e) => {
             setReservationData((prev) => ({
               ...prev,
@@ -118,13 +118,8 @@ const CreateEventForm = ({
             }));
           }}
         >
-          <option
-            value={reservationData.resourceId || ''}
-            disabled={!reservationData.resourceId}
-          >
-            {reservationData.resourceName !== ''
-              ? reservationData.resourceName
-              : 'Select a room'}
+          <option value="" disabled>
+            Select a room
           </option>
           {calendars.map((room) => (
             <option key={room.id} value={room.id}>

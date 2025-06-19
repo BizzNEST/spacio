@@ -2,7 +2,9 @@
   display: grid;
   gap: 4px;
   width: 100%;
+}
 
+.containerBottomScroll {
   border-radius: 8px;
   box-shadow: rgb(181 177 177) 0 22px 18px -18px;
   z-index: 100;

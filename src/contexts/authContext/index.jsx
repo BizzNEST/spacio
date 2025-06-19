@@ -39,6 +39,7 @@ export function AuthProvider({ children }) {
           discoveryDocs: [
             'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
             'https://people.googleapis.com/$discovery/rest?version=v1',
+            'https://admin.googleapis.com/$discovery/rest?version=directory_v1',
           ],
         });
 

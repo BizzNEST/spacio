@@ -5,9 +5,15 @@ const useFilterResourceByFloor = (resources, filterType) => {
     if (filterType === 'all') {
       return resources;
     } else {
-      return resources.filter(
+      const rooms = resources.filter(
         (resource) => Number(filterType) === resource.floor
       );
+
+      if (rooms.length > 0) {
+        return rooms;
+      } else {
+        return resources;
+      }
     }
   }, [resources, filterType]);
 };

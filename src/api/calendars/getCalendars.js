@@ -11,31 +11,25 @@ import { db } from '../firebase.config';
 
 const getCalendars = async () => {
   try {
-    // //Retrieve all the calendars from the user's calendar list
-    // const response = await gapi.client.calendar.calendarList.list();
-    // const calendarItems = response.result.items;
-
-    // //Finally, return an array of calendars with the parameters we want for convenience
-    // const calendars = calendarItems.map((calendar, index) => {
-    //   const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
-
-    const querySnapshot = await getDocs(collection(db, 'rooms'));
-    const documents = [];
-    querySnapshot.forEach((doc) => {
-      documents.push({ id: doc.id, ...doc.data() });
+    //fetch from org resources
+    const response = await gapi.client.directory.resources.calendars.list({
+      customer: 'my_customer',
     });
 
-    const calendars = documents.map((calendar, index) => {
+    //get resources from call response
+    const resources = response.result.items;
+
+    const calendars = resources.map((calendar, index) => {
       const color = CALENDAR_COLORS[index % CALENDAR_COLORS.length];
 
       return {
         id: calendar.resourceEmail,
-        title: calendar.name,
+        title: calendar.resourceName,
         capacity: calendar.capacity,
-        floor: calendar.floor,
+        floor: Number(calendar.floorName),
         backgroundColor: color.backgroundColor,
         foregroundColor: color.foregroundColor,
-        location: calendar.location,
+        location: getTrimmedName(calendar.buildingId) ?? calendar.buildingId,
       };
     });
 

@@ -131,5 +131,5 @@
 
 :global(.rbc-time-slot) {
   cursor: pointer;
-  min-height: 70px;
+  min-height: 40px;
 }
