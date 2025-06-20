@@ -1,13 +1,5 @@
 import { gapi } from 'gapi-script';
-import {
-  getResourceCapacity,
-  getResourceFloor,
-  getResourceLocation,
-  getTrimmedName,
-  isResourceCalendar,
-} from './helpers';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase.config';
+import { getTrimmedName } from './helpers';
 
 const getCalendars = async () => {
   try {
