@@ -7,18 +7,17 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../contexts/authContext';
 
 import Logo from '../assets/logo.svg?react';
+import { gapi } from 'gapi-script';
+import useGetToken from '../api/tokens/useGetToken';
 
 const scopes = import.meta.env.VITE_SCOPE;
 
 function Login() {
-  const {
-    isUserLoggedIn,
-    setIsUserLoggedIn,
-    setAccessToken,
-    loading,
-    scheduleAutoLogout,
-  } = useAuth();
+  const { isUserLoggedIn, setIsUserLoggedIn, loading, setAccessToken } =
+    useAuth();
   const navigate = useNavigate();
+
+  const tokenMutation = useGetToken();
 
   //Redirect to home if user is already logged in
   React.useEffect(() => {
@@ -28,24 +27,32 @@ function Login() {
   }, [isUserLoggedIn, loading, navigate]);
 
   const googleSignIn = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      // Access Token expires in 1 hour
-      const expiresAt = Date.now() + tokenResponse.expires_in * 1000;
+    onSuccess: async ({ code }) => {
+      try {
+        const data = await tokenMutation.mutateAsync({ code });
 
-      setIsUserLoggedIn(true);
-      setAccessToken(tokenResponse.access_token);
+        const accessToken = data.access_token;
+        const expiresIn = data.expiry_date;
 
-      window.localStorage.setItem('token', tokenResponse.access_token);
-      window.localStorage.setItem('expires_at', expiresAt.toString());
+        // Save token and expiry
+        localStorage.setItem('token', accessToken);
+        localStorage.setItem('expires_at', expiresIn.toString());
 
-      // Automatically sign out after 1 hour since login
-      scheduleAutoLogout(tokenResponse.expires_in * 1000);
+        setAccessToken(accessToken);
+        gapi.client.setToken({ access_token: accessToken });
+        setIsUserLoggedIn(true);
+
+        navigate('/home');
+      } catch (error) {
+        console.log('Login Failed:', error);
+        setIsUserLoggedIn(false);
+      }
     },
     onError: (error) => {
       console.log('Login Failed:', error);
       setIsUserLoggedIn(false);
     },
-    scope: scopes,
+    flow: 'auth-code',
   });
 
   return (

@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { gapi } from 'gapi-script';
 import PropTypes from 'prop-types';
+import useRefreshToken from '../../api/tokens/useRefreshToken';
 
 // Create the context
 const AuthContext = createContext();
@@ -16,15 +17,26 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
 
-  //Schedule auto logout after specified time in milliseconds
-  function scheduleAutoLogout(timeoutMs) {
-    setTimeout(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('expires_at');
+  const refreshTokenMutation = useRefreshToken();
+
+  async function refreshAccessToken() {
+    try {
+      const data = await refreshTokenMutation.mutateAsync();
+      const { access_token, expiry_date } = data;
+
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('expires_at', expiry_date.toString());
+
+      gapi.client.setToken({ access_token });
+      setAccessToken(access_token);
+      setIsUserLoggedIn(true);
+    } catch (err) {
+      console.error('Error refreshing token:', err);
       setIsUserLoggedIn(false);
       setAccessToken(null);
-      window.location.href = '/';
-    }, timeoutMs);
+      localStorage.removeItem('token');
+      localStorage.removeItem('expires_at');
+    }
   }
 
   // Initialize GAPI
@@ -45,25 +57,20 @@ export function AuthProvider({ children }) {
         //Retrieve the token and expiration from local storage
         const storedToken = localStorage.getItem('token');
         const expiresAt = parseInt(localStorage.getItem('expires_at'), 10);
+        const isValid = storedToken && expiresAt && Date.now() < expiresAt;
 
-        //If token exists and is not expired, log user automatically, otherwise, log them out
-        if (storedToken && expiresAt && Date.now() < expiresAt) {
+        //If token is valid, log user automatically. Otherwise, attempt to refresh
+        if (isValid) {
           gapi.client.setToken({ access_token: storedToken });
           setAccessToken(storedToken);
           setIsUserLoggedIn(true);
-
-          // Ensures auto logout even if window is closed
-          scheduleAutoLogout(expiresAt - Date.now());
         } else {
-          localStorage.removeItem('token');
-          localStorage.removeItem('expires_at');
-          setIsUserLoggedIn(false);
+          await refreshAccessToken();
         }
-
-        setIsGapiReady(true);
       } catch (error) {
         console.error('Error initializing GAPI:', error);
       } finally {
+        setIsGapiReady(true);
         setLoading(false);
       }
     }
@@ -80,7 +87,6 @@ export function AuthProvider({ children }) {
         setAccessToken,
         isGapiReady,
         loading,
-        scheduleAutoLogout,
         userInfo,
         setUserInfo,
       }}
