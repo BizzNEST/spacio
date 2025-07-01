@@ -22,7 +22,7 @@ function Login() {
   //Redirect to home if user is already logged in
   React.useEffect(() => {
     if (!loading && isUserLoggedIn) {
-      navigate('/home');
+      navigate('/');
     }
   }, [isUserLoggedIn, loading, navigate]);
 
@@ -42,7 +42,7 @@ function Login() {
         gapi.client.setToken({ access_token: accessToken });
         setIsUserLoggedIn(true);
 
-        navigate('/home');
+        navigate('/');
       } catch (error) {
         console.log('Login Failed:', error);
         setIsUserLoggedIn(false);

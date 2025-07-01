@@ -10,7 +10,7 @@ const ProtectedRoute = () => {
     return <Loader />;
   }
 
-  return isUserLoggedIn ? <Outlet /> : <Navigate to="/" replace />;
+  return isUserLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

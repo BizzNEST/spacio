@@ -30,12 +30,24 @@ export function AuthProvider({ children }) {
       gapi.client.setToken({ access_token });
       setAccessToken(access_token);
       setIsUserLoggedIn(true);
+
+      scheduleTokenRefresh(expiry_date);
     } catch (err) {
       console.error('Error refreshing token:', err);
       setIsUserLoggedIn(false);
       setAccessToken(null);
       localStorage.removeItem('token');
       localStorage.removeItem('expires_at');
+    }
+  }
+
+  function scheduleTokenRefresh(expiresAt) {
+    const timeUntilExpiry = expiresAt - Date.now() - 60 * 1000; // 1 minute before expiry
+
+    if (timeUntilExpiry > 0) {
+      setTimeout(() => {
+        refreshAccessToken();
+      }, timeUntilExpiry);
     }
   }
 
@@ -64,6 +76,7 @@ export function AuthProvider({ children }) {
           gapi.client.setToken({ access_token: storedToken });
           setAccessToken(storedToken);
           setIsUserLoggedIn(true);
+          scheduleTokenRefresh(expiresAt);
         } else {
           await refreshAccessToken();
         }

@@ -11,11 +11,11 @@ const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Public Routes */}
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
 
       {/* Protected Route for Dashboard */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/home" element={<Layout />} />
+        <Route path="/" element={<Layout />} />
         {/*To Do: Uncomment once Floor Plan is implemented}  */}
         {/* <Route path="/floor-map" element={<p>Floor Plan Page</p>} /> */}
       </Route>
