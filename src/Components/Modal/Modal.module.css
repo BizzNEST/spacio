@@ -14,7 +14,7 @@
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 8px;
-  background-color: #fffcfc;
+  background-color: #27272a; /*dark mode target : before #fffcfc */
   border-radius: 14px;
   position: fixed;
   top: 50%;
@@ -38,7 +38,7 @@
 .title {
   margin: 0;
   font-weight: bold;
-  color: black;
+  color: white; /*dark mode target : before black */
   font-size: 1.7rem;
 }
 

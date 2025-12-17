@@ -4,19 +4,17 @@
   align-items: center;
   justify-content: center;
   padding: 12px 0;
-  background: white;
+  background: black; /*dark mode target*/
 }
 
 .resourceTitle {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #3f3f45;
 }
 
 .resourceLocation {
   font-size: 0.6rem;
   font-style: italic;
-  color: #aeaeb3;
 }
 
 .resourceCapacity {
@@ -24,7 +22,6 @@
   align-items: center;
   gap: 6px;
   font-size: 0.7rem;
-  color: #aeaeb3;
 }
 
 .resourceCapacity i {
@@ -38,13 +35,13 @@
   font-size: 14px;
   padding: 0;
   border-bottom: none;
+  color: white; /*dark mode target*/
 }
 
 :global(.rbc-time-header) {
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: white;
 }
 
 :global(.rbc-time-view-resources .rbc-header) {

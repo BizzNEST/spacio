@@ -9,10 +9,10 @@
   grid-template-columns: auto 1fr;
   gap: 8px;
   align-items: center;
+  color: white; /*dark mode target*/
 }
 
 .navigationContainer p {
-  color: #76767a;
   font-size: 0.9rem;
 }
 
@@ -25,9 +25,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fefefe;
-  border: 1px solid #d5d7da;
-  color: #545455;
+  background-color: #3f3f46; /*dark mode target */
+  border: 2px solid #333537; /*dark mode target */
+  color: white; /*dark mode target*/
   cursor: pointer;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -37,7 +37,7 @@
 }
 
 .buttonContainer button:hover {
-  background: #F6F6F7;
+  background: black; /*dark mode target*/
 }
 
 .filtersContainer {

@@ -3,14 +3,14 @@
   gap: 4px;
   padding: 2px 4px;
   border-radius: 4px;
-  background-color: #F6F6F7;
+  background-color: #3f3f46; /*dark mode target */
 }
 
 .toggleGroupItem {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: .8rem;
+  font-size: 0.8rem;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -20,9 +20,9 @@
 }
 
 .toggleGroupItem[data-state='on'] {
-  background-color: #FEFEFE;
-  border: 1px solid #D5D7DA;
-  color: #545455;
+  background-color: #27272a;
+  border: 1px solid #27272a;
+  color: white;
 }
 
 .toggleGroupItem[data-state='off'] {

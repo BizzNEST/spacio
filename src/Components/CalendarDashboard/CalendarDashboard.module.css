@@ -69,6 +69,7 @@
   flex-direction: column;
   align-items: center;
   padding: 5px;
+  color: red;
 }
 
 .roomTitle {
@@ -100,6 +101,7 @@
 
 :global(.rbc-label) {
   font-size: 0.9rem;
+  color: white; /*dark mode target*/
 }
 
 :global(.rbc-row-content > .rbc-row) {
@@ -132,4 +134,5 @@
 :global(.rbc-time-slot) {
   cursor: pointer;
   min-height: 40px;
+  background-color: black; /*dark mode target */
 }

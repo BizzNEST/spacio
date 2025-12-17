@@ -2,6 +2,7 @@
   font-size: 1rem;
   font-weight: 700;
   padding-left: 3px;
+  color: white; /*dark mode target*/
 }
 
 .selectWrapper {
@@ -14,6 +15,7 @@
   padding: 8px;
   font-size: 0.8rem;
   border-radius: 4px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+  background-color: #27272a; /*dark mode target */
+  border: 1px solid #3f3f46; /*dark mode target */
+  color: white; /*dark mode target*/
 }

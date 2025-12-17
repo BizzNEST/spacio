@@ -19,10 +19,9 @@
   padding-top: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: lightgray;
   grid-template-rows: 1fr auto;
   transition: width 0.3s ease;
-  background-color: #F2F2F2;
+  background-color: black; /*dark mode target*/
 }
 
 .sideNavClose {
@@ -36,6 +35,8 @@
 .dashboard {
   overflow: auto;
   transition: 0.3s ease;
+  background-color: black;
+  /*dark mode target*/
 }
 
 @media screen and (max-width: 768px) {
