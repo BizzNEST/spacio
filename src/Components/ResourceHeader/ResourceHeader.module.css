@@ -4,13 +4,15 @@
   align-items: center;
   justify-content: center;
   padding: 12px 0;
-  background: white;
+  background: red;
+  background: var(--main-bg);
 }
 
 .resourceTitle {
   font-size: 0.75rem;
   font-weight: 700;
   color: #3f3f45;
+  color: var(--text-color);
 }
 
 .resourceLocation {
@@ -45,6 +47,7 @@
   top: 0;
   z-index: 10;
   background-color: white;
+  background-color: var(--main-bg);
 }
 
 :global(.rbc-time-view-resources .rbc-header) {
@@ -53,4 +56,10 @@
 
 :global(.rbc-time-content > .rbc-day-slot) {
   min-width: 149px;
+  background-color: var(--main-bg);
+}
+
+:global(.rbc-time-content > * + * > * ){
+  border-left: 1px solid var(--navbar-item-border);
+  border-right: none;
 }

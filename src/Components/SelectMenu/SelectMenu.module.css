@@ -2,6 +2,7 @@
   font-size: 1rem;
   font-weight: 700;
   padding-left: 3px;
+  color: var(--text-color);
 }
 
 .selectWrapper {
@@ -16,4 +17,7 @@
   border-radius: 4px;
   background-color: #ffffff;
   border: 1px solid #ccc;
+  background-color: var(--button-bg);
+  color: var(--text-color);
 }
+

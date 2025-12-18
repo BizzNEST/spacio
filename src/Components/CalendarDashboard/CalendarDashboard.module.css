@@ -98,8 +98,10 @@
   border-left: 1px solid lightgray;
 }
 
+
 :global(.rbc-label) {
   font-size: 0.9rem;
+  color: var(--text-color);
 }
 
 :global(.rbc-row-content > .rbc-row) {
@@ -132,4 +134,7 @@
 :global(.rbc-time-slot) {
   cursor: pointer;
   min-height: 40px;
+  
 }
+
+

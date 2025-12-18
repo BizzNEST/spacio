@@ -16,6 +16,12 @@
   font-size: 0.9rem;
 }
 
+[data-theme="dark"] {
+    .navigationContainer p {
+      color: #C3C7C5;
+  }
+}
+
 .buttonContainer {
   display: flex;
   gap: 8px;
@@ -39,6 +45,22 @@
 .buttonContainer button:hover {
   background: #F6F6F7;
 }
+
+[data-theme="dark"] {
+    .buttonContainer button {
+      background-color: #27272A;
+      border: 1px solid #27272A;
+      color: white;
+  }
+    .buttonContainer button:hover {
+      background: #3b3b41;
+}
+
+}
+
+
+
+
 
 .filtersContainer {
   display: flex;

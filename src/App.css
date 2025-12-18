@@ -69,3 +69,20 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+[data-theme="light"]{
+  --navbar-item-border: #e4e4e7;
+}
+
+[data-theme="dark"]{
+  --main-bg: #131314;
+  --text-color: #C3C7C5;
+  --button-bg: #3F3F46;
+  --button-hover: #27272A;
+  --divider: #333537;
+  --bg-color: #27272A;
+  --logo-color: #C3C7C5;
+  --navbar-item-border: #3F3F46;
+  --transparency: none;
+
+}
