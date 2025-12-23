@@ -11,6 +11,7 @@
 .inputContainer label {
     font-size: 14px;
     font-weight: 400;
+    color: var(--text-color);
 }
 
 .inputContainer input {
@@ -59,6 +60,7 @@
     min-width: 75px;
     background-color: var(--button-bg);
     border: var(--transparency);
+    color: white;
 }
 
 .disabled {

@@ -26,8 +26,13 @@
   max-height: 85vh;
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  /* background-color: var(--main-bg);
-  color: var(--text-color); */
+
+}
+
+[data-theme="dark"]{
+  .content{
+    background-color: var(--main-bg);
+  }
 }
 
 /* .content h2{
@@ -47,6 +52,8 @@
   font-weight: bold;
   color: black;
   font-size: 1.7rem;
+  color: var(--text-color);
+  
 }
 
 .description {

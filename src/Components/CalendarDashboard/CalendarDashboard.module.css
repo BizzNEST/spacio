@@ -116,9 +116,14 @@
   border-left: none;
 }
 
+:global( .rbc-time-view-resources .rbc-time-header-gutter ){
+  background-color: var(--main-bg);
+}
+
 :global(.rbc-time-content) {
   border-top: none;
 }
+
 
 :global(.rbc-time-view) {
   display: flex;
@@ -134,7 +139,18 @@
 :global(.rbc-time-slot) {
   cursor: pointer;
   min-height: 40px;
+  background-color: var(--main-bg);
+
   
 }
 
 
+:global(.rbc-current-time-indicator){
+  background-color:  green;
+}
+
+[data-theme="dark"]{
+  :global(.rbc-current-time-indicator){
+    background-color: var(--indicator);
+  }
+}

@@ -84,5 +84,7 @@ h6 {
   --logo-color: #C3C7C5;
   --navbar-item-border: #3F3F46;
   --transparency: none;
+  --white: white;
+  --indicator: rgb(104, 240, 104);
 
 }
