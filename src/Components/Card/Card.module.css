@@ -6,10 +6,17 @@
   padding: 0.4rem 0.6rem;
   text-align: left;
   cursor: pointer;
+  background-color: var(--button-bg);
+  border-color: var(--navbar-item-border); 
+  color: var(--text-color);
+
+
 }
+
 
 .card:hover {
   background-color: rgb(237, 237, 237);
+  background-color: var(--button-hover);
 }
 
 .cardHeader {

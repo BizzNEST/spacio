@@ -17,6 +17,7 @@
 
 .availabilityListContainer > h3 {
   font-size: 1rem;
+  color: var(--text-color);
 }
 
 .roomsAvailable {

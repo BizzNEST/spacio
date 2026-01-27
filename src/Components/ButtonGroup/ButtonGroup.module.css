@@ -4,7 +4,9 @@
   padding: 2px 4px;
   border-radius: 4px;
   background-color: #F6F6F7;
+  background-color: var(--button-bg);
 }
+
 
 .toggleGroupItem {
   display: flex;
@@ -23,6 +25,9 @@
   background-color: #FEFEFE;
   border: 1px solid #D5D7DA;
   color: #545455;
+  background-color: var(--button-hover);
+  border: var(--button-bg);
+  color: var(--text-color);
 }
 
 .toggleGroupItem[data-state='off'] {

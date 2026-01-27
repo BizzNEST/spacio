@@ -11,12 +11,16 @@
 .inputContainer label {
     font-size: 14px;
     font-weight: 400;
+    color: var(--text-color);
 }
 
 .inputContainer input {
     padding: 4px 8px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+
 }
 
 .datePicker {
@@ -29,6 +33,8 @@
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     background-color: #ffffff;
+    background-color: var(--button-bg);
+    color: var(--text-color);
 }
 
 .timeInputContainer {
@@ -52,6 +58,9 @@
 
 .btnContainer button {
     min-width: 75px;
+    background-color: var(--button-bg);
+    border: var(--transparency);
+    color: white;
 }
 
 .disabled {

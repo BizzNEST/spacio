@@ -23,6 +23,7 @@
   grid-template-rows: 1fr auto;
   transition: width 0.3s ease;
   background-color: #F2F2F2;
+  background-color: var(--bg-color);
 }
 
 .sideNavClose {
