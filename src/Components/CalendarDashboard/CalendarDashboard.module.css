@@ -153,4 +153,13 @@
   :global(.rbc-current-time-indicator){
     background-color: var(--indicator);
   }
+  :global(.rbc-header){
+    border-left: 1px solid var(--text-color);
+  }
+  :global(.rbc-time-content) {
+    border-left: 1px solid var(--text-color);
+  }
+  :global(.rbc-time-content > * + * > *) {
+    border-left: 1px solid var(--text-color);
+}
 }
