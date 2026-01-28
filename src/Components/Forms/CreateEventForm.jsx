@@ -20,6 +20,58 @@ const CreateEventForm = ({
   const [requestError, setRequestError] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const roundedStart = roundUpToNext15(new Date());
+  const [emailError, setEmailError] = React.useState('');
+
+  const [emailInput, setEmailInput] = React.useState('');
+
+  const validateEmail = (email) => {
+    // Basic HTML5 email regex pattern
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleAddGuest = (e) => {
+    e.preventDefault();
+    setEmailError(''); // Clear previous errors
+    const email = emailInput.trim();
+
+    // Check if empty
+    if (!email) return;
+
+    // Check validity
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+
+    // Check for duplicates
+    if (reservationData.attendees.includes(email)) {
+      setEmailError('This guest has already been added.');
+      return;
+    }
+
+    // If all checks pass, add to state
+    setReservationData({
+      ...reservationData,
+      attendees: [...reservationData.attendees, email],
+    });
+    setEmailInput(''); // Clear input
+  };
+
+  const removeGuest = (emailToRemove) => {
+    setReservationData({
+      ...reservationData,
+      attendees: reservationData.attendees.filter(
+        (email) => email !== emailToRemove
+      ),
+    });
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent submitting the whole form
+      handleAddGuest(e);
+    }
+  };
 
   // Get the selected slot's resource name
   let selectedSlotResourceName;
@@ -37,6 +89,7 @@ const CreateEventForm = ({
     end: selectedSlot?.end ?? addMinutes(roundedStart, 15),
     resourceId: calendarId ?? selectedSlot?.resourceId ?? '',
     resourceName: calendarName ?? selectedSlotResourceName ?? '',
+    attendees: [],
   });
 
   const isInvalidDateSelection = reservationData.start >= reservationData.end;
@@ -46,6 +99,13 @@ const CreateEventForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
+
+    const guestEmails = reservationData.emails
+      ? reservationData.emails
+          .split(',')
+          .map((email) => ({ email: email.trim() }))
+      : [];
+
     const startDateTime = combineDateAndTime(
       reservationData.date,
       reservationData.start
@@ -55,6 +115,20 @@ const CreateEventForm = ({
       reservationData.date,
       reservationData.end
     );
+
+    // 1. Format the human guests correctly
+    // We map the array of strings ['a@b.com'] to objects [{email: 'a@b.com'}]
+    const guestAttendees = reservationData.attendees.map((email) => ({
+      email: email,
+    }));
+
+    // 2. Format the Room Resource (if one is selected)
+    const resourceAttendee = reservationData.resourceId
+      ? [{ email: reservationData.resourceId }]
+      : [];
+
+    // 3. COMBINE THEM (This was missing before!)
+    const allAttendees = [...resourceAttendee, ...guestAttendees];
 
     const eventPayload = {
       summary: reservationData.name,
@@ -66,9 +140,7 @@ const CreateEventForm = ({
         dateTime: endDateTime.toISOString(),
         timeZone: 'America/Los_Angeles',
       },
-      attendees: reservationData.resourceId
-        ? [{ email: reservationData.resourceId }]
-        : [],
+      attendees: allAttendees,
     };
 
     try {
@@ -190,6 +262,79 @@ const CreateEventForm = ({
             }}
           />
         </div>
+      </div>
+
+      {/* --- Guest Emails Section --- */}
+      <div className={styles.inputContainer}>
+        <label htmlFor="guest-input">Guest Emails (optional)</label>
+
+        {/* Input and Add Button Row */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <input
+            type="email"
+            id="guest-input"
+            placeholder="Enter guest email"
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            style={{ flex: 1 }}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleAddGuest}
+            disabled={!emailInput.trim()}
+          >
+            Add
+          </Button>
+        </div>
+
+        {/* --- HERE IS THE NEW ERROR MESSAGE --- */}
+        {emailError && (
+          <p
+            className={styles.error}
+            style={{ marginTop: '0', marginBottom: '10px' }}
+          >
+            {emailError}
+          </p>
+        )}
+
+        {/* List of Added Guests */}
+        {reservationData.attendees.length > 0 && (
+          <ul style={{ listStyle: 'none', padding: 0, marginTop: '5px' }}>
+            {reservationData.attendees.map((email) => (
+              <li
+                key={email}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '8px',
+                  background: '#f5f5f5', // Light grey background
+                  marginBottom: '5px',
+                  borderRadius: '4px',
+                  fontSize: '0.9rem',
+                }}
+              >
+                <span>{email}</span>
+                <button
+                  type="button"
+                  onClick={() => removeGuest(email)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#ff4d4f', // Red color for remove
+                    cursor: 'pointer',
+                    fontSize: '0.8rem',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Error Message if start time is after end time */}
