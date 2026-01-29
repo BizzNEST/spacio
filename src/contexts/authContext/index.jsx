@@ -15,6 +15,9 @@ export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
+  const [userEmail, setUserEmail] = useState(
+    localStorage.getItem('userEmail') || null
+  );
 
   //Schedule auto logout after specified time in milliseconds
   function scheduleAutoLogout(timeoutMs) {
@@ -45,6 +48,7 @@ export function AuthProvider({ children }) {
         //Retrieve the token and expiration from local storage
         const storedToken = localStorage.getItem('token');
         const expiresAt = parseInt(localStorage.getItem('expires_at'), 10);
+        const userEmail = localStorage.getItem('userEmail');
 
         //If token exists and is not expired, log user automatically, otherwise, log them out
         if (storedToken && expiresAt && Date.now() < expiresAt) {
@@ -57,6 +61,7 @@ export function AuthProvider({ children }) {
         } else {
           localStorage.removeItem('token');
           localStorage.removeItem('expires_at');
+          localStorage.removeItem('userEmail');
           setIsUserLoggedIn(false);
         }
 
@@ -83,6 +88,8 @@ export function AuthProvider({ children }) {
         scheduleAutoLogout,
         userInfo,
         setUserInfo,
+        userEmail,
+        setUserEmail,
       }}
     >
       {children}

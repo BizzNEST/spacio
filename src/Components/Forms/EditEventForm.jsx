@@ -178,7 +178,6 @@ const EditEventForm = ({
     (attendee) => attendee.email !== selectedEvent.resourceId
   );
 
-  console.log('List of Attendees:', visibleAttendees);
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {/* Name Selection */}

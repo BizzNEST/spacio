@@ -11,6 +11,7 @@ import Logo from '../assets/logo.svg?react';
 const scopes = import.meta.env.VITE_SCOPE;
 
 function Login() {
+  const [userEmail, setUserEmail] = React.useState('');
   const {
     isUserLoggedIn,
     setIsUserLoggedIn,
@@ -28,7 +29,7 @@ function Login() {
   }, [isUserLoggedIn, loading, navigate]);
 
   const googleSignIn = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
+    onSuccess: async (tokenResponse) => {
       // Access Token expires in 1 hour
       const expiresAt = Date.now() + tokenResponse.expires_in * 1000;
 
@@ -40,6 +41,21 @@ function Login() {
 
       // Automatically sign out after 1 hour since login
       scheduleAutoLogout(tokenResponse.expires_in * 1000);
+      try {
+        const res = await fetch(
+          'https://www.googleapis.com/oauth2/v3/userinfo',
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
+        const profile = await res.json();
+        setUserEmail(profile.email);
+        window.localStorage.setItem('userEmail', profile.email);
+      } catch (err) {
+        console.error('Failed to fetch user info:', err);
+      }
     },
     onError: (error) => {
       console.log('Login Failed:', error);

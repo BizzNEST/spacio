@@ -10,6 +10,7 @@ import { combineDateAndTime, roundUpToNext15 } from './helpers';
 import useCreateEvent from '../../api/events/useCreateEvent';
 import { toast } from 'react-toastify';
 
+import { useAuth } from '../../contexts/authContext';
 const CreateEventForm = ({
   calendars,
   afterSave,
@@ -24,6 +25,7 @@ const CreateEventForm = ({
 
   const [emailInput, setEmailInput] = React.useState('');
 
+  const { userEmail } = useAuth();
   const validateEmail = (email) => {
     // Basic HTML5 email regex pattern
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -116,20 +118,20 @@ const CreateEventForm = ({
       reservationData.end
     );
 
-    // 1. Format the human guests correctly
-    // We map the array of strings ['a@b.com'] to objects [{email: 'a@b.com'}]
+    const creatorAttendee = userEmail ? [{ email: userEmail }] : [];
     const guestAttendees = reservationData.attendees.map((email) => ({
       email: email,
     }));
 
-    // 2. Format the Room Resource (if one is selected)
     const resourceAttendee = reservationData.resourceId
       ? [{ email: reservationData.resourceId }]
       : [];
 
-    // 3. COMBINE THEM (This was missing before!)
-    const allAttendees = [...resourceAttendee, ...guestAttendees];
-
+    const allAttendees = [
+      ...resourceAttendee,
+      ...creatorAttendee,
+      ...guestAttendees,
+    ];
     const eventPayload = {
       summary: reservationData.name,
       start: {
