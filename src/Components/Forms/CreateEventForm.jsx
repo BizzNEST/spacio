@@ -11,6 +11,7 @@ import useCreateEvent from '../../api/events/useCreateEvent';
 import { toast } from 'react-toastify';
 
 import { useAuth } from '../../contexts/authContext';
+
 const CreateEventForm = ({
   calendars,
   afterSave,
@@ -283,9 +284,9 @@ const CreateEventForm = ({
           />
           <Button
             type="button"
-            variant="outline"
+            variant={emailInput.trim() ? 'gradient' : 'outline'} // green when there's text
             onClick={handleAddGuest}
-            disabled={!emailInput.trim()}
+            disabled={!emailInput.trim()} // still disable if empty
           >
             Add
           </Button>
