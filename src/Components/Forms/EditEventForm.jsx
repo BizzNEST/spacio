@@ -21,6 +21,9 @@ const EditEventForm = ({
   const [requestError, setRequestError] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
+  const [emailInput, setEmailInput] = React.useState('');
+  const [emailError, setEmailError] = React.useState('');
+
   const isInvalidDateSelection = selectedEvent.start >= selectedEvent.end;
 
   const updateEventMutation = useUpdateEvent();
@@ -32,6 +35,56 @@ const EditEventForm = ({
     }
   }, [selectedEvent, isEditing]);
 
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleAddGuest = (e) => {
+    e.preventDefault();
+    setEmailError('');
+    const email = emailInput.trim();
+
+    if (!email) return;
+
+    if (!validateEmail(email)) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+
+    // Check for duplicates (handle both string and object formats)
+    const currentAttendees = selectedEvent.attendees || [];
+    const exists = currentAttendees.some((a) => (a.email || a) === email);
+
+    if (exists) {
+      setEmailError('This guest has already been added.');
+      return;
+    }
+
+    // Add new guest
+    setSelectedEvent({
+      ...selectedEvent,
+      attendees: [...currentAttendees, { email: email }],
+    });
+    setEmailInput('');
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddGuest(e);
+    }
+  };
+
+  const removeGuest = (emailToRemove) => {
+    const currentAttendees = selectedEvent.attendees || [];
+    setSelectedEvent({
+      ...selectedEvent,
+      attendees: currentAttendees.filter(
+        (a) => (a.email || a) !== emailToRemove
+      ),
+    });
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -50,6 +103,25 @@ const EditEventForm = ({
       selectedEvent.end
     );
 
+    const currentAttendees = selectedEvent.attendees || [];
+
+    // Filter out the Room ID from the guest list so we don't add it twice
+    const humanGuests = currentAttendees.filter(
+      (a) => (a.email || a) !== selectedEvent.resourceId
+    );
+
+    // Ensure humans are formatted as objects {email: '...'}
+    const formattedGuests = humanGuests.map((a) =>
+      typeof a === 'string' ? { email: a } : { email: a.email }
+    );
+
+    // Add the Room Resource
+    const resourceAttendee = selectedEvent.resourceId
+      ? [{ email: selectedEvent.resourceId }]
+      : [];
+
+    const allAttendees = [...resourceAttendee, ...formattedGuests];
+
     //Prepare event payload
     const eventPayload = {
       id: selectedEvent.id,
@@ -62,9 +134,7 @@ const EditEventForm = ({
         dateTime: endDateTime.toISOString(),
         timeZone: 'America/Los_Angeles',
       },
-      attendees: selectedEvent.resourceId
-        ? [{ email: selectedEvent.resourceId }]
-        : [],
+      attendees: allAttendees, // Send the combined list
     };
 
     //Update event
@@ -104,6 +174,9 @@ const EditEventForm = ({
       setIsEditing(true);
     }
   };
+  const visibleAttendees = (selectedEvent.attendees || []).filter(
+    (attendee) => attendee.email !== selectedEvent.resourceId
+  );
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -237,8 +310,86 @@ const EditEventForm = ({
         <p className={styles.error}>Start time must be before end time.</p>
       )}
 
-      {/* Error Message if request fails */}
-      {requestError && <p className={styles.error}>{requestError}</p>}
+      {/* --- 4. UPDATED GUESTS SECTION --- */}
+      <div className={styles.inputContainer}>
+        <label>Guests</label>
+
+        {/* Input Field (Only when editing) */}
+        {isEditing && (
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+            <input
+              type="email"
+              placeholder="Enter guest email"
+              value={emailInput}
+              onChange={(e) => {
+                setEmailInput(e.target.value);
+                if (emailError) setEmailError('');
+              }}
+              onKeyDown={handleKeyDown}
+              style={{ flex: 1 }}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleAddGuest}
+              disabled={!emailInput.trim()}
+            >
+              Add
+            </Button>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {isEditing && emailError && (
+          <p
+            className={styles.error}
+            style={{ marginTop: '0', marginBottom: '10px' }}
+          >
+            {emailError}
+          </p>
+        )}
+
+        {/* List */}
+        {visibleAttendees.length > 0 ? (
+          <ul className={styles.editAttendeeList}>
+            {visibleAttendees.map((attendee) => {
+              // Handle object vs string safely
+              const emailText = attendee.email || attendee;
+
+              if (!emailText || typeof emailText !== 'string') return null;
+
+              return (
+                <li key={emailText} className={styles.attendeeBox}>
+                  <span style={{ flex: 1 }}>{emailText}</span>
+
+                  {/* Remove Button (Only when editing) */}
+                  {isEditing && (
+                    <button
+                      type="button"
+                      onClick={() => removeGuest(emailText)}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#ff4d4f',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        textDecoration: 'underline',
+                        marginLeft: '10px',
+                      }}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p style={{ color: '#888', fontStyle: 'italic', marginTop: '5px' }}>
+            No guests invited.
+          </p>
+        )}
+      </div>
 
       {selectedEvent.isOrganizer && (
         <div className={styles.btnContainer}>
