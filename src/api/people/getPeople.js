@@ -19,6 +19,7 @@ const getPeople = async () => {
     return simplifiedPeople;
   } catch (error) {
     console.error('Error fetching people:', error);
+    return [];
   }
 };
 
